@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://taiga/skin/style.css" type="text/css"?>
+<!DOCTYPE overlay SYSTEM "chrome://taiga/locale/bugzillalinkgrabber.dtd">
+<overlay id="taiga-overlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <script src="overlay.js"/>
+  
+  <!--stringbundleset id="stringbundleset">
+    <stringbundle id="taiga-strings" src="chrome://taiga/locale/taiga.properties"/>
+  </stringbundleset-->
+
+  <popup id="mailContext">
+    <menuitem id="context-taiga" label="&taiga.label;"
+              oncommand="taiga.onMenuItemCommand(gContextMenu.linkURL)"/>
+  </popup>
+</overlay>

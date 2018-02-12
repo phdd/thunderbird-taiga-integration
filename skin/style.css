@@ -1,0 +1,18 @@
+#taiga-options {
+  background-color: -moz-dialog!important;
+}
+
+#taiga-options label {
+  padding-right: 5px;
+  text-align: right;
+}
+
+#taiga-options description {
+  font-size: 80%;
+  margin: 5px;
+  margin-bottom: 12px;
+}
+
+#taiga-options description i {
+  font-style: italic;
+}
