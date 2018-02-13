@@ -3,16 +3,21 @@
 }
 
 #taiga-options label {
-  padding-right: 5px;
-  text-align: right;
+  margin: 5px;
 }
 
 #taiga-options description {
   font-size: 80%;
   margin: 5px;
-  margin-bottom: 12px;
+  color: #AAA;
 }
 
 #taiga-options description i {
   font-style: italic;
+}
+
+#taiga-options hr {
+  border-top: 1px solid #DDD;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }

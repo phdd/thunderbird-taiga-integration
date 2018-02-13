@@ -9,6 +9,7 @@ xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 		<em:name>Taiga Integration</em:name>
 		<em:version>1.0.0</em:version>
 		<em:creator>Peter Heisig</em:creator>
+		<em:description>Create projects, epics, user stories, tasks and tickets from your mail.</em:description>
 		
 		<em:optionsURL>chrome://taiga/content/options.xul</em:optionsURL>
 		<em:iconURL>chrome://taiga/skin/icon.png</em:iconURL>

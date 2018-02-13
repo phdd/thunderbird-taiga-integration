@@ -1,16 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet href="chrome://taiga/skin/style.css" type="text/css"?>
-<!DOCTYPE overlay SYSTEM "chrome://taiga/locale/bugzillalinkgrabber.dtd">
+<!DOCTYPE overlay SYSTEM "chrome://taiga/locale/overlay.dtd">
+
 <overlay id="taiga-overlay"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-  <script src="overlay.js"/>
+         
+  <script type="text/javascript" src="chrome://taiga/content/http.js" />
+  <script type="text/javascript" src="chrome://taiga/content/taiga.js" />
+  <script type="text/javascript" src="chrome://taiga/content/overlay.js" />
   
   <!--stringbundleset id="stringbundleset">
     <stringbundle id="taiga-strings" src="chrome://taiga/locale/taiga.properties"/>
   </stringbundleset-->
-
+  
   <popup id="mailContext">
-    <menuitem id="context-taiga" label="&taiga.label;"
-              oncommand="taiga.onMenuItemCommand(gContextMenu.linkURL)"/>
+    <menu id="taiga-mail-menu" 
+        label="&taiga;"
+        accesskey="T"
+        image="chrome://taiga/skin/icon.png"
+        class="menu-iconic">
+      <menupopup>
+        <menu id="taiga-mail-menu-create" 
+            label="&create;"
+            accesskey="C"
+            class="menu-iconic">
+            
+          <menupopup>
+            <menuitem 
+              id="user-story" 
+              label="&user-story;"
+              oncommand="Overlay.createUserStory(event);"/>
+            <menuitem 
+              id="task" 
+              label="&task;"
+              oncommand=""
+              disabled="true"/>
+            <menuitem 
+              id="ticket" 
+              label="&ticket;"
+              oncommand=""
+              disabled="true"/>
+            </menupopup>
+          </menu>
+          
+        <menuitem 
+          id="comment" 
+          label="&comment;"
+          oncommand=""
+          disabled="true"/>
+        <menuitem 
+          id="attachment" 
+          label="&attachment;"
+          oncommand=""
+          disabled="true"/>
+      </menupopup>
+    </menu>
   </popup>
+  
 </overlay>

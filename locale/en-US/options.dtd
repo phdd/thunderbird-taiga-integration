@@ -1,3 +1,7 @@
 <!ENTITY title "Taiga Integration Preferences">
-<!ENTITY token "Application Token">
+
+<!ENTITY token "Authentication Token">
+<!ENTITY token-descr "Ask your Taiga admin for help.">
+
 <!ENTITY address "Taiga URL">
+<!ENTITY address-descr "Address of the Taiga instance. E.g. <i>https://tree.taiga.io</i>.">

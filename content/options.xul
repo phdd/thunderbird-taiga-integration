@@ -7,6 +7,10 @@
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" 
   title="&title;"
   image="chrome://taiga/skin/icon.png">
+  
+  <script type="text/javascript" src="chrome://taiga/content/http.js" />
+  <script type="text/javascript" src="chrome://taiga/content/taiga.js" />
+  <script type="text/javascript" src="chrome://taiga/content/options.js" />
 
   <prefpane id="taiga-options-access">
     <preferences>
@@ -14,35 +18,18 @@
       <preference id="address" name="extensions.taiga.address" type="string" />
     </preferences>
     
-    <grid>
-      <columns>
-        <column flex="0" />
-        <column flex="4" />
-      </columns>
-      <rows>
-        
-        <row align="center">
-          <label control="address">&address;</label>
-          <textbox id="address" preference="address" />
-        </row>
-        
-        <row align="center">
-          <span />
-          <description>Address of the Taiga instance. 
-            E.g. <i>https://tree.taiga.io</i></description>
-        </row>
-        
-        <row align="center">
-          <label control="token">&token;</label>
-          <textbox id="token" preference="token" />
-        </row>
-        <row align="center">
-          <span />
-          <description>Ask your Taiga admin for a token.</description>
-        </row>
-        
-      </rows>
-    </grid>
-    
+    <vbox>
+      
+      <label control="address">&address;</label>
+      <textbox id="address" preference="address" />
+      <description>&address-descr;</description>
+      
+      <hr />
+      
+      <label control="token">&token;</label>
+      <textbox id="token" preference="token" />
+      <description>&token-descr;</description>
+      
+    </vbox>
   </prefpane>
 </prefwindow>
