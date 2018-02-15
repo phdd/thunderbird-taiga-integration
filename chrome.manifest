@@ -1,5 +1,4 @@
 content  taiga   content/
-resource taiga   modules/
 skin     taiga   classic/1.0 skin/
 locale   taiga   en-US locale/en-US/
 overlay  chrome://messenger/content/messenger.xul chrome://taiga/content/overlay.xul

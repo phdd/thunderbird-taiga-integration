@@ -90,5 +90,5 @@ var Overlay = {
 
 }
 
-window.addEventListener("load", function(e) { Overlay.startup(); }, false);
-window.addEventListener("unload", function(e) { Overlay.shutdown(); }, false);
+/*window.addEventListener("load", function(e) { Overlay.startup(); }, false);
+window.addEventListener("unload", function(e) { Overlay.shutdown(); }, false);*/

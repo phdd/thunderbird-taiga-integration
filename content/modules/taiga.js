@@ -17,11 +17,7 @@ var Taiga = {
           resolve(me.email);
         })
         .catch(error => {
-          if (!error.hasOwnProperty('statusText') || error.statusText == '') {
-            reject('Network issue');
-          } else {
-            reject(error.statusText);
-          }
+          reject(error.statusText || 'Network issue');
         });
     });
   },

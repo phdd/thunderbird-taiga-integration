@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet href="chrome://taiga/skin/style.css" type="text/css"?>
+<?xul-overlay href="chrome://taiga/content/import.xul"?>
+
 <!DOCTYPE overlay SYSTEM "chrome://taiga/locale/overlay.dtd">
 
 <overlay id="taiga-overlay"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
          
-  <script type="text/javascript" src="chrome://taiga/content/modules/ajax.js" />
-  <script type="text/javascript" src="chrome://taiga/content/modules/taiga.js" />
-  <script type="text/javascript" src="chrome://taiga/content/overlay.js" />
+  <script type="text/javascript">
+    let controller = null;
+    Extension.onLoad(() => { new Overlay(); });
+    Extension.onUnload(() => { controller.destructor(); });
+  </script>
 
   <popup id="mailContext">
     <menuitem 
