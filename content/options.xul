@@ -8,8 +8,8 @@
   title="&title;"
   image="chrome://taiga/skin/icon.png">
   
-  <script type="text/javascript" src="chrome://taiga/content/http.js" />
-  <script type="text/javascript" src="chrome://taiga/content/taiga.js" />
+  <script type="text/javascript" src="chrome://taiga/content/modules/ajax.js" />
+  <script type="text/javascript" src="chrome://taiga/content/modules/taiga.js" />
   <script type="text/javascript" src="chrome://taiga/content/options.js" />
 
   <prefpane id="taiga-options-access">
@@ -29,6 +29,15 @@
       <label control="token">&token;</label>
       <textbox id="token" preference="token" />
       <description>&token-descr;</description>
+      
+      <hr />
+      
+      <label control="authentication">&authentication;</label>
+      <hbox>
+        <image id="state" src="chrome://taiga/skin/confused.png" flex="0" />
+        <textbox id="authentication" readonly="true" flex="1" />
+      </hbox>
+      <description>&authentication-descr;</description>
       
     </vbox>
   </prefpane>

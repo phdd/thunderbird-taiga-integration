@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://global/skin/style.css" type="text/css"?>
+<?xml-stylesheet href="chrome://taiga/skin/style.css" type="text/css"?>
+<!DOCTYPE prefwindow SYSTEM "chrome://taiga/locale/create-ticket.dtd">
+
+<dialog id="taiga-create-ticket"
+  title="&title;"
+  buttons="accept,cancel"
+  ondialogaccept="return CreateTicket.accept();"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+         
+  <script type="text/javascript" src="chrome://taiga/content/modules/ajax.js" />
+  <script type="text/javascript" src="chrome://taiga/content/modules/taiga.js" />
+  <script type="text/javascript" src="chrome://taiga/content/create-ticket.js" />
+
+
+
+</dialog>

@@ -1,19 +1,24 @@
 var Options = {
-	prefs: null,
+	_prefs: null,
+	
+	_state: {
+		valid: 'chrome://taiga/skin/smile.png',
+		invalid: 'chrome://taiga/skin/confused.png'
+	},
 	
 	startup: function() {
-		this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+		this._prefs = Components.classes["@mozilla.org/preferences-service;1"]
 				.getService(Components.interfaces.nsIPrefService)
 				.getBranch("extensions.taiga.");
 		
-    this.prefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
-		this.prefs.addObserver("", this, false);
+    this._prefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
+		this._prefs.addObserver("", this, false);
 
     this.update();
 	},
 	
 	shutdown: function() {
-		this.prefs.removeObserver("", this);
+		this._prefs.removeObserver("", this);
 	},
 	
 	observe: function(subject, topic, data) {
@@ -30,21 +35,25 @@ var Options = {
 	},
 	
   update: function() {
-		var address = this.prefs.getCharPref("address"),
-    		token = this.prefs.getCharPref("token");
+		var address = this._prefs.getCharPref("address"),
+    		token = this._prefs.getCharPref("token");
 		
-		Taiga.configure(address, token);
-    console.log(Taiga);
-		Taiga.validateToken((data) => {
-      console.log('SUCCESS');
-      console.log(data);
-    }, (error) => {
-      console.log(error);
-    });
-  }
+		Taiga.connect(address, token)
+			.then(user => this._valid(user))
+			.catch(error => this._invalid(error));
+  },
+	
+	_valid: function(user) {
+		document.getElementById("authentication").value = user;
+		document.getElementById("state").src = this._state.valid;
+	},
+	
+	_invalid: function(error) {
+		document.getElementById("authentication").value = error;
+		document.getElementById("state").src = this._state.invalid;
+	}
 
 }
 
-// Install load and unload handlers
 window.addEventListener("load", function(e) { Options.startup(); }, false);
 window.addEventListener("unload", function(e) { Options.shutdown(); }, false);
