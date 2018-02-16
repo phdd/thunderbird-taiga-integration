@@ -35,9 +35,8 @@ var Overlay = {
 			.catch(error => 
 				document.querySelector('#taiga').disabled = true);
 	},
-	
+
   createTicket: function() {
-		// TODO check for permission to create a ticket
 		Promise
 			.all(this
 				.selectedMessages()

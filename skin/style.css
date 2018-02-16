@@ -2,27 +2,27 @@
   background-color: -moz-dialog!important;
 }
 
-#taiga-options label {
+label {
   margin: 5px;
 }
 
-#taiga-options description {
+description {
   font-size: 80%;
   margin: 5px;
   color: #AAA;
 }
 
-#taiga-options description i {
+description i {
   font-style: italic;
 }
 
-#taiga-options hr {
+hr {
   border-top: 1px solid #DDD;
   margin-top: 5px;
   margin-bottom: 5px;
 }
 
-#taiga-options #state {
+#state {
   margin: 4px;
   width: 30px;
   height: 30px;

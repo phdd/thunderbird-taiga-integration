@@ -1,20 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet href="chrome://global/skin/style.css" type="text/css"?>
 <?xml-stylesheet href="chrome://taiga/skin/style.css" type="text/css"?>
-
 <!DOCTYPE dialog SYSTEM "chrome://taiga/locale/create-ticket.dtd">
+<wizard xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+    id="taiga-create-ticket"
+    height="550"
+    width="600"
+    title="Create Taiga ticket">
+  <wizardpage
+        label="Taiga Project"
+        onpageshow="">
+    <label control="filter" value="Filter"/>
+    <textbox id="filter" value=""/>
+    <description>Search your projects for title, description or slug.</description>
+    <label control="project" value="Ticket's Project"/>
+    <separator/>
+    <listbox id="project" rows="12">
+      <listitem value="project-x" label="Project X"/>
+      <listitem value="project-y" label="Project Y"/>
+      <listitem value="project-z" label="Project Z"/>
+    </listbox>
+    <description>The project you intent creating a ticket for.</description>
+  </wizardpage>
+  <wizardpage
+        label="Ticket's Details"
+        onpageshow="">
+    <vbox>
+      <grid flex="1">
+        <columns>
+          <column flex="1" />
+          <column flex="1" />
+          <column flex="1" />
+        </columns>
+        <rows>
+          <row>
+            <label control="" value="Type"/>
+            <label control="" value="Priority"/>
+            <label control="" value="Severity"/>
+          </row>
+          <row>
+            <menulist>
+              <menupopup>
+                <menuitem value="{item value}" label="Bug"/>
+              </menupopup>
+            </menulist>
+            <menulist>
+              <menupopup>
+                <menuitem value="{item value}" label="Normal"/>
+              </menupopup>
+            </menulist>
+            <menulist>
+              <menupopup>
+                <menuitem value="{item value}" label="Normal"/>
+              </menupopup>
+            </menulist>
+          </row>
+        </rows>
+      </grid>
+      <description>
+Ticket attributes.
+        </description>
+      <separator/>
+      <label control="title" value="Title"/>
+      <textbox id="title" value=""/>
+      <description>
+A short but meaningful title.
+        </description>
+      <separator/>
+      <label control="description" value="Description"/>
+      <textbox id="description" multiline="true" rows="8" value=""/>
+      <description>
+Detailed ticket description.
+        </description>
+    </vbox>
+  </wizardpage>
 
-<dialog id="taiga-create-ticket"
-  title="&title;"
-  buttons="accept,cancel"
-  ondialogaccept="return CreateTicket.accept();"
-  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-  
-  <script src="chrome://taiga/content/modules/utils.js" />
-  <script src="chrome://taiga/content/modules/ajax.js" />
-  <script src="chrome://taiga/content/modules/taiga.js" />
-  <script src="chrome://taiga/content/create-ticket.js" />
+  <wizardpage
+        label="Ticket's Attachments"
+        onpageshow="">
 
-  <description>Hello World!</description>
+    <label control="attachments" value="Attachments"/>
+    <listbox seltype="multiple" id="attachments" rows="16">
+        <listitem value="a1" label="Attachment A"/>
+        <listitem value="a2" label="Attachment B"/>
+        <listitem value="a3" label="Attachment C"/>
+    </listbox>
+    <description>Select all attachments connected to this ticket.</description>
 
-</dialog>
+  </wizardpage>
+</wizard>
+
