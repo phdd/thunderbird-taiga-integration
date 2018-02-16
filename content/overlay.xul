@@ -10,19 +10,20 @@
   <script src="chrome://taiga/content/modules/utils.js" />
   <script src="chrome://taiga/content/modules/ajax.js" />
   <script src="chrome://taiga/content/modules/taiga.js" />
-
   <script src="chrome://taiga/content/overlay.js" />
   
-  <script type="text/javascript">
-    Extension.onLoad(() => return new Overlay());
-  </script>
-
   <popup id="mailContext">
-    <menuitem 
-      id="create-ticket" 
-      label="&create-ticket;"
+    <menu id="taiga"
+      label="&taiga;"
       accesskey="T"
-      image="chrome://taiga/skin/icon.png"
-      oncommand="Extension.controller().createTicket();"/>
+      class="menu-iconic"
+      image="chrome://taiga/skin/icon.png">
+      <menupopup>
+        <menuitem 
+          id="create-ticket" 
+          label="&create-ticket;"
+          oncommand="Overlay.createTicket();"/>
+      </menupopup>
+    </menu>
   </popup>
 </overlay>

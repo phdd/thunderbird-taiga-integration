@@ -3,22 +3,26 @@ const IMAGE_CONFUSED = 'chrome://taiga/skin/confused.png';
 
 var Options = {
 	
-	_preferences: null,
-	_taigaApi: null,
+	preferences: null,
+	taigaApi: null,
 		
-	startup: function(preferences = false, taigaApi = false) {
-		this._taigaApi = taigaApi || new TaigaApi();
-		this._preferences = preferences || new Preferences(
+	startup: function(
+			preferences = false,
+			taigaApi = new TaigaApi()
+	) {
+		this.taigaApi = taigaApi;
+		
+		this.preferences = preferences || new Preferences(
 				"extensions.taiga.", () => this.validateTaigaAuthentication());
 				
 		this.validateTaigaAuthentication();
 	},
 
 	validateTaigaAuthentication: function() {
-		this._taigaApi.address = this._preferences.stringFrom("address");
-		this._taigaApi.token = this._preferences.stringFrom("token");
+		this.taigaApi.address = this.preferences.stringFrom("address");
+		this.taigaApi.token = this.preferences.stringFrom("token");
 
-		this._taigaApi
+		this.taigaApi
 		  .me()
 			.then(user => 
 				this.setUser(user.email))
@@ -27,13 +31,13 @@ var Options = {
 	},
 	
 	setUser: function(user) {
-		document.getElementById("authentication").value = user;
-		document.getElementById("state").src = IMAGE_SMILE;
+		document.querySelector("#authentication").value = user;
+		document.querySelector("#state").src = IMAGE_SMILE;
 	},
 	
 	setError: function(error) {
-		document.getElementById("authentication").value = error;
-		document.getElementById("state").src = IMAGE_CONFUSED;
+		document.querySelector("#authentication").value = error;
+		document.querySelector("#state").src = IMAGE_CONFUSED;
 	}
 
 }

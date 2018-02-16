@@ -1,94 +1,66 @@
-Components.utils.import("resource://gre/modules/Services.jsm");
-Components.utils.import("resource:///modules/gloda/mimemsg.js");
-
 var Overlay = {
-	_prefs: null,
-	_listener: null,
-	_messenger: null,
 	
-	startup: function() {
-		this._prefs = Components.classes["@mozilla.org/preferences-service;1"]
-				.getService(Components.interfaces.nsIPrefService)
-				.getBranch("extensions.taiga.");
+	messageMapper: null,
+	preferences: null,
+	mailPane: null,
+	taigaApi: null,
+	
+	startup: function(
+			preferences = false, 
+			taigaApi = new TaigaApi(),
+			messageMapper = new MessageMapper()
+	) {
+		this.messageMapper = messageMapper;
+		this.taigaApi = taigaApi;
 		
-		this._prefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
-		this._prefs.addObserver("", this, false);
+		this.preferences = preferences || new Preferences(
+				"extensions.taiga.", () => this.validateTaigaAuthentication());
 		
-		this._listener = Components.classes["@mozilla.org/network/sync-stream-listener;1"]
-				.createInstance(Components.interfaces.nsISyncStreamListener);
-				
-		this._messenger = Components.classes["@mozilla.org/messenger;1"]
-				.createInstance(Components.interfaces.nsIMessenger);
+		this.mailPane = Components
+		  .classes["@mozilla.org/appshell/window-mediator;1"]
+			.getService(Components.interfaces.nsIWindowMediator)
+			.getMostRecentWindow("mail:3pane");
+		
+		this.validateTaigaAuthentication();
+	},
+		
+	validateTaigaAuthentication: function() {
+		this.taigaApi.address = this.preferences.stringFrom("address");
+		this.taigaApi.token = this.preferences.stringFrom("token");
 
-		this._update();
+		this.taigaApi
+			.me()
+			.then(user => 
+				document.querySelector('#taiga').disabled = false)
+			.catch(error => 
+				document.querySelector('#taiga').disabled = true);
 	},
 	
-	shutdown: function() {
-		this._prefs.removeObserver("", this);
-	},
-	
-	observe: function(subject, topic, data) {
-		if (topic != "nsPref:changed") {
-			return;
-		}
-
-		switch(data) {
-			case "address":
-			case "token":
-				this._update();
-				break;
-		}
-	},
-	
-	_update: function() {
-		var address = this._prefs.getCharPref("address"),
-				token = this._prefs.getCharPref("token");
-		
-		Taiga.connect(address, token)
-			.then(user => this._valid(user))
-			.catch(error => this._invalid(error));
-	},
-	
-	_valid: function(user) {
-		document.getElementById("create-ticket").disabled = false;
-	},
-	
-	_invalid: function(error) {
-		document.getElementById("create-ticket").disabled = true;
-	},
-	
-  createTicket: function() {		
-		var win = Components.classes["@mozilla.org/appshell/window-mediator;1"].
-			getService(Components.interfaces.nsIWindowMediator).
-			getMostRecentWindow("mail:3pane");
-			
-// TODO Promises
-		window.openDialog(
-			"chrome://taiga/content/create-ticket.xul",
-			"taiga-create-ticket", "chrome,centerscreen",
-			window, win.gFolderDisplay
-				.selectedMessages.map(message => this._messageMapper(message)));
+  createTicket: function() {
+		// TODO check for permission to create a ticket
+		Promise
+			.all(this
+				.selectedMessages()
+				.map(this.messageMapper.toJson))
+			.then((mappedMessages) => this
+				.startDialog('create-ticket', mappedMessages))
+			.catch(console.log); // TODO error handling
   },
 	
-// TODO Promises
-	_messageMapper: function(message) {
-		var subject = null;
-		var headers = {};
-		var body = null;
-		var attachments = null;
-		
-		MsgHdrToMimeMessage(message, null, function(message, mimemessage) {
-			subject = message.mime2DecodedSubject; // TODO encoding
-			headers = mimemessage.headers; // TODO cc, ...
-			body = mimemessage.coerceBodyToPlaintext().trim();
+	startDialog: function(process, messages) {
+		window.openDialog(
+			`chrome://taiga/content/${process}.xul`,
+			`taiga-${process}`, 
+			"chrome,centerscreen",
+			messages);
+	},
 
-			console.log(headers);
-		});
-		
-		return message;
+	selectedMessages: function() {
+		return this.mailPane
+			.gFolderDisplay
+			.selectedMessages;
 	}
 
 }
 
-/*window.addEventListener("load", function(e) { Overlay.startup(); }, false);
-window.addEventListener("unload", function(e) { Overlay.shutdown(); }, false);*/
+Extension.onLoad(() => Overlay.startup());
