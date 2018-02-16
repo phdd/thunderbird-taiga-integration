@@ -18,11 +18,7 @@
     <script src="chrome://taiga/content/modules/utils.js" />
     <script src="chrome://taiga/content/modules/ajax.js" />
     <script src="chrome://taiga/content/modules/taiga.js" />
-
     <script src="chrome://taiga/content/options.js" />
-    <script type="text/javascript">
-      Extension.onLoad(() => { new Options(); });
-    </script>
     
     <vbox>
       

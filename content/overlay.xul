@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xul-overlay href="chrome://taiga/content/import.xul"?>
+<?xml-stylesheet href="chrome://global/skin/style.css" type="text/css"?>
+<?xml-stylesheet href="chrome://taiga/skin/style.css" type="text/css"?>
 
 <!DOCTYPE overlay SYSTEM "chrome://taiga/locale/overlay.dtd">
 
 <overlay id="taiga-overlay"
-         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
          
+  <script src="chrome://taiga/content/modules/utils.js" />
+  <script src="chrome://taiga/content/modules/ajax.js" />
+  <script src="chrome://taiga/content/modules/taiga.js" />
+
+  <script src="chrome://taiga/content/overlay.js" />
+  
   <script type="text/javascript">
-    let controller = null;
-    Extension.onLoad(() => { new Overlay(); });
-    Extension.onUnload(() => { controller.destructor(); });
+    Extension.onLoad(() => return new Overlay());
   </script>
 
   <popup id="mailContext">
@@ -18,6 +23,6 @@
       label="&create-ticket;"
       accesskey="T"
       image="chrome://taiga/skin/icon.png"
-      oncommand="Overlay.createTicket();"/>
+      oncommand="Extension.controller().createTicket();"/>
   </popup>
 </overlay>

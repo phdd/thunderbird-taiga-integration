@@ -1,34 +1,41 @@
-'use strict';
-
 const IMAGE_SMILE = 'chrome://taiga/skin/smile.png';
 const IMAGE_CONFUSED = 'chrome://taiga/skin/confused.png';
 
-class Options {
-		
-	constructor(preferences = false) {
-		this._preferences = preferences || new Preferences(
-				"extensions.taiga.", () => this.connectToTaiga());
-				
-		this.connectToTaiga();
-	}
-
-	connectToTaiga() {
-		var address = this._preferences.stringFrom("address"),
-				token = this._preferences.stringFrom("token");
-		
-		Taiga.connect(address, token)
-			.then(user => this._valid(user))
-			.catch(error => this._invalid(error));
-	}
+var Options = {
 	
-	_valid(user) {
+	_preferences: null,
+	_taigaApi: null,
+		
+	startup: function(preferences = false, taigaApi = false) {
+		this._taigaApi = taigaApi || new TaigaApi();
+		this._preferences = preferences || new Preferences(
+				"extensions.taiga.", () => this.validateTaigaAuthentication());
+				
+		this.validateTaigaAuthentication();
+	},
+
+	validateTaigaAuthentication: function() {
+		this._taigaApi.address = this._preferences.stringFrom("address");
+		this._taigaApi.token = this._preferences.stringFrom("token");
+
+		this._taigaApi
+		  .me()
+			.then(user => 
+				this.setUser(user.email))
+			.catch(error => 
+				this.setError(error.statusText || 'Network issue'));
+	},
+	
+	setUser: function(user) {
 		document.getElementById("authentication").value = user;
 		document.getElementById("state").src = IMAGE_SMILE;
-	}
+	},
 	
-	_invalid(error) {
+	setError: function(error) {
 		document.getElementById("authentication").value = error;
 		document.getElementById("state").src = IMAGE_CONFUSED;
 	}
 
 }
+
+Extension.onLoad(() => Options.startup());
