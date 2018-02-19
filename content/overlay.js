@@ -6,7 +6,7 @@ var Overlay = {
 	taigaApi: null,
 	
 	startup: function(
-			preferences = false, 
+			preferences = false,
 			taigaApi = new TaigaApi(),
 			messageMapper = new MessageMapper()
 	) {

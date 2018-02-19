@@ -4,6 +4,10 @@ class TaigaApi {
     return this._entity('users/me');
   }
 
+  projects() {
+    return this._entity('projects');
+  }
+
   set address(address) {
     this._address = address;
   }
