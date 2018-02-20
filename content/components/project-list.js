@@ -2,8 +2,6 @@
 // e.g. projects, priority, severity, …
 class ProjectList {
 
-  // TODO consider using a factory 
-  // e.g. ComponentFactory.projectListWith(taigaApi)
   static connect(taigaApi) {
     let list = new ProjectList();
     list.listElementName = false;
@@ -13,6 +11,17 @@ class ProjectList {
   
   createElementsNamed(name) {
     this.listElementName = name;
+    return this;
+  }
+  
+  loadSelection(callback) {
+    this.loadSelection = callback;
+    return this;
+  }
+  
+  storeSelection(callback) {
+    this.storeSelection = callback;
+    return this;
   }
   
   populate(list) {
@@ -25,10 +34,15 @@ class ProjectList {
   
   load(callback) {
     this.list.addEventListener('select', () => {
-      if (this.list.selectedItem !== null) 
-        callback(this.list.selectedItem.value);
-      else 
-        callback(null);
+      if (this.list.selectedItem !== null) {
+        const value = this.list.selectedItem.value;
+        
+        if (this.storeSelection)
+          this.storeSelection(value);
+          
+        callback(value);
+        
+      } else callback(null);
     });
     
     this.list.style.cursor = 'progress';
@@ -60,7 +74,13 @@ class ProjectList {
           this.list.style.cursor = 'auto';
           this.list.setAttribute('disabled', 'false');
           
-          resolve(projectItemMapping);
+          const lastSelection = this.loadSelection();
+
+          if (lastSelection !== null &&
+              Object.keys(projectItemMapping).includes(lastSelection))
+            this.list.selectItem(projectItemMapping[lastSelection]);
+          
+          resolve();
         })
         
         .catch((error) => {

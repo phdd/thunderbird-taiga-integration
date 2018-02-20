@@ -37,22 +37,12 @@ var CreateTicket = {
 		ProjectList
 			.connect(this.taigaApi)
 			.populate(this.gui.projects())
+			.loadSelection(() => this.preferences.stringFrom("lastProject"))
+			.storeSelection(id => this.preferences.setString("lastProject", `${id}`))
 
 			.load((projectId) => {
 				this.ticket.project = projectId;
-				
-				if (projectId !== null)
-					this.preferences.setString("lastProject", `${projectId}`);
-
 				this.updateGui();
-			})
-			
-			.then((projectItemMapping) => {
-				const lastProject = this.preferences.stringFrom("lastProject");
-
-				if (lastProject !== null &&
-						Object.keys(projectItemMapping).includes(lastProject))
-					this.gui.projects().selectItem(projectItemMapping[lastProject]);
 			})
 
 			.catch((error) => {
