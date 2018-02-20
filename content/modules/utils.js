@@ -95,8 +95,6 @@ class MessageMapper {
             };
           });
           
-          console.log(json);
-          
           resolve(json);
         } catch (error) { 
           reject(error);

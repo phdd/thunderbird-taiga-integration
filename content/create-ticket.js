@@ -34,22 +34,23 @@ var CreateTicket = {
 	},
 
 	showProjects: function() {
-		ProjectList
-			.connect(this.taigaApi)
-			.populate(this.gui.projects())
-			.loadSelection(() => this.preferences.stringFrom("lastProject"))
-			.storeSelection(id => this.preferences.setString("lastProject", `${id}`))
-
-			.load((projectId) => {
+		ListBuilder
+			.fetchEntitiesFrom(() => this.taigaApi.projects())
+			.createElementsNamed('listitem')
+			.addItemsTo(this.gui.projects())
+			.addItemOnlyWhen(project => project.i_am_member)
+			.loadSelectionWith(() => this.preferences.stringFrom("lastProject"))
+			.storeSelectionWith(id => this.preferences.setString("lastProject", `${id}`))
+			.consumeSelectionWith((projectId) => {
 				this.ticket.project = projectId;
 				this.updateGui();
 			})
-
 			.catch((error) => {
+				console.log(error);
 				new Prompt('taiga-create-ticket') 
 				  // TODO localize
 					.alert('Create Taiga Ticket', error)
-					.then(window.close); 
+					.then(window.close);
 			});
 	},
 	

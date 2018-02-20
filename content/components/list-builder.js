@@ -1,11 +1,9 @@
-// TODO maybe generic 
-// e.g. projects, priority, severity, …
-class ProjectList {
+class ListBuilder {
 
-  static connect(taigaApi) {
-    let list = new ProjectList();
+  static fetchEntitiesFrom(fetchEntities) {
+    let list = new ListBuilder();
     list.listElementName = false;
-    list.taigaApi = taigaApi;
+    list.fetchEntities = fetchEntities;
     return list;
   }
   
@@ -14,17 +12,17 @@ class ProjectList {
     return this;
   }
   
-  loadSelection(callback) {
+  loadSelectionWith(callback) {
     this.loadSelection = callback;
     return this;
   }
   
-  storeSelection(callback) {
+  storeSelectionWith(callback) {
     this.storeSelection = callback;
     return this;
   }
   
-  populate(list) {
+  addItemsTo(list) {
     while (list.firstChild) 
       list.removeChild(list.firstChild);
       
@@ -32,7 +30,17 @@ class ProjectList {
     return this;
   }
   
-  load(callback) {
+  addItemOnlyWhen(filter) {
+    this.filter = filter;
+    return this;
+  }
+  
+  mapEntityToItemWith(entityItemMapper) {
+    this.entityItemMapper = entityItemMapper;
+    return this;
+  }
+  
+  consumeSelectionWith(callback) {
     this.list.addEventListener('select', () => {
       if (this.list.selectedItem !== null) {
         const value = this.list.selectedItem.value;
@@ -49,26 +57,30 @@ class ProjectList {
     this.list.setAttribute('disabled', 'true');
     
     return new Promise((resolve, reject) => {       
-      this.taigaApi
-        .projects()
+      this
+        .fetchEntities()
         
-        .then((projects) => {
-          if (projects.length == 0) 
-            throw new Error('You are no member of any project.');
+        .then((entities) => {
+          if (entities.length == 0) 
+            throw new Error('Sorry, but there are no items.');
 
-          let projectItemMapping = {};
-          projects.forEach((project) => {
-            if (!project.i_am_member) 
+          let entityItemMapping = {};
+          entities.forEach((entity) => {
+            if (!this.filter(entity))
               return;
 
             let item = document.createElement(
               this.listElementName || 'listitem');
-              
-            item.setAttribute('value', project.id);
-            item.setAttribute('label', project.name);
             
+            if (this.entityItemMapper) {
+              this.entityItemMapper(entity, item);
+            } else {
+              item.setAttribute('value', entity.id);
+              item.setAttribute('label', entity.name);
+            }
+
             this.list.appendChild(item);
-            projectItemMapping[project.id] = item;
+            entityItemMapping[entity.id] = item;
           });
 
           this.list.style.cursor = 'auto';
@@ -77,15 +89,15 @@ class ProjectList {
           const lastSelection = this.loadSelection();
 
           if (lastSelection !== null &&
-              Object.keys(projectItemMapping).includes(lastSelection))
-            this.list.selectItem(projectItemMapping[lastSelection]);
+              Object.keys(entityItemMapping).includes(lastSelection))
+            this.list.selectItem(entityItemMapping[lastSelection]);
           
           resolve();
         })
         
         .catch((error) => {
           if (typeof(error) !== 'string') {
-  					error = 'There was an error getting the Projects'; // TODO localize
+  					error = 'There was an error getting the items'; // TODO localize
   					console.log(error);
   				}
 
