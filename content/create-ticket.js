@@ -5,7 +5,11 @@ var CreateTicket = {
 	
 	ticket: {
 		project: null,
-		type: null
+		type: null,
+		severity: null,
+		priority: null,
+		subject: null,
+		description: null
 	},
 	
 	gui: {
@@ -109,9 +113,25 @@ var CreateTicket = {
 			.then(() => this.updateGui())
 			.catch(error =>
 				this.alertAndClose(error));
-				
-		this.gui.description().value = this.messages[0].body;
-		this.gui.title().value = this.messages[0].subject;
+		
+		if (!this.ticket.description)
+			this.ticket.description = this.messages[0].body
+		
+		if (!this.ticket.subject)
+			this.ticket.subject = this.messages[0].subject
+		
+		this.gui.title().value = this.ticket.subject;
+		this.gui.description().value = this.ticket.description;
+
+		this.gui.description().addEventListener('keyup', () => {
+			this.ticket.description = this.gui.description().value;
+			this.updateGui();
+		});
+
+		this.gui.title().addEventListener('keyup', () => {
+			this.ticket.subject = this.gui.title().value;
+			this.updateGui();
+		});
 
 		this.gui.title().focus();
 	},
@@ -128,7 +148,12 @@ var CreateTicket = {
 				this.gui.wizard().canAdvance = this.ticket.project != null;
 				break;
 			case 'page-details':
-				this.gui.wizard().canAdvance = false;
+				this.gui.wizard().canAdvance = 
+					this.ticket.type != null && 
+					this.ticket.severity != null && 
+					this.ticket.priority != null &&
+					this.ticket.subject != null && this.ticket.subject.length > 2 && 
+					this.ticket.description != null && this.ticket.description.length > 2;
 				break;
 		}
 	}

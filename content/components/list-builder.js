@@ -49,7 +49,7 @@ class ListBuilder {
   consumeSelectionWith(callback) {
     this.entities = {};
     
-    const listener = (event) => {
+    const listener = () => {
       const selectedItem = this.list.querySelector('[selected=true]');
       
       if (selectedItem) {
@@ -109,7 +109,7 @@ class ListBuilder {
             .find(possibleSelection => 
               Object.keys(entityItemMapping).includes(possibleSelection));
           
-          if (selection !== null)
+          if (selection !== null) {
             switch (this.list.localName) {
               case 'menupopup':
                 this.list.parentNode.selectedItem = entityItemMapping[selection];
@@ -117,6 +117,9 @@ class ListBuilder {
               default: 
                 this.list.selectedItem = entityItemMapping[selection];
             }
+            
+            listener();
+          }
           
           resolve();
         })

@@ -30,6 +30,7 @@
   </wizardpage>
   
   <wizardpage
+        id="page-details"
         label="&ticket-details;"
         onpageshow="CreateTicket.showDetails()">
     <vbox>
@@ -73,6 +74,7 @@
   </wizardpage>
 
   <wizardpage
+        id="page-attachments"
         label="Ticket's Attachments"
         onpageshow="">
 
