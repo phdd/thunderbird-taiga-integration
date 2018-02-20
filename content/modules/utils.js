@@ -35,6 +35,14 @@ class Preferences {
     return this.preferences.getCharPref(preference);
   }
   
+  setString(preference, value) {
+    return this.preferences.setCharPref(preference, value);
+  }
+  
+  have(preference) {
+    return this.preferences.prefHasUserValue(preference);
+  }
+  
 }
 
 class Extension {

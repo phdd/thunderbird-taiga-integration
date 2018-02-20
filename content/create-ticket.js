@@ -40,10 +40,22 @@ var CreateTicket = {
 
 			.load((projectId) => {
 				this.ticket.project = projectId;
+				
+				if (projectId !== null)
+					this.preferences.setString("lastProject", `${projectId}`);
+
 				this.updateGui();
 			})
+			
+			.then((projectItemMapping) => {
+				const lastProject = this.preferences.stringFrom("lastProject");
 
-			.catch((error) => {				
+				if (lastProject !== null &&
+						Object.keys(projectItemMapping).includes(lastProject))
+					this.gui.projects().selectItem(projectItemMapping[lastProject]);
+			})
+
+			.catch((error) => {
 				new Prompt('taiga-create-ticket') 
 				  // TODO localize
 					.alert('Create Taiga Ticket', error)

@@ -42,6 +42,7 @@ class ProjectList {
           if (projects.length == 0) 
             throw new Error('You are no member of any project.');
 
+          let projectItemMapping = {};
           projects.forEach((project) => {
             if (!project.i_am_member) 
               return;
@@ -53,12 +54,13 @@ class ProjectList {
             item.setAttribute('label', project.name);
             
             this.list.appendChild(item);
+            projectItemMapping[project.id] = item;
           });
 
           this.list.style.cursor = 'auto';
           this.list.setAttribute('disabled', 'false');
           
-          resolve();
+          resolve(projectItemMapping);
         })
         
         .catch((error) => {
