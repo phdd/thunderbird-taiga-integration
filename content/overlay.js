@@ -43,7 +43,7 @@ var Overlay = {
 				.map(this.messageMapper.toJson))
 			.then((mappedMessages) => this
 				.startDialog('create-ticket', mappedMessages))
-			.catch(console.log); // TODO error handling
+			.catch(console.log);
   },
 	
 	startDialog: function(process, messages) {

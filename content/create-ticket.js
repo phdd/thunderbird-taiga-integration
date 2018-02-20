@@ -25,18 +25,18 @@ var CreateTicket = {
 		this.taigaApi.token = this.preferences.stringFrom("token");
 
 		if (this.messages.length != 1) 
-			new Prompt('taiga-create-ticket') 
-				// TODO localize
-				.alert('Create Taiga Ticket', 'You need to select one message.')
+			new Prompt('taiga-create-ticket')
+				.alert(i18n('createTicket'), i18n('selectOneMessage'))
 				.then(window.close);
 
 		this.updateGui();
 	},
 
-	showProjects: function() {
+	showProjects: function() {		
 		ListBuilder
 			.fetchEntitiesFrom(() => this.taigaApi.projects())
-			.createElementsNamed('listitem')
+			.nameEntities(i18n('project'), i18n('projects'))
+			.createItemsNamed('listitem')
 			.addItemsTo(this.gui.projects())
 			.addItemOnlyWhen(project => project.i_am_member)
 			.loadSelectionWith(() => this.preferences.stringFrom("lastProject"))
@@ -46,10 +46,8 @@ var CreateTicket = {
 				this.updateGui();
 			})
 			.catch((error) => {
-				console.log(error);
 				new Prompt('taiga-create-ticket') 
-				  // TODO localize
-					.alert('Create Taiga Ticket', error)
+					.alert(i18n('createTicket'), error)
 					.then(window.close);
 			});
 	},

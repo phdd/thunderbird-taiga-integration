@@ -7,7 +7,7 @@ class ListBuilder {
     return list;
   }
   
-  createElementsNamed(name) {
+  createItemsNamed(name) {
     this.listElementName = name;
     return this;
   }
@@ -32,6 +32,12 @@ class ListBuilder {
   
   addItemOnlyWhen(filter) {
     this.filter = filter;
+    return this;
+  }
+  
+  nameEntities(entityName, entitiesName) {
+    this.entityName = entityName;
+    this.entitiesName = entitiesName;
     return this;
   }
   
@@ -62,7 +68,7 @@ class ListBuilder {
         
         .then((entities) => {
           if (entities.length == 0) 
-            throw new Error('Sorry, but there are no items.');
+            throw new Error(i18n('noEntities', [ this.entityName ]));
 
           let entityItemMapping = {};
           entities.forEach((entity) => {
@@ -96,9 +102,11 @@ class ListBuilder {
         })
         
         .catch((error) => {
+          console.log(error); 
+          
           if (typeof(error) !== 'string') {
-  					error = 'There was an error getting the items'; // TODO localize
-  					console.log(error);
+  					error = Extension
+              .i18n('errorGettingEntities', [ this.entitiesName ]);
   				}
 
           this.list.style.cursor = 'auto';

@@ -54,8 +54,32 @@ class Extension {
   static onUnload(callback) {
     window.addEventListener("unload", callback, false);
   }
+  
+  /**
+   * Translate a message from taiga.properties.
+   * You may use template strings. E.g.:
+   * 
+   *    "This is a %S."
+   * 
+   * @param {string} id - Property-ID
+   * @param {string} subPhrases - array of values for template
+   */
+  static i18n(id, subPhrases) {
+    if (!Extension.stringBundle) {
+      Extension.stringBundle = Cc["@mozilla.org/intl/stringbundle;1"]
+        .getService(Ci.nsIStringBundleService)
+        .createBundle("chrome://taiga/locale/taiga.properties");
+    }
+    
+    if (subPhrases)
+      return Extension.stringBundle.formatStringFromName(id, subPhrases, subPhrases.length);
+    else 
+      return Extension.stringBundle.GetStringFromName(id);
+  }
 
 }
+
+const i18n = Extension.i18n;
 
 class Prompt {
   
