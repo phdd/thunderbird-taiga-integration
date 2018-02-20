@@ -114,13 +114,16 @@ class MessageMapper {
     let json = {};
     
     return new Promise((resolve, reject) => {
-      MsgHdrToMimeMessage(message, null, function(message, mime) {
+      MsgHdrToMimeMessage(message, null, (message, mime) => {
         try {
-          
-          json.subject = message.mime2DecodedSubject; // TODO encoding
-          json.headers = mime.headers; // TODO cc, ...
+          json.subject = message.mime2DecodedSubject;
+          json.from = mime.headers.from[0];
+          //json.to = this.splitAddresses(mime.headers.to);
+          //json.cc = this.splitAddresses(mime.headers.cc);
+          json.date = mime.headers.date[0] || null;
+          json.id = mime.headers['message-id'][0];
           json.body = mime.coerceBodyToPlaintext().trim();
-          
+
           json.attachments = mime.allUserAttachments.map((attachment) => {
             return {
               url: attachment.url,
@@ -138,6 +141,14 @@ class MessageMapper {
         examineEncryptedParts: true 
       });
     });
+  }
+  
+  splitAddresses(addressString) {
+    if (addressString && addressString[0]) {
+      addressString[0].split(', ')
+    } else {
+      return null;
+    }
   }
 
 }
