@@ -12,7 +12,10 @@ var CreateTicket = {
 		projects: () => document.querySelector('#projects'),
 		wizard: () => document.querySelector('#taiga-create-ticket'),
 		types: () => document.querySelector('#ticket-type'),
-		title: () => document.querySelector('#title')
+		priority: () => document.querySelector('#ticket-priority'),
+		severity: () => document.querySelector('#ticket-severity'),
+		title: () => document.querySelector('#title'),
+		description: () => document.querySelector('#description')
 	},
 
 	startup: function(
@@ -45,7 +48,7 @@ var CreateTicket = {
 				project.i_am_member && 
 				project.is_issues_activated && 
 				project.my_permissions.includes('add_issue'))
-			.loadSelectionWith(() => this.preferences.stringFrom("lastProject"))
+			.loadSelectionWith(() => [ this.preferences.stringFrom("lastProject") ])
 			.storeSelectionWith(id => this.preferences.setString("lastProject", `${id}`))
 			.consumeSelectionWith(project => {
 				this.ticket.project = project;
@@ -62,17 +65,54 @@ var CreateTicket = {
 			.nameEntities(i18n('issueType'), i18n('issueTypes'))
 			.createItemsNamed('menuitem')
 			.addItemsTo(this.gui.types())
-			.loadSelectionWith(() => 
-				this.preferences.stringFrom("lastIssueType") || 
-				this.ticket.project.default_issue_type)
-			.storeSelectionWith(id => this.preferences.setString("lastIssueType", `${id}`))
-			.consumeSelectionWith(type => {
-				this.ticket.type = type;
-				this.updateGui();
-			})
-			.catch(error => 
+			.loadSelectionWith(() => [
+				this.preferences.stringFrom("lastIssueType"), 
+				this.ticket.project.default_issue_type ])
+			.storeSelectionWith(id => 
+				this.preferences.setString("lastIssueType", `${id}`))
+			.consumeSelectionWith(type => 
+				this.ticket.type = type)
+			.then(() => this.updateGui())
+			.catch(error =>
 				this.alertAndClose(error));
-		
+	
+		ListBuilder
+			.fetchEntitiesFrom(() => 
+				this.taigaApi.priorities(this.ticket.project.id))
+			.nameEntities(i18n('priority'), i18n('priorities'))
+			.createItemsNamed('menuitem')
+			.addItemsTo(this.gui.priority())
+			.loadSelectionWith(() => [
+				this.preferences.stringFrom("lastPriority"), 
+				this.ticket.project.default_priority ])
+			.storeSelectionWith(id => 
+				this.preferences.setString("lastPriority", `${id}`))
+			.consumeSelectionWith(priority => 
+				this.ticket.priority = priority)
+			.then(() => this.updateGui())
+			.catch(error =>
+				this.alertAndClose(error));
+	
+		ListBuilder
+			.fetchEntitiesFrom(() => 
+				this.taigaApi.severities(this.ticket.project.id))
+			.nameEntities(i18n('severity'), i18n('severities'))
+			.createItemsNamed('menuitem')
+			.addItemsTo(this.gui.severity())
+			.loadSelectionWith(() => [
+				this.preferences.stringFrom("lastSeverity"), 
+				this.ticket.project.default_severity ])
+			.storeSelectionWith(id => 
+				this.preferences.setString("lastSeverity", `${id}`))
+			.consumeSelectionWith(severity => 
+				this.ticket.severity = severity)
+			.then(() => this.updateGui())
+			.catch(error =>
+				this.alertAndClose(error));
+				
+		this.gui.description().value = this.messages[0].body;
+		this.gui.title().value = this.messages[0].subject;
+
 		this.gui.title().focus();
 	},
 	
@@ -86,6 +126,9 @@ var CreateTicket = {
 		switch (this.gui.wizard().currentPage.id) {
 			case 'page-project':
 				this.gui.wizard().canAdvance = this.ticket.project != null;
+				break;
+			case 'page-details':
+				this.gui.wizard().canAdvance = false;
 				break;
 		}
 	}

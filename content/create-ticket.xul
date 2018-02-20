@@ -50,14 +50,10 @@
               <menupopup id="ticket-type"></menupopup>
             </menulist>
             <menulist>
-              <menupopup>
-                <menuitem value="{item value}" label="Normal"/>
-              </menupopup>
+              <menupopup id="ticket-priority"></menupopup>
             </menulist>
             <menulist>
-              <menupopup>
-                <menuitem value="{item value}" label="Normal"/>
-              </menupopup>
+              <menupopup id="ticket-severity"></menupopup>
             </menulist>
           </row>
         </rows>
@@ -66,12 +62,12 @@
       <separator/>
       
       <label control="title" value="&ticket-title;"/>
-      <textbox id="title" value="" focus="true"/>
+      <textbox class="body" id="title" value="" focus="true"/>
       <description>&ticket-title-description;</description>
       <separator/>
       
       <label control="description" value="&ticket-description;"/>
-      <textbox id="description" multiline="true" rows="8" value=""/>
+      <textbox class="body" id="description" multiline="true" rows="9" value=""/>
       <description>&ticket-description-description;</description>
     </vbox>
   </wizardpage>

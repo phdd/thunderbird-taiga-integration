@@ -49,17 +49,25 @@ class ListBuilder {
   consumeSelectionWith(callback) {
     this.entities = {};
     
-    this.list.addEventListener('select', () => {
-      if (this.list.selectedItem !== null) {
-        const value = this.list.selectedItem.value;
+    const listener = (event) => {
+      const selectedItem = this.list.querySelector('[selected=true]');
+      
+      if (selectedItem) {
+        callback(this.entities[selectedItem.value]);
         
         if (this.storeSelection)
-          this.storeSelection(value);
-          
-        callback(this.entities[value]);
+          this.storeSelection(selectedItem.value);
         
       } else callback(null);
-    });
+    };
+    
+    switch (this.list.localName) {
+      case 'menupopup':
+        this.list.parentNode.addEventListener('command', listener, false);
+        break;
+      default: 
+        this.list.addEventListener('select', listener, false);
+    }
     
     this.list.style.cursor = 'progress';
     this.list.setAttribute('disabled', 'true');
@@ -95,11 +103,20 @@ class ListBuilder {
           this.list.style.cursor = 'auto';
           this.list.setAttribute('disabled', 'false');
           
-          const selection = this.loadSelection();
-
-          if (selection !== null &&
-              Object.keys(entityItemMapping).includes(selection))
-            this.list.selectedItem = entityItemMapping[selection];
+          const selection = this
+            .loadSelection()
+            .map(possibleSelection => String(possibleSelection))
+            .find(possibleSelection => 
+              Object.keys(entityItemMapping).includes(possibleSelection));
+          
+          if (selection !== null)
+            switch (this.list.localName) {
+              case 'menupopup':
+                this.list.parentNode.selectedItem = entityItemMapping[selection];
+                break;
+              default: 
+                this.list.selectedItem = entityItemMapping[selection];
+            }
           
           resolve();
         })

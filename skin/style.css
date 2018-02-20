@@ -28,3 +28,7 @@ hr {
   width: 30px;
   height: 30px;
 }
+
+textbox.body {
+  font-size: 13px;
+}

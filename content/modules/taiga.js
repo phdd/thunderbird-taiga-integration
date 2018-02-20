@@ -11,6 +11,14 @@ class TaigaApi {
   issueTypes(projectId) {
     return this._entity(`issue-types?project=${projectId}`);
   }
+  
+  priorities(projectId) {
+    return this._entity(`priorities?project=${projectId}`);
+  }
+  
+  severities(projectId) {
+    return this._entity(`severities?project=${projectId}`);
+  }
 
   set address(address) {
     this._address = address;
