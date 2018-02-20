@@ -58,6 +58,13 @@ class Extension {
     window.addEventListener("unload", callback, false);
   }
   
+  static onPageShow(target, callback) {
+    window.addEventListener("pageshow", (event) => {
+    	if (event.target.nodeName == 'wizardpage')
+    		callback(event);
+    }, false);
+  }
+  
   /**
    * Translate a message from taiga.properties.
    * You may use template strings. E.g.:

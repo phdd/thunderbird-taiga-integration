@@ -92,8 +92,4 @@ var CreateTicket = {
 	
 };
 
-// showProjects triggered before startup when using load-event
-window.addEventListener("pageshow", (event) => {
-	if (event.target.nodeName == 'wizardpage')
-		CreateTicket.startup();
-}, false);
+Extension.onPageShow('wizardpage', () => CreateTicket.startup());
