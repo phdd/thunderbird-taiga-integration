@@ -32,7 +32,10 @@ class Preferences {
   }
 
   stringFrom(preference) {
-    return this.preferences.getCharPref(preference);
+    if (this.have(preference))
+      return this.preferences.getCharPref(preference);
+    else 
+      return null;
   }
   
   setString(preference, value) {

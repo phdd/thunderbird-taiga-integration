@@ -47,6 +47,8 @@ class ListBuilder {
   }
   
   consumeSelectionWith(callback) {
+    this.entities = {};
+    
     this.list.addEventListener('select', () => {
       if (this.list.selectedItem !== null) {
         const value = this.list.selectedItem.value;
@@ -54,7 +56,7 @@ class ListBuilder {
         if (this.storeSelection)
           this.storeSelection(value);
           
-        callback(value);
+        callback(this.entities[value]);
         
       } else callback(null);
     });
@@ -62,7 +64,7 @@ class ListBuilder {
     this.list.style.cursor = 'progress';
     this.list.setAttribute('disabled', 'true');
     
-    return new Promise((resolve, reject) => {       
+    return new Promise((resolve, reject) => { 
       this
         .fetchEntities()
         
@@ -72,7 +74,7 @@ class ListBuilder {
 
           let entityItemMapping = {};
           entities.forEach((entity) => {
-            if (!this.filter(entity))
+            if (this.filter && !this.filter(entity))
               return;
 
             let item = document.createElement(
@@ -86,17 +88,18 @@ class ListBuilder {
             }
 
             this.list.appendChild(item);
+            this.entities[entity.id] = entity;
             entityItemMapping[entity.id] = item;
           });
 
           this.list.style.cursor = 'auto';
           this.list.setAttribute('disabled', 'false');
           
-          const lastSelection = this.loadSelection();
+          const selection = this.loadSelection();
 
-          if (lastSelection !== null &&
-              Object.keys(entityItemMapping).includes(lastSelection))
-            this.list.selectItem(entityItemMapping[lastSelection]);
+          if (selection !== null &&
+              Object.keys(entityItemMapping).includes(selection))
+            this.list.selectedItem = entityItemMapping[selection];
           
           resolve();
         })

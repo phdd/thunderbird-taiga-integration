@@ -5,11 +5,14 @@ var CreateTicket = {
 	
 	ticket: {
 		project: null,
+		type: null
 	},
 	
 	gui: {
 		projects: () => document.querySelector('#projects'),
-		wizard: () => document.querySelector('#taiga-create-ticket')
+		wizard: () => document.querySelector('#taiga-create-ticket'),
+		types: () => document.querySelector('#ticket-type'),
+		title: () => document.querySelector('#title')
 	},
 
 	startup: function(
@@ -38,20 +41,47 @@ var CreateTicket = {
 			.nameEntities(i18n('project'), i18n('projects'))
 			.createItemsNamed('listitem')
 			.addItemsTo(this.gui.projects())
-			.addItemOnlyWhen(project => project.i_am_member)
+			.addItemOnlyWhen(project => 
+				project.i_am_member && 
+				project.is_issues_activated && 
+				project.my_permissions.includes('add_issue'))
 			.loadSelectionWith(() => this.preferences.stringFrom("lastProject"))
 			.storeSelectionWith(id => this.preferences.setString("lastProject", `${id}`))
-			.consumeSelectionWith((projectId) => {
-				this.ticket.project = projectId;
+			.consumeSelectionWith(project => {
+				this.ticket.project = project;
 				this.updateGui();
 			})
-			.catch((error) => {
-				new Prompt('taiga-create-ticket') 
-					.alert(i18n('createTicket'), error)
-					.then(window.close);
-			});
+			.catch(error => 
+				this.alertAndClose(error));
 	},
 	
+	showDetails: function() {
+		ListBuilder
+			.fetchEntitiesFrom(() => 
+				this.taigaApi.issueTypes(this.ticket.project.id))
+			.nameEntities(i18n('issueType'), i18n('issueTypes'))
+			.createItemsNamed('menuitem')
+			.addItemsTo(this.gui.types())
+			.loadSelectionWith(() => 
+				this.preferences.stringFrom("lastIssueType") || 
+				this.ticket.project.default_issue_type)
+			.storeSelectionWith(id => this.preferences.setString("lastIssueType", `${id}`))
+			.consumeSelectionWith(type => {
+				this.ticket.type = type;
+				this.updateGui();
+			})
+			.catch(error => 
+				this.alertAndClose(error));
+		
+		this.gui.title().focus();
+	},
+	
+	alertAndClose: function(error) {
+		new Prompt('taiga-create-ticket') 
+			.alert(i18n('createTicket'), error)
+			.then(window.close);
+	},
+
 	updateGui: function() {
 		switch (this.gui.wizard().currentPage.id) {
 			case 'page-project':

@@ -18,20 +18,20 @@
     
   <wizardpage
         id="page-project"
-        label="Taiga Project"
+        label="&taiga-project;"
         onpageshow="CreateTicket.showProjects()">
-    <label control="filter" value="Filter"/>
-    <textbox id="filter" value="not implemented yet" disabled="true"/>
-    <description>Search your projects for title, description or slug.</description>
-    <label control="projects" value="Ticket's Project"/>
+    <label control="filter" value="&filter-label;"/>
+    <textbox id="filter" value="&not-implemented;" disabled="true"/>
+    <description>&filter-description;</description>
+    <label control="projects" value="&project-list-label;"/>
     <separator/>
-    <listbox id="projects" rows="12"></listbox>
-    <description>The project you intent creating a ticket for.</description>
+    <listbox id="projects" rows="10"></listbox>
+    <description>&project-list-description;</description>
   </wizardpage>
   
   <wizardpage
-        label="Ticket's Details"
-        onpageshow="">
+        label="&ticket-details;"
+        onpageshow="CreateTicket.showDetails()">
     <vbox>
       <grid flex="1">
         <columns>
@@ -41,15 +41,13 @@
         </columns>
         <rows>
           <row>
-            <label control="" value="Type"/>
-            <label control="" value="Priority"/>
-            <label control="" value="Severity"/>
+            <label control="" value="&ticket-type;"/>
+            <label control="" value="&ticket-priority;"/>
+            <label control="" value="&ticket-severity;"/>
           </row>
           <row>
             <menulist>
-              <menupopup>
-                <menuitem value="{item value}" label="Bug"/>
-              </menupopup>
+              <menupopup id="ticket-type"></menupopup>
             </menulist>
             <menulist>
               <menupopup>
@@ -64,21 +62,17 @@
           </row>
         </rows>
       </grid>
-      <description>
-Ticket attributes.
-        </description>
+      <description>&ticket-attributes;</description>
       <separator/>
-      <label control="title" value="Title"/>
-      <textbox id="title" value=""/>
-      <description>
-A short but meaningful title.
-        </description>
+      
+      <label control="title" value="&ticket-title;"/>
+      <textbox id="title" value="" focus="true"/>
+      <description>&ticket-title-description;</description>
       <separator/>
-      <label control="description" value="Description"/>
+      
+      <label control="description" value="&ticket-description;"/>
       <textbox id="description" multiline="true" rows="8" value=""/>
-      <description>
-Detailed ticket description.
-        </description>
+      <description>&ticket-description-description;</description>
     </vbox>
   </wizardpage>
 
