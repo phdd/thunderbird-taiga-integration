@@ -32,3 +32,8 @@ hr {
 textbox.body {
   font-size: 13px;
 }
+
+listbox .listcell-icon {
+  max-height: 26px;
+  margin: 3px;
+}

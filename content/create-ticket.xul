@@ -28,7 +28,7 @@
     <description>&filter-description;</description>
     <label control="projects" value="&project-list-label;"/>
     <separator/>
-    <listbox id="projects" rows="10"></listbox>
+    <listbox id="projects" rows="7"></listbox>
     <description>&project-list-description;</description>
   </wizardpage>
   

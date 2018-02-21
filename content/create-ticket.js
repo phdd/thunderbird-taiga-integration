@@ -1,5 +1,7 @@
 /* eslint no-undef: 'off' */
 
+const IMAGE_PROJECT = 'chrome://taiga/skin/icon.png'
+
 var CreateTicket = {
 
   messages: [],
@@ -51,6 +53,8 @@ var CreateTicket = {
       .nameEntities(i18n('project'), i18n('projects'))
       .createItemsNamed('listitem')
       .addItemsTo(this.gui.projects())
+      .addIconFrom(project =>
+        project.logo_small_url || IMAGE_PROJECT)
       .addItemOnlyWhen(project =>
         project.i_am_member &&
         project.is_issues_activated &&
