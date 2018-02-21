@@ -131,7 +131,7 @@ class MessageMapper {
         try {
           json.id = mime.headers['message-id'][0]
           json.subject = message.mime2DecodedSubject
-          json.from = mime.headers.from[0]
+          json.from = this.splitAddresses(mime.headers.from)
           json.to = this.splitAddresses(mime.headers.to)
           json.cc = this.splitAddresses(mime.headers.cc)
           json.body = this.extractBodyFrom(mime).trim()
@@ -194,7 +194,11 @@ class MessageMapper {
 
   splitAddresses (addressString) {
     if (addressString && addressString[0]) {
-      return addressString[0].split(', ')
+      return addressString[0]
+        .split(', ')
+        .map(address => address
+          .replace(/([^<]+)?</, '')
+          .replace(/>.*/, ''))
     } else {
       return []
     }
