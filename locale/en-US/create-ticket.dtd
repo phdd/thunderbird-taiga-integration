@@ -27,3 +27,5 @@
 <!ENTITY attachments-label "Ticket's Attachments">
 <!ENTITY ticket-attachments "Attachments">
 <!ENTITY ticket-attachments-description "Select all attachments connected to this ticket.">
+
+<!ENTITY upload-progress "Creating Ticket…">

@@ -24,7 +24,8 @@ var CreateTicket = {
     priority: () => document.querySelector('#ticket-priority'),
     severity: () => document.querySelector('#ticket-severity'),
     title: () => document.querySelector('#title'),
-    description: () => document.querySelector('#description')
+    description: () => document.querySelector('#description'),
+    attachments: () => document.querySelector('#attachment-list')
   },
 
   startup: function (
@@ -45,6 +46,7 @@ var CreateTicket = {
         .then(window.close)
     }
 
+    this.ticket.attachments = this.messages[0].attachments
     this.updateGui()
   },
 
@@ -146,21 +148,50 @@ var CreateTicket = {
       this.updateGui()
     })
 
-    if (this.messages[0].attachments.length !== 0) {
-      this.ticket.attachments = this.messages[0].attachments
-    } else {
+    if (this.ticket.attachments === 0) {
       this.gui.wizard().currentPage.next = 'page-final'
     }
 
     this.gui.title().focus()
   },
 
+  showAttachments: function () {
+    ListBuilder
+      .fetchEntitiesFrom(this.ticket.attachments)
+      .createItemsNamed('attachmentitem')
+      .addItemsTo(this.gui.attachments())
+      .mapEntityToItemWith((entity, item) => {
+        item.setAttribute('name', entity.name)
+        item.setAttribute('value', entity.url)
+        item.setAttribute('size', i18n('fileSizeKb', entity.size / 1024))
+        item.setAttribute('image32',
+           `moz-icon://a?size=32&amp;amp;contentType=${entity.contentType}`)
+        item.setAttribute('imagesize', '32')
+        item.setAttribute('context', 'attachmentItemContext')
+        item.setAttribute('tooltiptext', entity.name)
+        item.setAttribute('width', '169')
+      })
+      .consumeSelectionWith(attachments => {
+        console.log(attachments)
+      })
+      .catch(error =>
+        this.alertAndClose(error))
+  },
+
   showFinal: function () {
     const wizard = this.gui.wizard()
-    const extra = this.gui.wizard().getButton('extra1')
-    const cancel = this.gui.wizard().getButton('cancel')
+    const extra = wizard.getButton('extra1')
+    const cancel = wizard.getButton('cancel')
+    const finish = wizard.getButton('finish')
 
     wizard.canRewind = false
+
+    extra.setAttribute('disabled', true)
+    finish.setAttribute('disabled', true)
+
+    // TODO replace dummy implementation
+    window.addEventListener('beforeunload', (event) => event.preventDefault())
+
     cancel.setAttribute('hidden', 'true')
     extra.setAttribute('hidden', 'false')
     extra.setAttribute('label', i18n('showInTaiga'))

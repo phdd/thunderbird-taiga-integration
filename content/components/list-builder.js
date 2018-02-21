@@ -7,7 +7,15 @@ class ListBuilder {
   static fetchEntitiesFrom (fetchEntities) {
     let list = new ListBuilder()
     list.listElementName = false
-    list.fetchEntities = fetchEntities
+
+    if (typeof fetchEntities === 'function') {
+      list.fetchEntities = fetchEntities
+    } else {
+      list.fetchEntities = () => new Promise((resolve, reject) => {
+        resolve(fetchEntities)
+      })
+    }
+
     return list
   }
 
@@ -121,22 +129,24 @@ class ListBuilder {
           this.list.style.cursor = 'auto'
           this.list.setAttribute('disabled', 'false')
 
-          const selection = this
-            .loadSelection()
-            .map(possibleSelection => String(possibleSelection))
-            .find(possibleSelection =>
-              Object.keys(entityItemMapping).includes(possibleSelection))
+          if (this.loadSelection) {
+            const selection = this
+              .loadSelection()
+              .map(possibleSelection => String(possibleSelection))
+              .find(possibleSelection =>
+                Object.keys(entityItemMapping).includes(possibleSelection))
 
-          if (selection !== null) {
-            switch (this.list.localName) {
-              case 'menupopup':
-                this.list.parentNode.selectedItem = entityItemMapping[selection]
-                break
-              default:
-                this.list.selectedItem = entityItemMapping[selection]
+            if (selection !== null) {
+              switch (this.list.localName) {
+                case 'menupopup':
+                  this.list.parentNode.selectedItem = entityItemMapping[selection]
+                  break
+                default:
+                  this.list.selectedItem = entityItemMapping[selection]
+              }
+
+              listener()
             }
-
-            listener()
           }
 
           resolve()

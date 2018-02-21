@@ -84,7 +84,7 @@
         id="page-attachments"
         pageid="page-attachments"
         label="&attachments-label;"
-        onpageshow="">
+        onpageshow="CreateTicket.showAttachments()">
 
     <vbox id="attachmentView">
         <hbox 
@@ -99,10 +99,7 @@
                 <image id="attachmentIcon"/>
                 <label id="attachmentCount"
                   value="2 Anhänge"/>
-                <label id="attachmentName"
-                  crop="center" flex="1"
-                  tooltiptext="Angehängte Datei öffnen"
-                  value="ForwardedMessage.eml" hidden="true"/>
+                <spacer flex="100" />
                 <label 
                   id="attachmentSize" 
                   value="7,1 KB"/>
@@ -110,14 +107,13 @@
         </hbox>
         <attachmentlist 
           orient="vertical" 
-          id="attachmentList" 
+          id="attachment-list" 
           height="370"
           seltype="multiple"
           view="big">
             <attachmentitem 
               name="confused.png" 
               size="4,5 KB" 
-              image16="moz-icon://confused.png?size=16&amp;amp;contentType=image/png" 
               image32="moz-icon://confused.png?size=32&amp;amp;contentType=image/png" 
               imagesize="32" 
               context="attachmentItemContext"
@@ -127,7 +123,6 @@
             <attachmentitem 
               name="smile.png" 
               size="2,6 KB" 
-              image16="moz-icon://smile.png?size=16&amp;amp;contentType=image/png" 
               image32="moz-icon://smile.png?size=32&amp;amp;contentType=image/png" 
               imagesize="32" 
               context="attachmentItemContext" 
@@ -143,13 +138,18 @@
   <wizardpage 
       id="page-final"
       pageid="page-final"
-      label="Ticket created"
+      label="&upload-progress;"
       onpageshow="CreateTicket.showFinal()">
     <vbox height="400">
       <spacer flex="3" />
       <hbox>
         <spacer flex="1" />
-        <label control="title" value="Ticket #765 has been created"/>
+        <label control="title" id="upload-progress" value="&upload-progress;" hidden="true"/>
+        <spacer flex="1" />
+      </hbox>
+      <hbox>
+        <spacer flex="1" />
+        <progressmeter id="progress-indicator" mode="undetermined"/>
         <spacer flex="1" />
       </hbox>
       <spacer flex="3" />
