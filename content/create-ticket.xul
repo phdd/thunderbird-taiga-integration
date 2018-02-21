@@ -26,12 +26,12 @@
         id="page-project"
         label="&taiga-project;"
         onpageshow="CreateTicket.showProjects()">
-    <label control="filter" value="&filter-label;"/>
+    <!--label control="filter" value="&filter-label;"/>
     <textbox id="filter" value="&not-implemented;" disabled="true"/>
-    <description>&filter-description;</description>
+    <description>&filter-description;</description-->
     <label control="projects" value="&project-list-label;"/>
     <separator/>
-    <listbox id="projects" rows="7"></listbox>
+    <listbox id="projects" rows="10"></listbox>
     <description>&project-list-description;</description>
   </wizardpage>
   
@@ -88,12 +88,22 @@
         <hbox 
           align="center" 
           id="attachmentBar" 
-          context="attachment-toolbar-context-menu" >
-            <hbox align="center" id="attachmentInfo" flex="1" contextmenu="attachmentListContext">
+          context="attachment-toolbar-context-menu">
+            <hbox 
+              align="center" 
+              id="attachmentInfo" 
+              flex="1" 
+              contextmenu="attachmentListContext">
                 <image id="attachmentIcon"/>
-                <label id="attachmentCount" value="2 Anhänge"/>
-                <label id="attachmentName" crop="center" flex="1" tooltiptext="Angehängte Datei öffnen" value="ForwardedMessage.eml" hidden="true"/>
-                <label id="attachmentSize" value="7,1 KB"/>
+                <label id="attachmentCount"
+                  value="2 Anhänge"/>
+                <label id="attachmentName"
+                  crop="center" flex="1"
+                  tooltiptext="Angehängte Datei öffnen"
+                  value="ForwardedMessage.eml" hidden="true"/>
+                <label 
+                  id="attachmentSize" 
+                  value="7,1 KB"/>
             </hbox>
         </hbox>
         <attachmentlist 
@@ -107,17 +117,23 @@
               size="4,5 KB" 
               image16="moz-icon://confused.png?size=16&amp;amp;contentType=image/png" 
               image32="moz-icon://confused.png?size=32&amp;amp;contentType=image/png" 
-              imagesize="16" 
+              imagesize="32" 
               context="attachmentItemContext"
               tooltiptext="confused.png" 
               width="169" 
               current="true"/>
-            <attachmentitem name="smile.png" size="2,6 KB" image16="moz-icon://smile.png?size=16&amp;amp;contentType=image/png" image32="moz-icon://smile.png?size=32&amp;amp;contentType=image/png" imagesize="16" context="attachmentItemContext" tooltiptext="smile.png" width="169"/>
+            <attachmentitem 
+              name="smile.png" 
+              size="2,6 KB" 
+              image16="moz-icon://smile.png?size=16&amp;amp;contentType=image/png" 
+              image32="moz-icon://smile.png?size=32&amp;amp;contentType=image/png" 
+              imagesize="32" 
+              context="attachmentItemContext" 
+              tooltiptext="smile.png"
+              width="169"/>
         </attachmentlist>
     </vbox>
-
-    <!--listbox seltype="multiple" id="attachments" rows="19">
-  </listbox-->
+    
     <description>&ticket-attachments-description;</description>
 
   </wizardpage>

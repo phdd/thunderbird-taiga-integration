@@ -155,7 +155,8 @@ class MessageMapper {
         return {
           url: attachment.url,
           type: attachment.contentType,
-          name: attachment.name
+          name: attachment.name,
+          size: attachment.size
         }
       })
   }
