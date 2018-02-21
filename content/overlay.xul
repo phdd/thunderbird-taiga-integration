@@ -7,23 +7,52 @@
 <overlay id="taiga-overlay"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
          
-  <script src="chrome://taiga/content/modules/utils.js" />
+  <script src="chrome://taiga/content/modules/turndown.js" />
   <script src="chrome://taiga/content/modules/ajax.js" />
+  
+  <script src="chrome://taiga/content/modules/utils.js" />
   <script src="chrome://taiga/content/modules/taiga.js" />
+  
   <script src="chrome://taiga/content/overlay.js" />
   
-  <popup id="mailContext">
-    <menu id="taiga"
+  <menupopup id="mailContext">
+    <menu id="mailContext-taiga-menu"
       label="&taiga;"
       accesskey="T"
       class="menu-iconic"
+      insertafter="mailContext-moveToFolderAgain"
       image="chrome://taiga/skin/icon.png">
       <menupopup>
         <menuitem 
           id="create-ticket" 
           label="&create-ticket;"
+          accesskey="I"
           oncommand="Overlay.createTicket();"/>
+        <menuitem 
+          id="create-user-story" 
+          label="&create-user-story;"
+          accesskey="S"
+          disabled="true"
+          oncommand="Overlay.createUserStory();"/>
+        <menuitem 
+          id="create-task" 
+          label="&create-task;"
+          accesskey="T"
+          disabled="true"
+          oncommand="Overlay.createTask();"/>
+        <menuitem 
+          id="comment" 
+          label="&comment;"
+          accesskey="C"
+          disabled="true"
+          oncommand="Overlay.comment();"/>
+        <menuitem 
+          id="attach" 
+          label="&attach;"
+          accesskey="A"
+          disabled="true"
+          oncommand="Overlay.uploadAttachment();"/>
       </menupopup>
     </menu>
-  </popup>
+  </menupopup>
 </overlay>

@@ -28,9 +28,6 @@ var CreateTicket = {
 	) {
 		this.messages = window.arguments[0];
 		
-		// XXX
-		console.log(this.messages);
-
 		this.taigaApi = taigaApi;
 		this.preferences = preferences || new Preferences("extensions.taiga.");
 

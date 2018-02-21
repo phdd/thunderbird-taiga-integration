@@ -110,27 +110,25 @@ class Prompt {
 
 class MessageMapper {
   
+  constructor() {
+    this.turndownService = new TurndownService();
+    this.turndownService.remove('style');
+    this.turndownService.remove('title');
+  }
+  
   toJson(message) {
     let json = {};
     
     return new Promise((resolve, reject) => {
       MsgHdrToMimeMessage(message, null, (message, mime) => {
         try {
+          json.id = mime.headers['message-id'][0];
           json.subject = message.mime2DecodedSubject;
           json.from = mime.headers.from[0];
-          //json.to = this.splitAddresses(mime.headers.to);
-          //json.cc = this.splitAddresses(mime.headers.cc);
-          json.date = mime.headers.date[0] || null;
-          json.id = mime.headers['message-id'][0];
-          json.body = mime.coerceBodyToPlaintext().trim();
-
-          json.attachments = mime.allUserAttachments.map((attachment) => {
-            return {
-              url: attachment.url,
-              type: attachment.contentType,
-              name: attachment.name,
-            };
-          });
+          json.to = this.splitAddresses(mime.headers.to);
+          json.cc = this.splitAddresses(mime.headers.cc);
+          json.body = this.extractBodyFrom(mime).trim();
+          json.attachments = this.extractAttachmentsFrom(mime);
           
           resolve(json);
         } catch (error) { 
@@ -143,12 +141,50 @@ class MessageMapper {
     });
   }
   
-  splitAddresses(addressString) {
-    if (addressString && addressString[0]) {
-      addressString[0].split(', ')
-    } else {
-      return null;
+  extractAttachmentsFrom(mime) {
+    return mime
+      .allUserAttachments
+      .map((attachment) => {
+        return {
+          url: attachment.url,
+          type: attachment.contentType,
+          name: attachment.name,
+        };
+      });
+  }
+  
+  extractBodyFrom(mime) {
+    let htmlPart, textPart;
+    
+    for (let part of mime.parts) {
+      if (part.contentType == "multipart/alternative")
+        return this.extractBodyFrom(part);
+      
+      if (part.contentType == "text/plain")
+        textPart = part.body;
+
+      if (part.contentType == "text/html")
+        htmlPart = part;
+        
+      // text/enriched gets transformed into HTML, use it if 
+      // we don't already have an HTML part.
+      else if (!htmlPart && part.contentType == "text/enriched")
+        htmlPart = part;
     }
+    
+    if (htmlPart)
+      return this.turndownService.turndown(htmlPart.body);
+    else if (textPart) 
+      return textPart;
+    else if (mime.coerceBodyToPlaintext)
+      return mime.coerceBodyToPlaintext();
+  }
+
+  splitAddresses(addressString) {
+    if (addressString && addressString[0]) 
+      return addressString[0].split(', ');
+    else 
+      return [];
   }
 
 }

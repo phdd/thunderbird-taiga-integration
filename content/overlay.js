@@ -40,7 +40,7 @@ var Overlay = {
 		Promise
 			.all(this
 				.selectedMessages()
-				.map(this.messageMapper.toJson))
+			  .map(this.messageMapper.toJson))
 			.then((mappedMessages) => this
 				.startDialog('create-ticket', mappedMessages))
 			.catch(console.log);

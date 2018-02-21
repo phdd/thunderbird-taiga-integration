@@ -1,2 +1,6 @@
+<!ENTITY taiga "Push to Taiga">
 <!ENTITY create-ticket "Create Ticket">
-<!ENTITY taiga "Taiga">
+<!ENTITY create-user-story "Create User Story">
+<!ENTITY create-task "Create Task">
+<!ENTITY comment "Comment">
+<!ENTITY attach "Upload Attachment">
