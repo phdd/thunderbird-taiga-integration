@@ -23,3 +23,7 @@
 <!ENTITY ticket-description "Description">
 <!ENTITY ticket-description-description 
   "Detailed ticket description for which you may use Markdown syntax.">
+
+<!ENTITY attachments-label "Ticket's Attachments">
+<!ENTITY ticket-attachments "Attachments">
+<!ENTITY ticket-attachments-description "Select all attachments connected to this ticket.">

@@ -37,3 +37,50 @@ listbox .listcell-icon {
   max-height: 26px;
   margin: 3px;
 }
+
+.wizard-header-label {
+  font-weight: normal;
+  margin: 0;
+  margin-left: 15px;
+}
+
+/* ::::: attachment view ::::: */
+
+#attachmentList {
+  /* -moz-appearance: none; */
+  /* border-top: 1px solid ThreeDShadow; */
+  background-color: -moz-Field;
+  color: -moz-FieldText;
+}
+
+#attachmentToggle {
+  -moz-appearance: treetwisty;
+  -moz-user-focus: normal;
+}
+
+#attachmentToggle[checked="true"] {
+  -moz-appearance: treetwistyopen;
+}
+
+#attachmentToggle:focus {
+  outline: 1px dotted Highlight;
+}
+
+#attachmentIcon {
+  list-style-image: url("chrome://messenger/skin/icons/filterbar.png");
+  -moz-image-region: rect(0px, 80px, 16px, 64px);
+  margin-inline-start: 5px;
+}
+
+#attachmentName:hover,
+#attachmentName[selected="true"] {
+  cursor: pointer;
+  color: HighlightText;
+  background-color: Highlight;
+}
+
+#attachmentSize {
+  margin: 0;
+  margin-inline-start: 8px;
+  color: #888a85; /* the same color as .headerName */
+}
