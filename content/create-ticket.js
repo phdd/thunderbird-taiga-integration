@@ -13,7 +13,8 @@ var CreateTicket = {
     severity: null,
     priority: null,
     subject: null,
-    description: null
+    description: null,
+    attachments: []
   },
 
   gui: {
@@ -145,7 +146,24 @@ var CreateTicket = {
       this.updateGui()
     })
 
+    if (this.messages[0].attachments.length !== 0) {
+      this.ticket.attachments = this.messages[0].attachments
+    } else {
+      this.gui.wizard().currentPage.next = 'page-final'
+    }
+
     this.gui.title().focus()
+  },
+
+  showFinal: function () {
+    const wizard = this.gui.wizard()
+    const extra = this.gui.wizard().getButton('extra1')
+    const cancel = this.gui.wizard().getButton('cancel')
+
+    wizard.canRewind = false
+    cancel.setAttribute('hidden', 'true')
+    extra.setAttribute('hidden', 'false')
+    extra.setAttribute('label', i18n('showInTaiga'))
   },
 
   alertAndClose: function (error) {

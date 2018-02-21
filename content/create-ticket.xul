@@ -37,6 +37,7 @@
   
   <wizardpage
         id="page-details"
+        pageid="page-details"
         label="&ticket-details;"
         onpageshow="CreateTicket.showDetails()">
     <vbox>
@@ -81,6 +82,7 @@
 
   <wizardpage
         id="page-attachments"
+        pageid="page-attachments"
         label="&attachments-label;"
         onpageshow="">
 
@@ -137,4 +139,21 @@
     <description>&ticket-attachments-description;</description>
 
   </wizardpage>
+  
+  <wizardpage 
+      id="page-final"
+      pageid="page-final"
+      label="Ticket created"
+      onpageshow="CreateTicket.showFinal()">
+    <vbox height="400">
+      <spacer flex="3" />
+      <hbox>
+        <spacer flex="1" />
+        <label control="title" value="Ticket #765 has been created"/>
+        <spacer flex="1" />
+      </hbox>
+      <spacer flex="3" />
+    </vbox>
+  </wizardpage>
+
 </wizard>
