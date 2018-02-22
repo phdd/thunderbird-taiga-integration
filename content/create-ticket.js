@@ -12,6 +12,7 @@ var CreateTicket = {
     type: null,
     severity: null,
     priority: null,
+    status: null,
     subject: null,
     description: null,
     attachments: []
@@ -46,7 +47,6 @@ var CreateTicket = {
         .then(window.close)
     }
 
-    this.ticket.attachments = this.messages[0].attachments
     this.updateGui()
   },
 
@@ -135,6 +135,8 @@ var CreateTicket = {
       this.ticket.subject = this.messages[0].subject
     }
 
+    this.ticket.status = this.ticket.project.default_issue_status
+
     this.gui.title().value = this.ticket.subject
     this.gui.description().value = this.ticket.description
 
@@ -148,7 +150,7 @@ var CreateTicket = {
       this.updateGui()
     })
 
-    if (this.ticket.attachments === 0) {
+    if (this.ticket.attachments.length === 0) {
       this.gui.wizard().currentPage.next = 'page-final'
     }
 
@@ -157,7 +159,7 @@ var CreateTicket = {
 
   showAttachments: function () {
     ListBuilder
-      .fetchEntitiesFrom(this.ticket.attachments)
+      .fetchEntitiesFrom(this.messages[0].attachments)
       .createItemsNamed('attachmentitem')
       .addItemsTo(this.gui.attachments())
       .mapEntityToItemWith((entity, item) => {
@@ -180,18 +182,58 @@ var CreateTicket = {
     const extra = wizard.getButton('extra1')
     const cancel = wizard.getButton('cancel')
     const finish = wizard.getButton('finish')
+    const disableWindowClose = (event) => event.preventDefault()
 
     wizard.canRewind = false
-
     extra.setAttribute('disabled', true)
     finish.setAttribute('disabled', true)
+    window.addEventListener('beforeunload', disableWindowClose)
 
-    // TODO replace dummy implementation
-    window.addEventListener('beforeunload', (event) => event.preventDefault())
+    this
+      .createTicket()
+      .then((createdTicket) => {
+        console.log(createdTicket)
+        extra.setAttribute('disabled', false)
+        finish.setAttribute('disabled', false)
+        window.removeEventListener('beforeunload', disableWindowClose)
+      })
 
     cancel.setAttribute('hidden', 'true')
     extra.setAttribute('hidden', 'false')
     extra.setAttribute('label', i18n('showInTaiga'))
+  },
+
+  createTicket: function () {
+    const taiga = this.taigaApi
+    const message = this.messages[0]
+    const participants = [].concat(message.from, message.to, message.cc)
+
+    return new Promise((resolve, reject) =>
+      taiga
+        .me()
+        .then(me => Promise
+          .all(participants
+            .filter(participant =>
+              participant !== me.email)
+
+            .map(participant => taiga
+              .usersContacts(me, participant)))
+
+          .then(contactSearchResults => IssueDto
+            .createFor(this.ticket)
+            .isAssignedTo(me)
+            .isWatchedBy(contactSearchResults
+              // we searched for unique mail-addresses,
+              // hence we assume a single entry query result
+              .map(Array.shift)
+              // drop empty results
+              .filter(result =>
+                result !== undefined)))
+
+          .then(dto => taiga
+            .createIssue(dto)
+            .then(resolve)
+            .catch(console.log))))
   },
 
   alertAndClose: function (error) {
