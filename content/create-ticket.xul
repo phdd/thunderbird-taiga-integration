@@ -136,18 +136,18 @@
   <wizardpage 
       id="page-final"
       pageid="page-final"
-      label="&upload-progress;"
+      label="&finish-line;"
       onpageshow="CreateTicket.showFinal()">
     <vbox height="400">
       <spacer flex="3" />
-      <hbox>
+      <hbox id="final-message" hidden="true">
         <spacer flex="1" />
-        <label control="title" id="upload-progress" value="&upload-progress;" hidden="true"/>
+        <label value="" />
         <spacer flex="1" />
       </hbox>
-      <hbox>
+      <hbox id="progress-indicator">
         <spacer flex="1" />
-        <progressmeter id="progress-indicator" mode="undetermined"/>
+        <progressmeter mode="undetermined"/>
         <spacer flex="1" />
       </hbox>
       <spacer flex="3" />

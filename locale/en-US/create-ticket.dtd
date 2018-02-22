@@ -28,4 +28,4 @@
 <!ENTITY ticket-attachments "Attachments">
 <!ENTITY ticket-attachments-description "Select all attachments connected to this ticket.">
 
-<!ENTITY upload-progress "Creating Ticket…">
+<!ENTITY finish-line "Finish line">

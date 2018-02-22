@@ -103,6 +103,12 @@ class Extension {
     return Extension.messenger.formatFileSize(size)
   }
 
+  static openUrl (url) {
+    Cc['@mozilla.org/uriloader/external-protocol-service;1']
+      .getService(Components.interfaces.nsIExternalProtocolService)
+      .loadUrl(Services.io.newURI(url, null, null))
+  }
+
 }
 
 const i18n = Extension.i18n

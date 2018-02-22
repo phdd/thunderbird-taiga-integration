@@ -26,7 +26,12 @@ var CreateTicket = {
     severity: () => document.querySelector('#ticket-severity'),
     title: () => document.querySelector('#title'),
     description: () => document.querySelector('#description'),
-    attachments: () => document.querySelector('#attachment-list')
+    attachments: () => document.querySelector('#attachment-list'),
+    finalMessage: () => document.querySelector('#final-message'),
+    finalMessageLabel: () => document.querySelector('#final-message label'),
+    progressIndicator: () => document.querySelector('#progress-indicator'),
+    attachmentCount: () => document.querySelector('#attachmentCount'),
+    attachmentSize: () => document.querySelector('#attachmentSize')
   },
 
   startup: function (
@@ -150,7 +155,7 @@ var CreateTicket = {
       this.updateGui()
     })
 
-    if (this.ticket.attachments.length === 0) {
+    if (this.messages[0].attachments.length === 0) {
       this.gui.wizard().currentPage.next = 'page-final'
     }
 
@@ -170,11 +175,32 @@ var CreateTicket = {
            `moz-icon://${entity.name}?size=32&amp;amp;contentType=${entity.contentType}`)
         item.setAttribute('imagesize', '32')
       })
+
       .consumeSelectionWith(attachments => {
+        this.gui.attachmentCount().setAttribute(
+          'value', i18n('numberOfAttachments', [ attachments.length ]))
+
+        if (attachments.length > 0) {
+          this.gui.attachmentSize().setAttribute(
+            'value', Extension.formatFileSize(attachments
+              .map((attachment) => attachment.size)
+              .reduce((a, b) => a + b)))
+        } else {
+          this.gui.attachmentSize().setAttribute(
+            'value', Extension.formatFileSize(0))
+        }
+
         this.ticket.attachments = attachments
       })
+
       .catch(error =>
         this.alertAndClose(error))
+
+    this.gui.attachmentCount().setAttribute(
+      'value', i18n('numberOfAttachments', [ 0 ]))
+
+    this.gui.attachmentSize().setAttribute(
+      'value', Extension.formatFileSize(0))
   },
 
   showFinal: function () {
@@ -191,12 +217,22 @@ var CreateTicket = {
 
     this
       .createTicket()
-      .then((createdTicket) => {
-        console.log(createdTicket)
+      .then((issue) => {
         extra.setAttribute('disabled', false)
         finish.setAttribute('disabled', false)
         window.removeEventListener('beforeunload', disableWindowClose)
+        this.gui.progressIndicator().setAttribute('hidden', true)
+        this.gui.finalMessage().setAttribute('hidden', false)
+        this.gui.finalMessageLabel().setAttribute(
+          'value', i18n('ticketNumberCreated', [ issue.ref ]))
+
+        // FIXME does nothing
+        const url = `${this.taigaApi.baseUrl()}/project/${this.ticket.project.slug}/issue/${issue.ref}`
+        extra.setAttribute('command', `Extension.openUrl("${url}")`)
       })
+
+      .catch(error =>
+        this.alertAndClose(error))
 
     cancel.setAttribute('hidden', 'true')
     extra.setAttribute('hidden', 'false')
@@ -232,8 +268,7 @@ var CreateTicket = {
 
           .then(dto => taiga
             .createIssue(dto)
-            .then(resolve)
-            .catch(console.log))))
+            .then(resolve))))
   },
 
   alertAndClose: function (error) {

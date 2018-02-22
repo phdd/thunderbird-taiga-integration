@@ -59,7 +59,11 @@ class TaigaApi {
   }
 
   expandUrlFor (path) {
-    return `${this._address}/api/v1/${path}`
+    return `${this.baseUrl()}/api/v1/${path}`
+  }
+
+  baseUrl () {
+    return this._address
   }
 
   ajaxOptions () {
