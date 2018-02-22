@@ -94,6 +94,15 @@ class Extension {
     }
   }
 
+  static formatFileSize (size) {
+    if (!Extension.messenger) {
+      Extension.messenger = Cc['@mozilla.org/messenger;1']
+        .createInstance(Components.interfaces.nsIMessenger)
+    }
+
+    return Extension.messenger.formatFileSize(size)
+  }
+
 }
 
 const i18n = Extension.i18n
@@ -153,9 +162,11 @@ class MessageMapper {
       .allUserAttachments
       .map((attachment) => {
         return {
+          id: attachment.url,
           url: attachment.url,
           type: attachment.contentType,
           name: attachment.name,
+          displayName: attachment.name.replace(/(.)\1{9,}/g, '$1…$1'),
           size: attachment.size
         }
       })

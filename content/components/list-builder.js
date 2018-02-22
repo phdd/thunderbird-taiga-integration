@@ -67,19 +67,11 @@ class ListBuilder {
   consumeSelectionWith (callback) {
     this.entities = {}
 
-    const listener = () => {
-      const selectedItem = this.list.querySelector('[selected=true]')
+    const seltype = this.list.getAttribute('seltype') || 'single'
+    const listener = seltype === 'single'
+      ? this.listenSingleSelect(callback) : this.listenMultiSelect(callback)
 
-      if (selectedItem) {
-        callback(this.entities[selectedItem.value])
-
-        if (this.storeSelection) {
-          this.storeSelection(selectedItem.value)
-        }
-
-      } else callback(null)
-    }
-
+    // FIXME better solution
     switch (this.list.localName) {
       case 'menupopup':
         this.list.parentNode.addEventListener('command', listener, false)
@@ -136,6 +128,7 @@ class ListBuilder {
               .find(possibleSelection =>
                 Object.keys(entityItemMapping).includes(possibleSelection))
 
+            // FIXME better solution
             if (selection !== null) {
               switch (this.list.localName) {
                 case 'menupopup':
@@ -166,6 +159,33 @@ class ListBuilder {
           reject(error)
         })
     })
+  }
+
+  listenSingleSelect (callback) {
+    return () => {
+      const selectedItem = this.list.querySelector('[selected=true]')
+
+      if (selectedItem) {
+        callback(this.entities[selectedItem.value])
+
+        if (this.storeSelection) {
+          this.storeSelection(selectedItem.value)
+        }
+
+      } else callback(null)
+    }
+  }
+
+  listenMultiSelect (callback) {
+    return () => {
+      const selectedItems = Array.from(
+        this.list.querySelectorAll('[selected="true"]'))
+
+      const selection = selectedItems.map(item => item.value)
+
+      callback(Object.values(this.entities)
+        .filter(entity => selection.includes(entity.id)))
+    }
   }
 
 }

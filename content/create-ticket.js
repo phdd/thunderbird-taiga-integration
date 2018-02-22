@@ -161,18 +161,15 @@ var CreateTicket = {
       .createItemsNamed('attachmentitem')
       .addItemsTo(this.gui.attachments())
       .mapEntityToItemWith((entity, item) => {
-        item.setAttribute('name', entity.name)
+        item.setAttribute('name', entity.displayName)
         item.setAttribute('value', entity.url)
-        item.setAttribute('size', i18n('fileSizeKb', entity.size / 1024))
+        item.setAttribute('size', Extension.formatFileSize(entity.size))
         item.setAttribute('image32',
-           `moz-icon://a?size=32&amp;amp;contentType=${entity.contentType}`)
+           `moz-icon://${entity.name}?size=32&amp;amp;contentType=${entity.contentType}`)
         item.setAttribute('imagesize', '32')
-        item.setAttribute('context', 'attachmentItemContext')
-        item.setAttribute('tooltiptext', entity.name)
-        item.setAttribute('width', '169')
       })
       .consumeSelectionWith(attachments => {
-        console.log(attachments)
+        this.ticket.attachments = attachments
       })
       .catch(error =>
         this.alertAndClose(error))
