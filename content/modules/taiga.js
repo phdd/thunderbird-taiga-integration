@@ -2,7 +2,7 @@
 /* eslint no-unused-vars: "off" */
 /* eslint padded-blocks: ["off", "never"] */
 
-const idFrom = (attribute) => {
+const getIdOrMapFromObject = (attribute) => {
   if (typeof attribute === 'object') {
     return attribute.id
   } else {
@@ -24,8 +24,12 @@ class TaigaApi {
     return this.post('issues', issueDto.json())
   }
 
+  patchIssue (patch) {
+    return this.patch(`issues/${patch.id}`, patch)
+  }
+
   usersContacts (user, query = '') {
-    return this.get(`users/${idFrom(user)}/contacts?q=${query}`)
+    return this.get(`users/${getIdOrMapFromObject(user)}/contacts?q=${query}`)
   }
 
   issueTypes (projectId) {
@@ -55,6 +59,11 @@ class TaigaApi {
 
   post (entity, json) {
     return Ajax.post(this.expandUrlFor(entity),
+      this.ajaxOptions(), JSON.stringify(json))
+  }
+
+  patch (entity, json) {
+    return Ajax.patch(this.expandUrlFor(entity),
       this.ajaxOptions(), JSON.stringify(json))
   }
 
@@ -104,16 +113,16 @@ class IssueDto {
 
   json () {
     return {
-      assigned_to: idFrom(this.assignTo),
+      assigned_to: getIdOrMapFromObject(this.assignTo),
       description: this.ticket.description,
-      project: idFrom(this.ticket.project),
-      status: idFrom(this.ticket.status),
-      severity: idFrom(this.ticket.severity),
-      priority: idFrom(this.ticket.priority),
-      type: idFrom(this.ticket.type),
+      project: getIdOrMapFromObject(this.ticket.project),
+      status: getIdOrMapFromObject(this.ticket.status),
+      severity: getIdOrMapFromObject(this.ticket.severity),
+      priority: getIdOrMapFromObject(this.ticket.priority),
+      type: getIdOrMapFromObject(this.ticket.type),
       subject: this.ticket.subject,
-      tags: this.tags.map(tag => idFrom(tag)),
-      watchers: this.watchers.map(watcher => idFrom(watcher))
+      tags: this.tags.map(tag => getIdOrMapFromObject(tag)),
+      watchers: this.watchers.map(watcher => getIdOrMapFromObject(watcher))
     }
   }
 

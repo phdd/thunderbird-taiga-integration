@@ -242,6 +242,7 @@ var CreateTicket = {
     const taiga = this.taigaApi
     const message = this.messages[0]
     const participants = [].concat(message.from, message.to, message.cc)
+    const members = this.ticket.project.members.map(getIdOrMapFromObject)
 
     return new Promise((resolve, reject) =>
       taiga
@@ -257,17 +258,41 @@ var CreateTicket = {
           .then(contactSearchResults => IssueDto
             .createFor(this.ticket)
             .isAssignedTo(me)
-            .isWatchedBy(contactSearchResults
+            .isWatchedBy([ me.id ].concat(contactSearchResults
+
               // we searched for unique mail-addresses,
               // hence we assume a single entry query result
               .map(Array.shift)
+
               // drop empty results
-              .filter(result =>
-                result !== undefined)))
+              .filter(contact =>
+                contact !== undefined)
+
+              // members only
+              .filter(contact =>
+                members.includes(contact.id)))))
 
           .then(dto => taiga
             .createIssue(dto)
-            .then(resolve))))
+            .then(issue => {
+              const intendedWatchers = dto.json().watchers
+              const allIntendedWatchersAreWatching =
+                intendedWatchers.every(intentedWatcher =>
+                  issue.watchers.includes(intentedWatcher))
+
+              // this seems to be a Taiga bug:
+              // original post does not include watchers
+              if (!allIntendedWatchersAreWatching) {
+                taiga
+                  .patchIssue({
+                    id: issue.id,
+                    version: issue.version,
+                    watchers: intendedWatchers })
+                .then(resolve)
+              } else {
+                resolve(issue)
+              }
+            }))))
   },
 
   alertAndClose: function (error) {

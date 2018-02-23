@@ -206,6 +206,28 @@ var Ajax = function () {
             return this.request(options);
         }
         /**
+         * Exec a XMLHttpRequest with method PATCH.
+         * @static
+         * @param {String} url The url for the XMLHttpRequest.
+         * @param {Object} options A set of options for the XMLHttpRequest.
+         * @param {Object} data The data to send in the PATCH request.
+         * @return {Promise}
+         */
+
+    }, {
+        key: 'patch',
+        value: function post(url) {
+            var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+            var data = arguments[2];
+
+            options.url = url;
+            options.method = 'PATCH';
+            if (data !== undefined) {
+                options.data = data;
+            }
+            return this.request(options);
+        }
+        /**
          * Exec a XMLHttpRequest with method PUT.
          * @static
          * @param {String} url The url for the XMLHttpRequest.
@@ -335,6 +357,22 @@ var Ajax = function () {
             }
 
             return (_Ajax$post = Ajax.post).call.apply(_Ajax$post, [this].concat(args));
+        }
+        /**
+         * Exec a XMLHttpRequest with method PATCH.
+         * @see Ajax.patch
+         */
+
+    }, {
+        key: 'patch',
+        value: function patch() {
+            var _Ajax$patch;
+
+            for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+                args[_key3] = arguments[_key3];
+            }
+
+            return (_Ajax$patch = Ajax.patch).call.apply(_Ajax$patch, [this].concat(args));
         }
         /**
          * Exec a XMLHttpRequest with method PUT.
