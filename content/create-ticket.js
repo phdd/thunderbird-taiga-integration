@@ -226,9 +226,8 @@ var CreateTicket = {
         this.gui.finalMessageLabel().setAttribute(
           'value', i18n('ticketNumberCreated', [ issue.ref ]))
 
-        // FIXME does nothing
         const url = `${this.taigaApi.baseUrl()}/project/${this.ticket.project.slug}/issue/${issue.ref}`
-        extra.setAttribute('command', `Extension.openUrl("${url}")`)
+        extra.addEventListener('command', () => Extension.openUrl(url))
       })
 
       .catch(error =>
