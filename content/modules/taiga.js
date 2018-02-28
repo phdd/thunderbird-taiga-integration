@@ -10,6 +10,10 @@ const getIdOrMapFromObject = (attribute) => {
   }
 }
 
+class TaigaError extends Error {}
+class NotFound extends TaigaError {}
+class BadRequest extends TaigaError {}
+
 class TaigaApi {
 
   me () {
@@ -57,24 +61,58 @@ class TaigaApi {
   }
 
   get (entity) {
-    return Ajax.get(this.expandUrlFor(entity), this.ajaxOptions())
+    return new Promise((resolve, reject) => {
+      Ajax
+        .get(this.expandUrlFor(entity), this.ajaxOptions())
+        .then(resolve)
+        .catch((error) => reject(this.translateError(error)))
+    })
   }
 
   postJson (entity, json) {
-    return Ajax.post(this.expandUrlFor(entity),
-      this.ajaxOptions(), JSON.stringify(json))
+    return new Promise((resolve, reject) => {
+      Ajax
+        .post(this.expandUrlFor(entity),
+          this.ajaxOptions(), JSON.stringify(json))
+        .then(resolve)
+        .catch((error) => reject(this.translateError(error)))
+    })
   }
 
   postFormData (entity, data) {
     const options = this.ajaxOptions()
     // if set to multipart/form-data, boundary part will be missing
     delete options.headers['Content-Type']
-    return Ajax.post(this.expandUrlFor(entity), options, data)
+    return new Promise((resolve, reject) => {
+      Ajax
+        .post(this.expandUrlFor(entity), options, data)
+        .then(resolve)
+        .catch((error) => reject(this.translateError(error)))
+    })
   }
 
   patch (entity, json) {
-    return Ajax.patch(this.expandUrlFor(entity),
-      this.ajaxOptions(), JSON.stringify(json))
+    return new Promise((resolve, reject) => {
+      Ajax
+        .patch(this.expandUrlFor(entity),
+          this.ajaxOptions(), JSON.stringify(json))
+        .then(resolve)
+        .catch((error) => reject(this.translateError(error)))
+    })
+  }
+
+  translateError (error) {
+    const message = error.statusText
+    console.error(error)
+
+    switch (error.status) {
+      case 400:
+        return new BadRequest(message)
+      case 404:
+        return new NotFound(message)
+      default:
+        return new TaigaError(message)
+    }
   }
 
   expandUrlFor (path) {

@@ -249,6 +249,7 @@ var CreateTicket = {
     return new Promise((resolve, reject) =>
       taiga
         .me()
+        .catch(console.log)
         .then(me => Promise
           // Aggregate issue watchers
           .all(participants
@@ -257,6 +258,8 @@ var CreateTicket = {
 
             .map(participant => taiga
               .usersContacts(me, participant)))
+
+          .catch(console.error)
 
           // Build issue DTO
           .then(contactSearchResults => IssueDto
@@ -292,13 +295,16 @@ var CreateTicket = {
                 .catch(console.log) // TODO
                 .then(attachments => Promise
                   .all(attachments
-                  .map(attachment => AttachmentDto
-                    .createFor(attachment)
-                    .targeting(issue)
-                    .within(this.ticket.project))
-                  .map(dto =>
-                    taiga.postIssueAttachment(dto))))
-                .then(() => Extension.removeDirectory(path))
+                    .map(attachment => AttachmentDto
+                      .createFor(attachment)
+                      .targeting(issue)
+                      .within(this.ticket.project))
+                    .map(dto =>
+                      taiga.postIssueAttachment(dto)))
+                  .catch(console.log)
+                  .then(() =>
+                    Extension.removeDirectory(path))
+                  .catch(console.log))
 
               return issue
             })
@@ -319,6 +325,7 @@ var CreateTicket = {
                     version: issue.version,
                     watchers: intendedWatchers })
                 .then(resolve)
+                .catch(console.log)
               } else {
                 resolve(issue)
               }
