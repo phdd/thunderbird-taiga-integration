@@ -168,7 +168,7 @@ var CreateTicket = {
       .createItemsNamed('attachmentitem')
       .addItemsTo(this.gui.attachments())
       .mapEntityToItemWith((entity, item) => {
-        item.setAttribute('name', entity.displayName)
+        item.setAttribute('name', entity.name.replace(/(.)\1{9,}/g, '$1…$1'))
         item.setAttribute('value', entity.url)
         item.setAttribute('size', Extension.formatFileSize(entity.size))
         item.setAttribute('image32',
@@ -248,6 +248,7 @@ var CreateTicket = {
       taiga
         .me()
         .then(me => Promise
+          // Aggregate issue watchers
           .all(participants
             .filter(participant =>
               participant !== me.email)
@@ -255,6 +256,7 @@ var CreateTicket = {
             .map(participant => taiga
               .usersContacts(me, participant)))
 
+          // Build issue DTO
           .then(contactSearchResults => IssueDto
             .createFor(this.ticket)
             .isAssignedTo(me)
@@ -272,8 +274,30 @@ var CreateTicket = {
               .filter(contact =>
                 members.includes(contact.id)))))
 
+          // Create issue
           .then(dto => taiga
             .createIssue(dto)
+
+            // attach files
+            .then(issue => {
+              Promise
+                .all(this.ticket.attachments
+                  .map(attachment =>
+                    Extension.download(attachment)))
+                .catch(console.log) // TODO
+                .then(attachments => Promise
+                  .all(attachments
+                  .map(attachment => AttachmentDto
+                    .createFor(attachment)
+                    .targeting(issue)
+                    .within(this.ticket.project))
+                  .map(dto =>
+                    taiga.postIssueAttachment(dto))))
+
+              return issue
+            })
+
+            // Patch issue watchers
             .then(issue => {
               const intendedWatchers = dto.json().watchers
               const allIntendedWatchersAreWatching =
@@ -292,7 +316,9 @@ var CreateTicket = {
               } else {
                 resolve(issue)
               }
-            }))))
+            })
+            .catch(console.log) // TODO
+          )))
   },
 
   alertAndClose: function (error) {

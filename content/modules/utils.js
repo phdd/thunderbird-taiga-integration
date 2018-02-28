@@ -10,6 +10,7 @@ Cu.import('resource:///modules/mailServices.js')
 Cu.import('resource:///modules/iteratorUtils.jsm')
 Cu.import('resource:///modules/Services.jsm')
 Cu.import('resource:///modules/gloda/mimemsg.js')
+Cu.import('resource://gre/modules/osfile.jsm')
 Cu.import('resource:///modules/FileUtils.jsm')
 
 class Preferences {
@@ -69,6 +70,46 @@ class Extension {
         callback(event)
       }
     }, false)
+  }
+
+  /**
+   * Download something.
+   *
+   * @static
+   * @param {Object}    something A definition of the download
+   * @property {String} something.url  Something's url.
+   * @property {Number} something.size Something's size in bytes.
+   * @return {Promise}
+   */
+  static download (something) {
+    return new Promise((resolve, reject) => {
+      try {
+        const uri = Services.io.newURI(something.url, null, null)
+        const channel = Services.io.newChannelFromURI2(uri, null,
+          Services.scriptSecurityManager.getSystemPrincipal(), null,
+          Ci.nsILoadInfo.SEC_ALLOW_CROSS_ORIGIN_DATA_IS_NULL,
+          Ci.nsIContentPolicy.TYPE_OTHER)
+
+        const istream = channel.open()
+        const bstream = Cc['@mozilla.org/binaryinputstream;1']
+          .createInstance(Ci.nsIBinaryInputStream)
+
+        bstream.setInputStream(istream)
+
+        // FIXME bstream.available() is max 32768?
+        const bytes = bstream.readBytes(something.size)
+
+        istream.close()
+        bstream.close()
+
+        // something.file = new File([new Blob([ bytes ])], something.name)
+        something.bytes = bytes
+        resolve(something)
+
+      } catch (error) {
+        reject(error)
+      }
+    })
   }
 
   /**
@@ -170,9 +211,8 @@ class MessageMapper {
         return {
           id: attachment.url,
           url: attachment.url,
-          type: attachment.contentType,
+          contentType: attachment.contentType,
           name: attachment.name,
-          displayName: attachment.name.replace(/(.)\1{9,}/g, '$1…$1'),
           size: attachment.size
         }
       })
@@ -220,34 +260,6 @@ class MessageMapper {
     } else {
       return []
     }
-  }
-
-}
-
-class AttachmentMapper {
-
-  constructor (directory) {
-    this.directory = directory
-  }
-
-  static toFile (attachment) {
-    let ioService = Cc['@mozilla.org/network/io-service;1']
-      .getService(Ci.nsIIOService)
-
-    let attURL = ioService.newURI(attachment.url, null, null)
-    attURL.QueryInterface(Ci.nsIMsgMessageUrl)
-    let uri = attURL.uri
-
-    let file = FileUtils.getFile(this.directory, [attachment.name])
-    file.createUnique(Ci.nsIFile.NORMAL_FILE_TYPE, FileUtils.PERMS_FILE)
-
-    let messenger = Cc['@mozilla.org/messenger;1']
-      .createInstance(Ci.nsIMessenger)
-
-    messenger
-      .saveAttachmentToFile(
-        file, attachment.url,
-        uri, attachment.type, null)
   }
 
 }
