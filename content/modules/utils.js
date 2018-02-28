@@ -10,8 +10,8 @@ Cu.import('resource:///modules/mailServices.js')
 Cu.import('resource:///modules/iteratorUtils.jsm')
 Cu.import('resource:///modules/Services.jsm')
 Cu.import('resource:///modules/gloda/mimemsg.js')
-Cu.import('resource://gre/modules/osfile.jsm')
 Cu.import('resource:///modules/FileUtils.jsm')
+Cu.import('resource://gre/modules/osfile.jsm')
 
 class Preferences {
 
@@ -76,38 +76,74 @@ class Extension {
    * Download something.
    *
    * @static
-   * @param {Object}    something A definition of the download
+   * @param {String}    path Target path.
+   * @param {Object}    something A definition of the download.
    * @property {String} something.url  Something's url.
+   * @property {String} something.name  Something's name.
    * @property {Number} something.size Something's size in bytes.
    * @return {Promise}
    */
-  static download (something) {
+  static download (path, something) {
     return new Promise((resolve, reject) => {
       try {
-        const uri = Services.io.newURI(something.url, null, null)
-        const channel = Services.io.newChannelFromURI2(uri, null,
-          Services.scriptSecurityManager.getSystemPrincipal(), null,
-          Ci.nsILoadInfo.SEC_ALLOW_CROSS_ORIGIN_DATA_IS_NULL,
-          Ci.nsIContentPolicy.TYPE_OTHER)
+        const ioService = Cc['@mozilla.org/network/io-service;1']
+          .getService(Components.interfaces.nsIIOService)
+        const messenger = Cc['@mozilla.org/messenger;1']
+          .createInstance(Components.interfaces.nsIMessenger)
+        const neckoURL = ioService.newURI(something.url, null, null)
 
-        const istream = channel.open()
-        const bstream = Cc['@mozilla.org/binaryinputstream;1']
-          .createInstance(Ci.nsIBinaryInputStream)
+        const dir = Cc['@mozilla.org/file/local;1']
+          .createInstance(Components.interfaces.nsILocalFile)
+        const file = Cc['@mozilla.org/file/local;1']
+          .createInstance(Components.interfaces.nsILocalFile)
 
-        bstream.setInputStream(istream)
+        neckoURL.QueryInterface(Components.interfaces.nsIMsgMessageUrl)
 
-        // FIXME bstream.available() is max 32768?
-        const bytes = bstream.readBytes(something.size)
+        dir.initWithPath(path)
+        if (!dir.exists()) {
+          try {
+            dir.create(Ci.nsIFile.DIRECTORY_TYPE, parseInt('0700', 8))
+          } catch (error) {
+            reject(error)
+          }
+        }
 
-        istream.close()
-        bstream.close()
+        file.initWithPath(OS.Path.join(path, something.name))
+        if (!file.exists()) {
+          try {
+            file.create(Ci.nsIFile.NORMAL_FILE_TYPE, parseInt('0700', 8))
+          } catch (error) {
+            reject(error)
+          }
+        }
 
-        // something.file = new File([new Blob([ bytes ])], something.name)
-        something.bytes = bytes
+        messenger.saveAttachmentToFile(
+          file, something.url, neckoURL.uri, something.contentType, null)
+
+        something.file = File.createFromNsIFile(file)
         resolve(something)
 
       } catch (error) {
         reject(error)
+      }
+    })
+  }
+
+  static removeDirectory (path) {
+    const dir = Cc['@mozilla.org/file/local;1']
+      .createInstance(Components.interfaces.nsILocalFile)
+
+    dir.initWithPath(path)
+    return new Promise((resolve, reject) => {
+      if (dir.exists()) {
+        try {
+          dir.remove(true /* recursive */)
+          resolve()
+        } catch (error) {
+          reject(error)
+        }
+      } else {
+        resolve()
       }
     })
   }

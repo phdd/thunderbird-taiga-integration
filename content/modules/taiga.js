@@ -29,7 +29,6 @@ class TaigaApi {
   }
 
   postIssueAttachment (attachmentDto) {
-    console.log(attachmentDto) // XXX
     return this.postFormData('issues/attachments', attachmentDto.formData())
   }
 
@@ -119,10 +118,8 @@ class AttachmentDto {
 
   formData () {
     const data = new FormData()
-    const blob = new Blob([ this.attachment.bytes ],
-      { type: this.attachment.contentType })
 
-    data.append('attached_file', blob, this.attachment.name)
+    data.append('attached_file', this.attachment.file)
     data.append('from_comment', this.from_comment)
     data.append('object_id', getIdOrMapFromObject(this.target))
     data.append('project', getIdOrMapFromObject(this.project))

@@ -1,5 +1,7 @@
 /* eslint no-undef: 'off' */
 
+Cu.import('resource://gre/modules/osfile.jsm')
+
 const IMAGE_PROJECT = 'chrome://taiga/skin/icon.png'
 
 var CreateTicket = {
@@ -280,10 +282,13 @@ var CreateTicket = {
 
             // attach files
             .then(issue => {
+              const path = OS.Path.join(
+                OS.Constants.Path.tmpDir, `tte-${issue.id}`)
+
               Promise
                 .all(this.ticket.attachments
                   .map(attachment =>
-                    Extension.download(attachment)))
+                    Extension.download(path, attachment)))
                 .catch(console.log) // TODO
                 .then(attachments => Promise
                   .all(attachments
@@ -293,6 +298,7 @@ var CreateTicket = {
                     .within(this.ticket.project))
                   .map(dto =>
                     taiga.postIssueAttachment(dto))))
+                .then(() => Extension.removeDirectory(path))
 
               return issue
             })
