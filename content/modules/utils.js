@@ -76,74 +76,38 @@ class Extension {
    * Download something.
    *
    * @static
-   * @param {String}    path Target path.
    * @param {Object}    something A definition of the download.
    * @property {String} something.url  Something's url.
    * @property {String} something.name  Something's name.
    * @property {Number} something.size Something's size in bytes.
    * @return {Promise}
    */
-  static download (path, something) {
+  static download (something) {
     return new Promise((resolve, reject) => {
       try {
-        const ioService = Cc['@mozilla.org/network/io-service;1']
-          .getService(Components.interfaces.nsIIOService)
-        const messenger = Cc['@mozilla.org/messenger;1']
-          .createInstance(Components.interfaces.nsIMessenger)
-        const neckoURL = ioService.newURI(something.url, null, null)
+        const uri = Services.io.newURI(something.url)
+        const channel = Services.io.newChannelFromURI2(uri, null,
+          Services.scriptSecurityManager.getSystemPrincipal(), null,
+          Ci.nsILoadInfo.SEC_ALLOW_CROSS_ORIGIN_DATA_IS_NULL,
+          Ci.nsIContentPolicy.TYPE_OTHER)
 
-        const dir = Cc['@mozilla.org/file/local;1']
-          .createInstance(Components.interfaces.nsILocalFile)
-        const file = Cc['@mozilla.org/file/local;1']
-          .createInstance(Components.interfaces.nsILocalFile)
+        const istream = channel.open()
+        const bstream = Cc['@mozilla.org/binaryinputstream;1']
+          .createInstance(Ci.nsIBinaryInputStream)
 
-        neckoURL.QueryInterface(Components.interfaces.nsIMsgMessageUrl)
+        bstream.setInputStream(istream)
 
-        dir.initWithPath(path)
-        if (!dir.exists()) {
-          try {
-            dir.create(Ci.nsIFile.DIRECTORY_TYPE, parseInt('0700', 8))
-          } catch (error) {
-            reject(error)
-          }
-        }
+        // bstream.available() seems to be 32768 B max
+        const bytes = new Int8Array(bstream.readByteArray(something.size))
 
-        file.initWithPath(OS.Path.join(path, something.name))
-        if (!file.exists()) {
-          try {
-            file.create(Ci.nsIFile.NORMAL_FILE_TYPE, parseInt('0700', 8))
-          } catch (error) {
-            reject(error)
-          }
-        }
+        istream.close()
+        bstream.close()
+        something.bytes = bytes
 
-        messenger.saveAttachmentToFile(
-          file, something.url, neckoURL.uri, something.contentType, null)
-
-        something.file = File.createFromNsIFile(file)
         resolve(something)
 
       } catch (error) {
         reject(error)
-      }
-    })
-  }
-
-  static removeDirectory (path) {
-    const dir = Cc['@mozilla.org/file/local;1']
-      .createInstance(Components.interfaces.nsILocalFile)
-
-    dir.initWithPath(path)
-    return new Promise((resolve, reject) => {
-      if (dir.exists()) {
-        try {
-          dir.remove(true /* recursive */)
-          resolve()
-        } catch (error) {
-          reject(error)
-        }
-      } else {
-        resolve()
       }
     })
   }

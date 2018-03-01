@@ -285,13 +285,10 @@ var CreateTicket = {
 
             // attach files
             .then(issue => {
-              const path = OS.Path.join(
-                OS.Constants.Path.tmpDir, `tte-${issue.id}`)
-
               Promise
                 .all(this.ticket.attachments
                   .map(attachment =>
-                    Extension.download(path, attachment)))
+                    Extension.download(attachment)))
                 .catch(console.log) // TODO
                 .then(attachments => Promise
                   .all(attachments
@@ -301,9 +298,6 @@ var CreateTicket = {
                       .within(this.ticket.project))
                     .map(dto =>
                       taiga.postIssueAttachment(dto)))
-                  .catch(console.log)
-                  .then(() =>
-                    Extension.removeDirectory(path))
                   .catch(console.log))
 
               return issue
