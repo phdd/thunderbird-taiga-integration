@@ -1,4 +1,5 @@
 /* eslint no-undef: 'off' */
+/* eslint promise/param-names: 'off' */
 
 Cu.import('resource://gre/modules/osfile.jsm')
 
@@ -31,6 +32,7 @@ var CreateTicket = {
     attachments: () => document.querySelector('#attachment-list'),
     finalMessage: () => document.querySelector('#final-message'),
     finalMessageLabel: () => document.querySelector('#final-message label'),
+    finalPane: () => document.querySelector('#final-pane'),
     progressIndicator: () => document.querySelector('#progress-indicator'),
     attachmentCount: () => document.querySelector('#attachmentCount'),
     attachmentSize: () => document.querySelector('#attachmentSize')
@@ -73,6 +75,7 @@ var CreateTicket = {
       .storeSelectionWith(id => this.preferences.setString('lastProject', `${id}`))
       .consumeSelectionWith(project => {
         this.ticket.project = project
+        this.gui.wizard().getButton('next').focus()
         this.updateGui()
       })
       .catch(error =>
@@ -219,17 +222,25 @@ var CreateTicket = {
 
     this
       .createTicket()
-      .then((issue) => {
-        extra.setAttribute('disabled', false)
+      .then((issue, messages = []) => {
         finish.setAttribute('disabled', false)
         window.removeEventListener('beforeunload', disableWindowClose)
         this.gui.progressIndicator().setAttribute('hidden', true)
         this.gui.finalMessage().setAttribute('hidden', false)
+
+        const url = `${this.taigaApi.baseUrl()}/project/${this.ticket.project.slug}/issue/${issue.ref}`
+
+        extra.setAttribute('disabled', false)
+        extra.addEventListener('command', () => Extension.openUrl(url))
+
         this.gui.finalMessageLabel().setAttribute(
           'value', i18n('ticketNumberCreated', [ issue.ref ]))
 
-        const url = `${this.taigaApi.baseUrl()}/project/${this.ticket.project.slug}/issue/${issue.ref}`
-        extra.addEventListener('command', () => Extension.openUrl(url))
+        for (let message in messages) {
+          const messageDescription = document.createElement('description')
+          messageDescription.setAttribute('value', `… ${message}`)
+          this.gui.finalPane().appendChild(messageDescription)
+        }
       })
 
       .catch(error =>
@@ -245,13 +256,15 @@ var CreateTicket = {
     const message = this.messages[0]
     const participants = [].concat(message.from, message.to, message.cc)
     const members = this.ticket.project.members.map(getIdOrMapFromObject)
+    const errors = []
 
-    return new Promise((resolve, reject) =>
+    return new Promise((resolveTicketCreation, rejectTicketCreation) =>
       taiga
         .me()
-        .catch(console.log)
+        .catch(rejectTicketCreation) // TODO e.g. 'Error: Not Found' :(
         .then(me => Promise
           // Aggregate issue watchers
+          // TODO this should be optional!
           .all(participants
             .filter(participant =>
               participant !== me.email)
@@ -259,7 +272,7 @@ var CreateTicket = {
             .map(participant => taiga
               .usersContacts(me, participant)))
 
-          .catch(console.error)
+          .catch(rejectTicketCreation) // TODO e.g. 'Error: Not Found' :(
 
           // Build issue DTO
           .then(contactSearchResults => IssueDto
@@ -282,29 +295,30 @@ var CreateTicket = {
           // Create issue
           .then(dto => taiga
             .createIssue(dto)
+            .catch(rejectTicketCreation) // TODO e.g. 'Error: Not Found' :(
 
             // attach files
-            .then(issue => {
-              Promise
-                .all(this.ticket.attachments
-                  .map(attachment =>
-                    Extension.download(attachment)))
-                .catch(console.log) // TODO
-                .then(attachments => Promise
-                  .all(attachments
-                    .map(attachment => AttachmentDto
-                      .createFor(attachment)
-                      .targeting(issue)
-                      .within(this.ticket.project))
-                    .map(dto =>
-                      taiga.postIssueAttachment(dto)))
-                  .catch(console.log))
+            .then(issue => new Promise((resolveAttachmentUpload) => Promise
+              .all(this.ticket.attachments
+                .map(attachment =>
+                  Extension.download(attachment)))
 
-              return issue
-            })
+              .then(attachments => Promise
+                .all(attachments
+                  .map(attachment => AttachmentDto
+                    .createFor(attachment)
+                    .targeting(issue)
+                    .within(this.ticket.project))
+                  .map(dto =>
+                    taiga.postIssueAttachment(dto))))
+
+              .catch(() =>
+                errors.push('uploading attachments failed')) // TODO i18n
+
+              .then(() => resolveAttachmentUpload(issue))))
 
             // Patch issue watchers
-            .then(issue => {
+            .then(issue => new Promise((resolveWatcherCreation) => {
               const intendedWatchers = dto.json().watchers
               const allIntendedWatchersAreWatching =
                 intendedWatchers.every(intentedWatcher =>
@@ -318,14 +332,15 @@ var CreateTicket = {
                     id: issue.id,
                     version: issue.version,
                     watchers: intendedWatchers })
-                .then(resolve)
-                .catch(console.log)
-              } else {
-                resolve(issue)
+
+                  .catch(() =>
+                    errors.push('adding watchers failed')) // TODO i18n
               }
-            })
-            .catch(console.log) // TODO
-          )))
+
+              resolveWatcherCreation(issue)
+            }))
+
+            .then(resolveTicketCreation))))
   },
 
   alertAndClose: function (error) {

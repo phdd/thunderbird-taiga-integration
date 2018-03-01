@@ -23,6 +23,12 @@ hr {
   margin-bottom: 5px;
 }
 
+#final-messages {
+  border: none !important;
+  background: none !important;
+  overflow: hidden !important;
+}
+
 #state {
   margin: 4px;
   width: 30px;

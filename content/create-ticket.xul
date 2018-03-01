@@ -138,7 +138,7 @@
       pageid="page-final"
       label="&finish-line;"
       onpageshow="CreateTicket.showFinal()">
-    <vbox height="400">
+    <vbox height="400" id="final-pane">
       <spacer flex="3" />
       <hbox id="final-message" hidden="true">
         <spacer flex="1" />
