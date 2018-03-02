@@ -25,13 +25,17 @@ taiga.wizard.ticket = {
     this.api.address = this.preferences.stringFrom('address')
     this.api.token = this.preferences.stringFrom('token')
 
-    taiga
-      .loadOverlay('wizardpage/project')
-      .then((implementation) =>
-        implementation.load(this.api, this.model, this.preferences))
+    taiga.resolveSynchronously([
+      () => taiga
+        .loadOverlay('wizardpage/project')
+        .then((implementation) =>
+          implementation.load(this.api, this.model, this.preferences)),
 
-    this.gui.wizard().getButton('back')
-      .setAttribute('hidden', true)
+      () => taiga
+        .loadOverlay('wizardpage/issue')
+        .then((implementation) =>
+          implementation.load(this.api, this.model, this.preferences))
+    ])
   }
 
 }
