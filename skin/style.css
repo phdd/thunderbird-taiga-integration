@@ -1,27 +1,43 @@
-#taiga-options, #taiga-create-ticket {
+#taiga-options, 
+#taiga-wizard {
   background-color: -moz-dialog!important;
 }
 
-label {
+#taiga-project-list .listcell-icon {
+  max-height: 26px;
+  margin: 3px;
+}
+
+#taiga-options label,
+#taiga-wizard label {
   margin: 5px;
 }
 
-description {
+#taiga-wizard description {
   font-size: 80%;
   margin: 5px;
   color: #AAA;
 }
 
-description i {
-  font-style: italic;
-  white-space: pre-wrap;
-}
-
-hr {
+#taiga-wizard hr {
   border-top: 1px solid #DDD;
   margin-top: 5px;
   margin-bottom: 5px;
 }
+
+#taiga-wizard textbox.body {
+  font-size: 13px;
+}
+
+#taiga-wizard .wizard-header-label {
+  font-weight: normal;
+  margin: 0;
+  margin-left: 15px;
+}
+
+/*
+
+
 
 #final-messages {
   border: none !important;
@@ -35,26 +51,7 @@ hr {
   height: 30px;
 }
 
-textbox.body {
-  font-size: 13px;
-}
-
-listbox .listcell-icon {
-  max-height: 26px;
-  margin: 3px;
-}
-
-.wizard-header-label {
-  font-weight: normal;
-  margin: 0;
-  margin-left: 15px;
-}
-
-/* ::::: attachment view ::::: */
-
 #attachmentList {
-  /* -moz-appearance: none; */
-  /* border-top: 1px solid ThreeDShadow; */
   background-color: -moz-Field;
   color: -moz-FieldText;
 }
@@ -77,5 +74,6 @@ listbox .listcell-icon {
   margin: 0;
   margin-right: 6px;
   margin-inline-start: 8px;
-  color: #888a85; /* the same color as .headerName */
+  color: #888a85; 
 }
+*/

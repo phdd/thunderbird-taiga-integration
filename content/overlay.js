@@ -46,7 +46,7 @@ var Overlay = {
         .map(message =>
           this.messageMapper.toJson(message)))
       .then((mappedMessages) => this
-        .startDialog('create-ticket', mappedMessages))
+        .startDialog('wizard/ticket', mappedMessages))
       .catch(console.log)
   },
 
