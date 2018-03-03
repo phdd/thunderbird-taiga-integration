@@ -126,7 +126,7 @@ taiga.wizardpage.issue = {
   },
 
   createTicket: function () {
-    console.log(this.model)
+    console.log(this.model) // TODO
   },
 
   onPageShow: function () {

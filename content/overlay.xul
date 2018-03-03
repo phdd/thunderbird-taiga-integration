@@ -22,32 +22,33 @@
       accesskey="T"
       class="menu-iconic"
       image="chrome://taiga/skin/icon.png">
-      <menupopup>
+      <menupopup 
+          onpopupshowing="taiga.overlay.onPopupShowing()">
         <menuitem
-          id="taiga-create-ticket"
+          id="messageMenuPopup_taiga-create-ticket"
           label="&create-ticket;"
           accesskey="I"
           oncommand="taiga.overlay.createTicket();"/>
         <menuitem
-          id="taiga-create-user-story"
+          id="messageMenuPopup_taiga-create-user-story"
           label="&create-user-story;"
           accesskey="S"
           disabled="true"
           oncommand="taiga.overlay.createUserStory();"/>
         <menuitem
-          id="taiga-create-task"
+          id="messageMenuPopup_taiga-create-task"
           label="&create-task;"
           accesskey="T"
           disabled="true"
           oncommand="taiga.overlay.createTask();"/>
         <menuitem
-          id="taiga-comment"
+          id="messageMenuPopup_taiga-comment"
           label="&comment;"
           accesskey="C"
           disabled="true"
           oncommand="taiga.overlay.comment();"/>
         <menuitem
-          id="taiga-attach"
+          id="messageMenuPopup_taiga-attach"
           label="&attach;"
           accesskey="A"
           disabled="true"
@@ -62,32 +63,33 @@
       accesskey="T"
       class="menu-iconic"
       image="chrome://taiga/skin/icon.png">
-      <menupopup>
+      <menupopup 
+          onpopupshowing="taiga.overlay.onPopupShowing()">
         <menuitem
-          id="taiga-create-ticket"
+          id="mailContext_taiga-create-ticket"
           label="&create-ticket;"
           accesskey="I"
           oncommand="taiga.overlay.createTicket();"/>
         <menuitem
-          id="taiga-create-user-story"
+          id="mailContext_taiga-create-user-story"
           label="&create-user-story;"
           accesskey="S"
           disabled="true"
           oncommand="taiga.overlay.createUserStory();"/>
         <menuitem
-          id="taiga-create-task"
+          id="mailContext_taiga-create-task"
           label="&create-task;"
           accesskey="T"
           disabled="true"
           oncommand="taiga.overlay.createTask();"/>
         <menuitem
-          id="taiga-comment"
+          id="mailContext_taiga-comment"
           label="&comment;"
           accesskey="C"
           disabled="true"
           oncommand="taiga.overlay.comment();"/>
         <menuitem
-          id="taiga-attach"
+          id="mailContext_taiga-attach"
           label="&attach;"
           accesskey="A"
           disabled="true"

@@ -6,6 +6,8 @@ taiga.overlay = {
   preferences: null,
   api: null,
 
+  hasValidConnection: false,
+
   gui: {
     messageMenu: () => document.querySelector('#messageMenuPopup-taiga-menu'),
     contextMenu: () => document.querySelector('#mailContext-taiga-menu')
@@ -49,6 +51,24 @@ taiga.overlay = {
   setValidConnection: function (valid) {
     this.gui.messageMenu().disabled = valid
     this.gui.contextMenu().disabled = valid
+  },
+
+  updatePossibilities: function () {
+    const isSingleMessageSelected = this.selectedMessages().length === 1
+    const get = (idSuffix) =>
+      document.querySelector(`[id$="taiga-${idSuffix}"]`)
+
+    // FIXME query all, select shown one
+
+    get('create-ticket').disabled = !isSingleMessageSelected
+    get('create-user-story').disabled = true // TODO
+    get('create-task').disabled = true // TODO
+    get('comment').disabled = true // TODO
+    get('attach').disabled = true // TODO
+  },
+
+  onPopupShowing: function () {
+    this.updatePossibilities()
   },
 
   startDialog: function (process, messages) {
