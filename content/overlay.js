@@ -7,7 +7,8 @@ taiga.overlay = {
   api: null,
 
   gui: {
-    menu: () => document.querySelector('#mailContext-taiga-menu')
+    messageMenu: () => document.querySelector('#messageMenuPopup-taiga-menu'),
+    contextMenu: () => document.querySelector('#mailContext-taiga-menu')
   },
 
   load: function (
@@ -30,13 +31,8 @@ taiga.overlay = {
 
     this.api
       .me()
-      .then(user => {
-        this.gui.menu().disabled = false
-      })
-      .catch(error => {
-        console.log(error)
-        this.gui.menu().disabled = true
-      })
+      .then(user => this.setValidConnection(false))
+      .catch(() => this.setValidConnection(true))
   },
 
   createTicket: function () {
@@ -48,6 +44,11 @@ taiga.overlay = {
       .then((mappedMessages) => this
         .startDialog('wizard/ticket', mappedMessages))
       .catch(console.log)
+  },
+
+  setValidConnection: function (valid) {
+    this.gui.messageMenu().disabled = valid
+    this.gui.contextMenu().disabled = valid
   },
 
   startDialog: function (process, messages) {

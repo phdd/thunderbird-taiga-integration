@@ -6,49 +6,88 @@
 
 <overlay id="taiga-overlay"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-         
+
   <script src="chrome://taiga/content/modules/turndown.js" />
   <script src="chrome://taiga/content/modules/ajax.js" />
-  
+
   <script src="chrome://taiga/content/modules/utils.js" />
   <script src="chrome://taiga/content/modules/api.js" />
-  
+
   <script src="chrome://taiga/content/taiga.js" />
   <script src="chrome://taiga/content/overlay.js" />
-  
+
+  <menupopup id="messageMenuPopup">
+    <menu id="messageMenuPopup-taiga-menu"
+      label="&taiga;"
+      accesskey="T"
+      class="menu-iconic"
+      image="chrome://taiga/skin/icon.png">
+      <menupopup>
+        <menuitem
+          id="taiga-create-ticket"
+          label="&create-ticket;"
+          accesskey="I"
+          oncommand="taiga.overlay.createTicket();"/>
+        <menuitem
+          id="taiga-create-user-story"
+          label="&create-user-story;"
+          accesskey="S"
+          disabled="true"
+          oncommand="taiga.overlay.createUserStory();"/>
+        <menuitem
+          id="taiga-create-task"
+          label="&create-task;"
+          accesskey="T"
+          disabled="true"
+          oncommand="taiga.overlay.createTask();"/>
+        <menuitem
+          id="taiga-comment"
+          label="&comment;"
+          accesskey="C"
+          disabled="true"
+          oncommand="taiga.overlay.comment();"/>
+        <menuitem
+          id="taiga-attach"
+          label="&attach;"
+          accesskey="A"
+          disabled="true"
+          oncommand="taiga.overlay.uploadAttachment();"/>
+      </menupopup>
+    </menu>
+  </menupopup>
+
   <menupopup id="mailContext">
     <menu id="mailContext-taiga-menu"
       label="&taiga;"
       accesskey="T"
       class="menu-iconic"
-      insertafter="mailContext-moveToFolderAgain"
       image="chrome://taiga/skin/icon.png">
       <menupopup>
-        <menuitem 
-          id="taiga-create-ticket" 
+        <menuitem
+          id="taiga-create-ticket"
           label="&create-ticket;"
           accesskey="I"
           oncommand="taiga.overlay.createTicket();"/>
-        <menuitem 
-          id="taiga-create-user-story" 
+        <menuitem
+          id="taiga-create-user-story"
           label="&create-user-story;"
           accesskey="S"
           disabled="true"
           oncommand="taiga.overlay.createUserStory();"/>
-        <menuitem 
-          id="taiga-create-task" 
+        <menuitem
+          id="taiga-create-task"
           label="&create-task;"
           accesskey="T"
           disabled="true"
           oncommand="taiga.overlay.createTask();"/>
-        <menuitem 
-          id="taiga-comment" 
+        <menuitem
+          id="taiga-comment"
           label="&comment;"
           accesskey="C"
           disabled="true"
           oncommand="taiga.overlay.comment();"/>
-        <menuitem 
-          id="taiga-attach" 
+        <menuitem
+          id="taiga-attach"
           label="&attach;"
           accesskey="A"
           disabled="true"

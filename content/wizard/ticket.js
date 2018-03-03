@@ -27,7 +27,10 @@ taiga.wizard.ticket = {
     this.api.token = this.preferences.stringFrom('token')
 
     taiga.wizardpage.project
-      .load(this.api, this.model, this.preferences)
+      .load(this.model, this.api, this.preferences)
+
+    taiga.wizardpage.issue
+      .load(this.model, this.messages[0], this.api, this.preferences)
   }
 
 }

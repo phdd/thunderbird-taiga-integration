@@ -1,3 +1,4 @@
+/* eslint-disable */
 var TurndownService = (function () {
 'use strict';
 

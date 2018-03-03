@@ -6,25 +6,23 @@ taiga.wizardpage.project = {
 
   api: null,
   model: null,
+  preferences: null,
 
   gui: {
     projects: () => document.querySelector('#taiga-project-list'),
     wizard: () => document.querySelector('#taiga-wizard')
   },
 
-  load: function (api, model, preferences) {
+  load: function (model, api, preferences) {
     this.api = api
     this.model = model
     this.preferences = preferences
     this.hasBeenLoaded = true
+
     this.update()
   },
 
   update: function () {
-    if (!this.hasBeenLoaded) {
-      return
-    }
-
     ListBuilder
       .fetchEntitiesFrom(() => this.api.projects())
       .nameEntities(i18n('project'), i18n('projects'))
@@ -51,6 +49,12 @@ taiga.wizardpage.project = {
   render: function () {
     this.gui.wizard().getButton('next').focus()
     this.gui.wizard().canAdvance = this.model.project != null
+  },
+
+  onPageShow: function () {
+    if (this.hasBeenLoaded) {
+      this.update()
+    }
   }
 
 }
