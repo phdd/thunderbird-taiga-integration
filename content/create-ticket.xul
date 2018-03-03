@@ -17,7 +17,7 @@
   <script src="chrome://taiga/content/modules/ajax.js" />
   
   <script src="chrome://taiga/content/modules/utils.js" />
-  <script src="chrome://taiga/content/modules/taiga.js" />
+  <script src="chrome://taiga/content/modules/api.js" />
   
   <script src="chrome://taiga/content/components/list-builder.js" />
   <script src="chrome://taiga/content/create-ticket.js" />

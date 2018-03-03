@@ -26,23 +26,8 @@ taiga.wizard.ticket = {
     this.api.address = this.preferences.stringFrom('address')
     this.api.token = this.preferences.stringFrom('token')
 
-    taiga.resolveSynchronously([
-      () => taiga
-        .loadOverlay('wizardpage/project')
-        .then((implementation) =>
-          implementation.load(this.api, this.model, this.preferences)),
-
-      () => taiga
-        .loadOverlay('wizardpage/issue')
-        .then((implementation) =>
-          implementation.load(this.api, this.model, this.preferences))])
-
-    .then(() => {
-      // TODO set first page
-      // this.gui.wizard().currentPage = this.gui.projects()
-      // this.gui.wizard().onFirstPage = true
-      this.gui.projects().next = 'taiga-wizardpage-issue'
-    })
+    taiga.wizardpage.project
+      .load(this.api, this.model, this.preferences)
   }
 
 }

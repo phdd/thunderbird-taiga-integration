@@ -37,7 +37,12 @@ class Preferences {
   }
 
   stringFrom (preference) {
-    return this.preferences.getCharPref(preference, null)
+    try {
+      return this.preferences.getCharPref(preference) || null
+    } catch (error) {
+      console.warn(error)
+      return null
+    }
   }
 
   setString (preference, value) {

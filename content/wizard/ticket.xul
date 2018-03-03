@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet href="chrome://taiga/skin/style.css" type="text/css"?>
 
+<?xul-overlay href="chrome://taiga/content/wizardpage/project.xul"?>
+<?xul-overlay href="chrome://taiga/content/wizardpage/issue.xul"?>
+
 <wizard
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
     id="taiga-wizard"
@@ -11,7 +14,7 @@
   <script src="chrome://taiga/content/modules/ajax.js" />
   
   <script src="chrome://taiga/content/modules/utils.js" />
-  <script src="chrome://taiga/content/modules/taiga.js" />
+  <script src="chrome://taiga/content/modules/api.js" />
   
   <script src="chrome://taiga/content/components/list-builder.js" />  
   <script src="chrome://taiga/content/taiga.js" />

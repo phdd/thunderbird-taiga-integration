@@ -16,10 +16,15 @@ taiga.wizardpage.project = {
     this.api = api
     this.model = model
     this.preferences = preferences
+    this.hasBeenLoaded = true
     this.update()
   },
 
   update: function () {
+    if (!this.hasBeenLoaded) {
+      return
+    }
+
     ListBuilder
       .fetchEntitiesFrom(() => this.api.projects())
       .nameEntities(i18n('project'), i18n('projects'))

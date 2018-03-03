@@ -10,7 +10,7 @@ taiga.overlay = {
     menu: () => document.querySelector('#mailContext-taiga-menu')
   },
 
-  startup: function (
+  load: function (
       preferences = false,
       api = new TaigaApi(),
       messageMapper = new MessageMapper()
@@ -19,12 +19,12 @@ taiga.overlay = {
     this.api = api
 
     this.preferences = preferences || new Preferences(
-        'extensions.taiga.', () => this.validateTaigaAuthentication())
+        'extensions.taiga.', () => this.update())
 
-    this.validateTaigaAuthentication()
+    this.update()
   },
 
-  validateTaigaAuthentication: function () {
+  update: function () {
     this.api.address = this.preferences.stringFrom('address')
     this.api.token = this.preferences.stringFrom('token')
 
@@ -64,4 +64,4 @@ taiga.overlay = {
 
 }
 
-taiga.onLoad(() => taiga.overlay.startup())
+taiga.onLoad(() => taiga.overlay.load())
