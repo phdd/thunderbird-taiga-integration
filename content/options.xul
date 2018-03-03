@@ -11,33 +11,35 @@
 
   <prefpane id="taiga-options-access">
     <preferences>
-      <preference id="token" name="extensions.taiga.token" type="string" />
-      <preference id="address" name="extensions.taiga.address" type="string" />
+      <preference id="taiga-token" name="extensions.taiga.token" type="string" />
+      <preference id="taiga-address" name="extensions.taiga.address" type="string" />
     </preferences>
     
     <script src="chrome://taiga/content/modules/utils.js" />
     <script src="chrome://taiga/content/modules/ajax.js" />
     <script src="chrome://taiga/content/modules/taiga.js" />
+    
+    <script src="chrome://taiga/content/taiga.js" />
     <script src="chrome://taiga/content/options.js" />
     
     <vbox>
       
-      <label control="address">&address;</label>
-      <textbox id="address" preference="address" />
+      <label control="taiga-address">&address;</label>
+      <textbox id="taiga-address" preference="taiga-address" />
       <description>&address-descr;</description>
       
       <hr />
       
-      <label control="token">&token;</label>
-      <textbox id="token" preference="token" />
+      <label control="taiga-token">&token;</label>
+      <textbox id="taiga-token" preference="taiga-token" />
       <description>&token-descr;</description>
       
       <hr />
       
-      <label control="authentication">&authentication;</label>
+      <label control="taiga-auth">&authentication;</label>
       <hbox>
-        <image id="state" src="chrome://taiga/skin/confused.png" flex="0" />
-        <textbox id="authentication" readonly="true" flex="1" />
+        <image id="taiga-auth-state" src="chrome://taiga/skin/confused.png" flex="0" />
+        <textbox id="taiga-auth" readonly="true" flex="1" />
       </hbox>
       <description>&authentication-descr;</description>
       

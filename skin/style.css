@@ -13,13 +13,15 @@
   margin: 5px;
 }
 
-#taiga-wizard description {
+#taiga-wizard description,
+#taiga-options description {
   font-size: 80%;
   margin: 5px;
   color: #AAA;
 }
 
-#taiga-wizard hr {
+#taiga-wizard hr,
+#taiga-options hr {
   border-top: 1px solid #DDD;
   margin-top: 5px;
   margin-bottom: 5px;
@@ -33,6 +35,12 @@
   font-weight: normal;
   margin: 0;
   margin-left: 15px;
+}
+
+#taiga-options #taiga-auth-state {
+  margin: 4px;
+  width: 30px;
+  height: 30px;
 }
 
 /*

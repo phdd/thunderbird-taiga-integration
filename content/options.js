@@ -1,45 +1,52 @@
-const IMAGE_SMILE = 'chrome://taiga/skin/smile.png';
-const IMAGE_CONFUSED = 'chrome://taiga/skin/confused.png';
+/* eslint no-undef: 'off' */
 
-var Options = {
-	
-	preferences: null,
-	taigaApi: null,
-		
-	startup: function(
-			preferences = false,
-			taigaApi = new TaigaApi()
-	) {
-		this.taigaApi = taigaApi;
-		
-		this.preferences = preferences || new Preferences(
-				"extensions.taiga.", () => this.validateTaigaAuthentication());
-				
-		this.validateTaigaAuthentication();
-	},
+taiga.options = {
 
-	validateTaigaAuthentication: function() {
-		this.taigaApi.address = this.preferences.stringFrom("address");
-		this.taigaApi.token = this.preferences.stringFrom("token");
+  IMAGE_SMILE: 'chrome://taiga/skin/smile.png',
+  IMAGE_CONFUSED: 'chrome://taiga/skin/confused.png',
 
-		this.taigaApi
-		  .me()
-			.then(user => 
-				this.setUser(user.email))
-			.catch(error => 
-				this.setError(error.statusText || 'Network issue'));
-	},
-	
-	setUser: function(user) {
-		document.querySelector("#authentication").value = user;
-		document.querySelector("#state").src = IMAGE_SMILE;
-	},
-	
-	setError: function(error) {
-		document.querySelector("#authentication").value = error;
-		document.querySelector("#state").src = IMAGE_CONFUSED;
-	}
+  preferences: null,
+  api: null,
+
+  gui: {
+    auth: () => document.querySelector('#taiga-auth'),
+    authState: () => document.querySelector('#taiga-auth-state')
+  },
+
+  load: function (
+      preferences = null,
+      api = new TaigaApi()
+  ) {
+    this.api = api
+
+    this.preferences = preferences || new Preferences(
+        'extensions.taiga.', () => this.validateTaigaAuthentication())
+
+    this.validateTaigaAuthentication()
+  },
+
+  validateTaigaAuthentication: function () {
+    this.api.address = this.preferences.stringFrom('address')
+    this.api.token = this.preferences.stringFrom('token')
+
+    this.api
+      .me()
+      .then(user =>
+        this.setUser(user.email))
+      .catch(error =>
+        this.setError(error.statusText || 'Network issue'))
+  },
+
+  setUser: function (user) {
+    this.gui.auth().value = user
+    this.gui.authState().src = this.IMAGE_SMILE
+  },
+
+  setError: function (error) {
+    this.gui.auth().value = error
+    this.gui.authState().src = this.IMAGE_CONFUSED
+  }
 
 }
 
-Extension.onLoad(() => Options.startup());
+taiga.onLoad(() => taiga.options.load())

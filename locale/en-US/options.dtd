@@ -4,7 +4,7 @@
 <!ENTITY token-descr "Taiga fontend token. Ask your admin for help.">
 
 <!ENTITY address "Address">
-<!ENTITY address-descr "Address of the Taiga instance. E.g. <i>https://tree.taiga.io</i>.">
+<!ENTITY address-descr "Address of the Taiga instance. E.g. <i>https://api.taiga.io</i>.">
 
 <!ENTITY authentication "Authentication">
 <!ENTITY authentication-descr "Either the authenticated Taiga user, or an error message.">

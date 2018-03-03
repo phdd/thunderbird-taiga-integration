@@ -13,6 +13,7 @@
   <script src="chrome://taiga/content/modules/utils.js" />
   <script src="chrome://taiga/content/modules/taiga.js" />
   
+  <script src="chrome://taiga/content/taiga.js" />
   <script src="chrome://taiga/content/overlay.js" />
   
   <menupopup id="mailContext">
@@ -24,34 +25,34 @@
       image="chrome://taiga/skin/icon.png">
       <menupopup>
         <menuitem 
-          id="create-ticket" 
+          id="taiga-create-ticket" 
           label="&create-ticket;"
           accesskey="I"
-          oncommand="Overlay.createTicket();"/>
+          oncommand="taiga.overlay.createTicket();"/>
         <menuitem 
-          id="create-user-story" 
+          id="taiga-create-user-story" 
           label="&create-user-story;"
           accesskey="S"
           disabled="true"
-          oncommand="Overlay.createUserStory();"/>
+          oncommand="taiga.overlay.createUserStory();"/>
         <menuitem 
-          id="create-task" 
+          id="taiga-create-task" 
           label="&create-task;"
           accesskey="T"
           disabled="true"
-          oncommand="Overlay.createTask();"/>
+          oncommand="taiga.overlay.createTask();"/>
         <menuitem 
-          id="comment" 
+          id="taiga-comment" 
           label="&comment;"
           accesskey="C"
           disabled="true"
-          oncommand="Overlay.comment();"/>
+          oncommand="taiga.overlay.comment();"/>
         <menuitem 
-          id="attach" 
+          id="taiga-attach" 
           label="&attach;"
           accesskey="A"
           disabled="true"
-          oncommand="Overlay.uploadAttachment();"/>
+          oncommand="taiga.overlay.uploadAttachment();"/>
       </menupopup>
     </menu>
   </menupopup>

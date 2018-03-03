@@ -61,58 +61,24 @@ class TaigaApi {
   }
 
   get (entity) {
-    return new Promise((resolve, reject) => {
-      Ajax
-        .get(this.expandUrlFor(entity), this.ajaxOptions())
-        .then(resolve)
-        .catch((error) => reject(this.translateError(error)))
-    })
+    return Ajax.get(this.expandUrlFor(entity), this.ajaxOptions())
   }
 
   postJson (entity, json) {
-    return new Promise((resolve, reject) => {
-      Ajax
-        .post(this.expandUrlFor(entity),
-          this.ajaxOptions(), JSON.stringify(json))
-        .then(resolve)
-        .catch((error) => reject(this.translateError(error)))
-    })
+    return Ajax.post(this.expandUrlFor(entity),
+      this.ajaxOptions(), JSON.stringify(json))
   }
 
   postFormData (entity, data) {
     const options = this.ajaxOptions()
     // if set to multipart/form-data, boundary part will be missing
     delete options.headers['Content-Type']
-    return new Promise((resolve, reject) => {
-      Ajax
-        .post(this.expandUrlFor(entity), options, data)
-        .then(resolve)
-        .catch((error) => reject(this.translateError(error)))
-    })
+    return Ajax.post(this.expandUrlFor(entity), options, data)
   }
 
   patch (entity, json) {
-    return new Promise((resolve, reject) => {
-      Ajax
-        .patch(this.expandUrlFor(entity),
-          this.ajaxOptions(), JSON.stringify(json))
-        .then(resolve)
-        .catch((error) => reject(this.translateError(error)))
-    })
-  }
-
-  translateError (error) {
-    const message = error.statusText
-    console.error(error)
-
-    switch (error.status) {
-      case 400:
-        return new BadRequest(message)
-      case 404:
-        return new NotFound(message)
-      default:
-        return new TaigaError(message)
-    }
+    return Ajax.patch(this.expandUrlFor(entity),
+      this.ajaxOptions(), JSON.stringify(json))
   }
 
   expandUrlFor (path) {

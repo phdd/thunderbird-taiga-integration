@@ -1,10 +1,10 @@
 /* eslint no-undef: "off" */
 
-var Overlay = {
+taiga.overlay = {
 
   messageMapper: null,
   preferences: null,
-  taigaApi: null,
+  api: null,
 
   gui: {
     menu: () => document.querySelector('#mailContext-taiga-menu')
@@ -12,11 +12,11 @@ var Overlay = {
 
   startup: function (
       preferences = false,
-      taigaApi = new TaigaApi(),
+      api = new TaigaApi(),
       messageMapper = new MessageMapper()
   ) {
     this.messageMapper = messageMapper
-    this.taigaApi = taigaApi
+    this.api = api
 
     this.preferences = preferences || new Preferences(
         'extensions.taiga.', () => this.validateTaigaAuthentication())
@@ -25,10 +25,10 @@ var Overlay = {
   },
 
   validateTaigaAuthentication: function () {
-    this.taigaApi.address = this.preferences.stringFrom('address')
-    this.taigaApi.token = this.preferences.stringFrom('token')
+    this.api.address = this.preferences.stringFrom('address')
+    this.api.token = this.preferences.stringFrom('token')
 
-    this.taigaApi
+    this.api
       .me()
       .then(user => {
         this.gui.menu().disabled = false
@@ -64,4 +64,4 @@ var Overlay = {
 
 }
 
-Extension.onLoad(() => Overlay.startup())
+taiga.onLoad(() => taiga.overlay.startup())

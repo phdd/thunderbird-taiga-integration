@@ -37,19 +37,11 @@ class Preferences {
   }
 
   stringFrom (preference) {
-    if (this.have(preference)) {
-      return this.preferences.getCharPref(preference)
-    } else {
-      return null
-    }
+    return this.preferences.getCharPref(preference, null)
   }
 
   setString (preference, value) {
     return this.preferences.setCharPref(preference, value)
-  }
-
-  have (preference) {
-    return this.preferences.prefHasUserValue(preference)
   }
 
 }
