@@ -9,7 +9,8 @@ taiga.wizard.ticket = {
   model: {},
 
   gui: {
-    projects: () => document.querySelector('#taiga-project-list'),
+    projects: () => document.querySelector('#taiga-wizardpage-project'),
+    issue: () => document.querySelector('#taiga-wizardpage-issue'),
     wizard: () => document.querySelector('#taiga-wizard')
   },
 
@@ -34,8 +35,14 @@ taiga.wizard.ticket = {
       () => taiga
         .loadOverlay('wizardpage/issue')
         .then((implementation) =>
-          implementation.load(this.api, this.model, this.preferences))
-    ])
+          implementation.load(this.api, this.model, this.preferences))])
+
+    .then(() => {
+      // TODO set first page
+      // this.gui.wizard().currentPage = this.gui.projects()
+      // this.gui.wizard().onFirstPage = true
+      this.gui.projects().next = 'taiga-wizardpage-issue'
+    })
   }
 
 }
