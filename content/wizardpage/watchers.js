@@ -25,9 +25,9 @@ taiga.wizardpage.watchers = {
       .fetchEntitiesFrom(() => this.fetchContacts())
       .nameEntities(i18n('people'), i18n('people'))
       .createItemsNamed('listitem')
+      .selectAll(true)
       .addItemsTo(this.gui.people())
       .addIconFrom(person => person.photo || this.IMAGE_PROFILE)
-      .loadSelectionWith(() => [])
       .consumeSelectionWith(people => {
         this.model.watchers = people
         this.render()
@@ -66,8 +66,8 @@ taiga.wizardpage.watchers = {
           people.map(person => {
             person.name = person.full_name_display || person.username
 
-            if (person.email === me.email) {
-              person.name += ' (me)' // TODO i18n
+            if (person.id === me.id) {
+              person.name += ` (${i18n('me')})`
             }
 
             return person

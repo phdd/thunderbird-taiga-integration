@@ -24,7 +24,8 @@
         
         <listbox 
           id="taiga-watch-list"
-          rows="10">
+          rows="10"
+          seltype="multiple">
         </listbox>
         
         <description>&taiga-watch-list-description;</description>

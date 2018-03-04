@@ -64,6 +64,11 @@ class ListBuilder {
     return this
   }
 
+  selectAll (selectAll) {
+    this.selectAll = selectAll
+    return this
+  }
+
   consumeSelectionWith (callback) {
     this.entities = {}
 
@@ -140,6 +145,9 @@ class ListBuilder {
 
               listener()
             }
+
+          } else if (this.selectAll) { // FIXME maybe not working
+            this.list.selectedItems = Array.from(this.list.childNodes)
           }
 
           resolve()
