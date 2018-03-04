@@ -62,7 +62,7 @@
             <spacer flex="1" />
             <hbox>
               <spacer flex="1" />
-              <label value="Creating Issue" />
+              <label value="&taiga-creating-issue;" />
               <spacer flex="1" />
             </hbox>
             <hbox>

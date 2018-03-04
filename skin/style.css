@@ -13,6 +13,10 @@
   margin: 3px;
 }
 
+#taiga-watch-list .listcell-icon {
+  max-height: 34px;
+}
+
 #taiga-options label,
 #taiga-wizard label {
   margin: 5px;

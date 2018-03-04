@@ -119,7 +119,6 @@ taiga.wizardpage.issue = {
   },
 
   render: function () {
-    this.gui.wizard().getButton('next').focus()
     this.gui.wizard().canAdvance =
       this.model.type != null &&
       this.model.severity != null &&

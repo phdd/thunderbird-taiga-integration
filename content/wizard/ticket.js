@@ -36,6 +36,9 @@ taiga.wizard.ticket = {
     taiga.wizardpage.issue
       .load(this.model, this.messages[0], this.api, this.preferences)
 
+    taiga.wizardpage.watchers
+      .load(this.model, this.messages[0], this.api)
+
     taiga.wizardpage.issue.onIssueCreated = this.onIssueCreated
     taiga.wizardpage.project.projectFilter = this.projectFilter
   },
