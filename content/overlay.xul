@@ -23,7 +23,7 @@
       class="menu-iconic"
       image="chrome://taiga/skin/icon.png">
       <menupopup 
-          onpopupshowing="taiga.overlay.onPopupShowing()">
+          onpopupshowing="taiga.overlay.onPopupShowing('messageMenuPopup')">
         <menuitem
           id="messageMenuPopup_taiga-create-ticket"
           label="&create-ticket;"
@@ -64,7 +64,7 @@
       class="menu-iconic"
       image="chrome://taiga/skin/icon.png">
       <menupopup 
-          onpopupshowing="taiga.overlay.onPopupShowing()">
+          onpopupshowing="taiga.overlay.onPopupShowing('mailContext')">
         <menuitem
           id="mailContext_taiga-create-ticket"
           label="&create-ticket;"

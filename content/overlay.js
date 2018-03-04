@@ -53,12 +53,10 @@ taiga.overlay = {
     this.gui.contextMenu().disabled = valid
   },
 
-  updatePossibilities: function () {
+  updateMenu: function (menuName) {
     const isSingleMessageSelected = this.selectedMessages().length === 1
     const get = (idSuffix) =>
-      document.querySelector(`[id$="taiga-${idSuffix}"]`)
-
-    // FIXME query all, select shown one
+      document.querySelector(`[id$="${menuName}_taiga-${idSuffix}"]`)
 
     get('create-ticket').disabled = !isSingleMessageSelected
     get('create-user-story').disabled = true // TODO
@@ -67,8 +65,8 @@ taiga.overlay = {
     get('attach').disabled = true // TODO
   },
 
-  onPopupShowing: function () {
-    this.updatePossibilities()
+  onPopupShowing: function (menuName) {
+    this.updateMenu(menuName)
   },
 
   startDialog: function (process, messages) {
