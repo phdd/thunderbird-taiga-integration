@@ -26,6 +26,10 @@ taiga.wizard.ticket = {
     this.api.address = this.preferences.stringFrom('address')
     this.api.token = this.preferences.stringFrom('token')
 
+    this.setup()
+  },
+
+  setup: function () {
     taiga.wizardpage.project
       .load(this.model, this.api, this.preferences)
 
@@ -33,12 +37,14 @@ taiga.wizard.ticket = {
       .load(this.model, this.messages[0], this.api, this.preferences)
 
     taiga.wizardpage.issue.onIssueCreated = this.onIssueCreated
+    taiga.wizardpage.project.projectFilter = this.projectFilter
   },
 
   onIssueCreated: function () {
     const ref = this.model.ref
+    const host = this.api.baseUrl()
     const slug = this.model.project.slug
-    const url = `${this.api.baseUrl()}/project/${slug}/issue/${ref}`
+    const url = `${host}/project/${slug}/issue/${ref}`
     const extra = this.gui.wizard().getButton('extra1')
 
     extra.hidden = false
@@ -46,6 +52,12 @@ taiga.wizard.ticket = {
     extra.label = i18n('showInTaiga')
 
     extra.addEventListener('command', () => taiga.openUrl(url))
+  },
+
+  projectFilter: function (project) {
+    return project.i_am_member &&
+      project.is_issues_activated &&
+      project.my_permissions.includes('add_issue')
   },
 
   onWizardNext: function () {

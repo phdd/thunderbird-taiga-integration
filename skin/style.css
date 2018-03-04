@@ -1,6 +1,11 @@
 #taiga-options, 
-#taiga-wizard {
+#taiga-wizard,
+#taiga-progress-overlay-background {
   background-color: -moz-dialog!important;
+}
+
+#taiga-progress-overlay-background {
+  opacity: 0.8;
 }
 
 #taiga-project-list .listcell-icon {

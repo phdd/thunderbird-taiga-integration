@@ -15,7 +15,8 @@ taiga.wizardpage.issue = {
     priority: () => document.querySelector('#taiga-issue-priority'),
     severity: () => document.querySelector('#taiga-issue-severity'),
     title: () => document.querySelector('#taiga-issue-title'),
-    description: () => document.querySelector('#taiga-issue-description')
+    description: () => document.querySelector('#taiga-issue-description'),
+    progressOverlay: () => document.querySelector('#taiga-progress-overlay')
   },
 
   load: function (model, message, api, preferences) {
@@ -128,12 +129,16 @@ taiga.wizardpage.issue = {
   },
 
   createTicket: function () {
-    return new Promise((resolve, reject) => {
-      console.log(this.model) // TODO
-      this.issueHasBeenCreated = true
-      this.onIssueCreated()
-      resolve()
-    })
+    return this.api
+      .me()
+      .then(me => IssueDto
+        .createFor(this.model)
+        .isAssignedTo(me))
+      .then(dto =>
+        this.api.createIssue(dto))
+      .then((issue) => {
+        this.model = Object.assign(issue, this.model)
+      })
   },
 
   onPageShow: function () {
@@ -151,11 +156,12 @@ taiga.wizardpage.issue = {
 
       const reenableUsersInput = () => {
         window.removeEventListener('beforeunload', disableWindowClose)
-
+        this.gui.progressOverlay().hidden = true
         this.gui.wizard().canAdvance = true
         this.gui.wizard().canRewind = true
       }
 
+      this.gui.progressOverlay().hidden = false
       this.gui.wizard().canAdvance = false
       this.gui.wizard().canRewind = false
 
@@ -164,13 +170,17 @@ taiga.wizardpage.issue = {
       this
         .createTicket()
         .then(() => {
+          this.issueHasBeenCreated = true
+          this.onIssueCreated()
           reenableUsersInput()
           this.gui.wizard().advance()
         })
         .catch((error) => {
           reenableUsersInput()
+          console.log(error)
           new Prompt('taiga-create-ticket')
-            .alert(i18n('createTicket'), error)
+            .alert(i18n('createTicket'),
+              'Sorry, but there was an error. You may try again.')
         })
 
       return false

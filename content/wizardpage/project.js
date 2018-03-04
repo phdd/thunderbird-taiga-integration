@@ -8,6 +8,8 @@ taiga.wizardpage.project = {
   model: null,
   preferences: null,
 
+  projectFilter: () => {},
+
   gui: {
     projects: () => document.querySelector('#taiga-project-list'),
     wizard: () => document.querySelector('#taiga-wizard')
@@ -30,10 +32,7 @@ taiga.wizardpage.project = {
       .addItemsTo(this.gui.projects())
       .addIconFrom(project =>
         project.logo_small_url || this.IMAGE_PROJECT)
-      .addItemOnlyWhen(project =>
-        project.i_am_member &&
-        project.is_issues_activated &&
-        project.my_permissions.includes('add_issue'))
+      .addItemOnlyWhen(project => this.projectFilter(project))
       .loadSelectionWith(() => [ this.preferences.stringFrom('lastProject') ])
       .storeSelectionWith(id => this.preferences.setString('lastProject', `${id}`))
       .consumeSelectionWith(project => {
