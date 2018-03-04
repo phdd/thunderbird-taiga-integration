@@ -14,8 +14,7 @@
         id="taiga-wizardpage-issue"
         pageid="taiga-wizardpage-issue"
         label="&taiga-issue-details;"
-        onpageshow="taiga.wizardpage.issue.onPageShow()"
-        onpageadvanced="taiga.wizardpage.issue.onPageAdvanced()">
+        onpageshow="taiga.wizardpage.issue.onPageShow()">
 
       <vbox>
         <grid flex="1">

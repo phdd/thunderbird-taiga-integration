@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- <!DOCTYPE dialog SYSTEM "chrome://taiga/locale/wizardpage/watchers.dtd"> -->
+
+<overlay 
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+    id="taiga-overlay">
+    
+  <wizard id="taiga-wizard">
+    
+    <!-- <script src="chrome://taiga/content/wizardpage/watchers.js" /> -->
+
+    <wizardpage 
+        id="taiga-wizardpage-watchers"
+        pageid="taiga-wizardpage-watchers"
+        label="Watchers">
+
+    </wizardpage>
+  </wizard>
+</overlay>

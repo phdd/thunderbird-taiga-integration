@@ -3,12 +3,16 @@
 
 <?xul-overlay href="chrome://taiga/content/wizardpage/project.xul"?>
 <?xul-overlay href="chrome://taiga/content/wizardpage/issue.xul"?>
+<?xul-overlay href="chrome://taiga/content/wizardpage/watchers.xul"?>
+<?xul-overlay href="chrome://taiga/content/wizardpage/attachments.xul"?>
 
 <wizard
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
     id="taiga-wizard"
     width="600" height="550"
-    title="Create Taiga Issue">
+    title="Create Taiga Issue"
+    onwizardnext="return taiga.wizard.ticket.onWizardNext()"
+    onwizardcancel="return taiga.wizard.ticket.onWizardCancel()">
 
   <script src="chrome://taiga/content/modules/turndown.js" />
   <script src="chrome://taiga/content/modules/ajax.js" />
@@ -19,5 +23,5 @@
   <script src="chrome://taiga/content/components/list-builder.js" />  
   <script src="chrome://taiga/content/taiga.js" />
   <script src="chrome://taiga/content/wizard/ticket.js" />
-    
+
 </wizard>

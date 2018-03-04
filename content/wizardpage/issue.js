@@ -7,6 +7,8 @@ taiga.wizardpage.issue = {
   api: null,
   preferences: null,
 
+  onIssueCreated: () => {},
+
   gui: {
     wizard: () => document.querySelector('#taiga-wizard'),
     types: () => document.querySelector('#taiga-issue-type'),
@@ -126,7 +128,12 @@ taiga.wizardpage.issue = {
   },
 
   createTicket: function () {
-    console.log(this.model) // TODO
+    return new Promise((resolve, reject) => {
+      console.log(this.model) // TODO
+      this.issueHasBeenCreated = true
+      this.onIssueCreated()
+      resolve()
+    })
   },
 
   onPageShow: function () {
@@ -135,8 +142,43 @@ taiga.wizardpage.issue = {
     }
   },
 
-  onPageAdvanced: function () {
-    this.createTicket()
+  onWizardNext: function () {
+    if (this.issueHasBeenCreated) {
+      return true
+    } else {
+      const disableWindowClose = (event) =>
+        event.preventDefault()
+
+      const reenableUsersInput = () => {
+        window.removeEventListener('beforeunload', disableWindowClose)
+
+        this.gui.wizard().canAdvance = true
+        this.gui.wizard().canRewind = true
+      }
+
+      this.gui.wizard().canAdvance = false
+      this.gui.wizard().canRewind = false
+
+      window.addEventListener('beforeunload', disableWindowClose)
+
+      this
+        .createTicket()
+        .then(() => {
+          reenableUsersInput()
+          this.gui.wizard().advance()
+        })
+        .catch((error) => {
+          reenableUsersInput()
+          new Prompt('taiga-create-ticket')
+            .alert(i18n('createTicket'), error)
+        })
+
+      return false
+    }
+  },
+
+  onWizardCancel: function () {
+    window.close()
   },
 
   alertAndClose: function (error) {

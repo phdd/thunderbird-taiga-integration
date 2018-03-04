@@ -53,10 +53,10 @@ taiga.overlay = {
     this.gui.contextMenu().disabled = valid
   },
 
-  updateMenu: function (menuName) {
+  updateMenu: function (name) {
     const isSingleMessageSelected = this.selectedMessages().length === 1
     const get = (idSuffix) =>
-      document.querySelector(`[id$="${menuName}_taiga-${idSuffix}"]`)
+      document.querySelector(`[id$="${name}_taiga-${idSuffix}"]`)
 
     get('create-ticket').disabled = !isSingleMessageSelected
     get('create-user-story').disabled = true // TODO
