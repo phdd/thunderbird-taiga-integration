@@ -12,6 +12,7 @@ taiga.wizard.ticket = {
     projects: () => document.querySelector('#taiga-wizardpage-project'),
     issue: () => document.querySelector('#taiga-wizardpage-issue'),
     team: () => document.querySelector('#taiga-wizardpage-team'),
+    attachments: () => document.querySelector('#taiga-wizardpage-attachments'),
     wizard: () => document.querySelector('#taiga-wizard')
   },
 
@@ -40,9 +41,13 @@ taiga.wizard.ticket = {
     taiga.wizardpage.team
       .load(this.model, this.messages[0], this.api, this.preferences)
 
+    taiga.wizardpage.attachments
+      .load(this.model, this.messages[0], this.api)
+
     taiga.wizardpage.issue.onIssueCreated = this.onIssueCreated.bind(this)
     taiga.wizardpage.project.projectFilter = this.projectFilter
     taiga.wizardpage.team.onWizardShow = this.onWizardShow.bind(this)
+    taiga.wizardpage.attachments.onWizardShow = this.onWizardShow.bind(this)
   },
 
   onIssueCreated: function () {
@@ -95,6 +100,11 @@ taiga.wizard.ticket = {
     switch (this.gui.wizard().currentPage) {
       case this.gui.team():
         this.gui.wizard().canRewind = false
+        break
+
+      case this.gui.attachments():
+        this.gui.wizard().canRewind = false
+        break
     }
   }
 

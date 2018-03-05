@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://messenger/skin/attachmentList.css" type="text/css"?>
 
-<!-- <!DOCTYPE dialog SYSTEM "chrome://taiga/locale/wizardpage/attachments.dtd"> -->
+<!DOCTYPE dialog SYSTEM "chrome://taiga/locale/wizardpage/attachments.dtd">
 
 <overlay 
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
@@ -8,13 +9,52 @@
     
   <wizard id="taiga-wizard">
     
-    <!-- <script src="chrome://taiga/content/wizardpage/attachments.js" /> -->
+    <script src="chrome://taiga/content/wizardpage/attachments.js" />
 
     <wizardpage 
         id="taiga-wizardpage-attachments"
         pageid="taiga-wizardpage-attachments"
-        label="Attachments">
+        label="&taiga-attachments;">
+      <stack>
+                
+        <vbox id="taiga-attachment-view">
+            <hbox align="center" context="attachment-toolbar-context-menu">
+              <hbox align="center" flex="1" contextmenu="attachmentListContext">
+                <image class="taiga-attachment-icon"/>
+                <label id="taiga-attachments-count" value=""/>
+                <spacer flex="100" />
+                <label id="taiga-attachments-size" value=""/>
+              </hbox>
+            </hbox>
+            <attachmentlist 
+              orient="vertical" 
+              id="taiga-attachments-list" 
+              height="370"
+              seltype="multiple"
+              view="big">
+            </attachmentlist>
+            <description>&taiga-attachments-description;</description>
+        </vbox>
 
+        <stack id="taiga-attachments-progress-overlay" hidden="true">
+          <vbox class="taiga-progress-overlay-background" />
+          <vbox>
+            <spacer flex="1" />
+            <hbox>
+              <spacer flex="1" />
+              <label value="&taiga-uploading-attachments;" />
+              <spacer flex="1" />
+            </hbox>
+            <hbox>
+              <spacer flex="1" />
+              <progressmeter mode="undetermined" />
+              <spacer flex="1" />
+            </hbox>
+            <spacer flex="1" />
+          </vbox>
+        </stack>
+        
+      </stack>
     </wizardpage>
-  </wizard>att
+  </wizard>
 </overlay>

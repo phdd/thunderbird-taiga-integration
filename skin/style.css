@@ -56,26 +56,23 @@
   -moz-binding: url("chrome://global/content/bindings/checkbox.xml#checkbox-with-spacing");
 }
 
-/*
-
-#attachmentIcon {
+#taiga-wizard .taiga-attachment-icon {
   list-style-image: url("chrome://messenger/skin/icons/filterbar.png");
   -moz-image-region: rect(0px, 80px, 16px, 64px);
   margin-inline-start: 5px;
   margin-left: 10px;
 }
 
-#attachmentName:hover,
-#attachmentName[selected="true"] {
+#taiga-wizard #attachmentName:hover,
+#taiga-wizard #attachmentName[selected="true"] {
   cursor: pointer;
   color: HighlightText;
   background-color: Highlight;
 }
 
-#attachmentSize {
+#taiga-attachment-size {
   margin: 0;
   margin-right: 6px;
   margin-inline-start: 8px;
   color: #888a85; 
 }
-*/
