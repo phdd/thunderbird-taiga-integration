@@ -2,7 +2,7 @@
 
 taiga.wizard.ticket = {
 
-  messages: [],
+  message: null,
   preferences: null,
   api: null,
 
@@ -21,7 +21,7 @@ taiga.wizard.ticket = {
     preferences = new Preferences('extensions.taiga.'),
     api = new TaigaApi()
   ) {
-    this.messages = messages
+    this.message = messages[0] // handles only one message at a time
     this.preferences = preferences
     this.api = api
 
@@ -36,19 +36,27 @@ taiga.wizard.ticket = {
       .load(this.model, this.api, this.preferences)
 
     taiga.wizardpage.issue
-      .load(this.model, this.messages[0], this.api, this.preferences)
+      .load(this.model, this.message, this.api, this.preferences)
 
     taiga.wizardpage.team
-      .load(this.model, this.messages[0], this.api, this.preferences)
-
-    taiga.wizardpage.attachments
-      .load(this.model, this.messages[0], this.api)
+      .load(this.model, this.message, this.api, this.preferences)
 
     taiga.wizardpage.issue.onIssueCreated = this.onIssueCreated.bind(this)
     taiga.wizardpage.team.onWizardShow = this.onWizardShow.bind(this)
-    taiga.wizardpage.attachments.onWizardShow = this.onWizardShow.bind(this)
-
     taiga.wizardpage.project.projectFilter = this.projectFilter
+
+    if (this.hasNoAttachments()) {
+      this.gui.wizard().removeChild(this.gui.attachments())
+    } else {
+      taiga.wizardpage.attachments
+        .load(this.model, this.message, this.api)
+
+      taiga.wizardpage.attachments.onWizardShow = this.onWizardShow.bind(this)
+    }
+  },
+
+  hasNoAttachments: function () {
+    return this.message.attachments.length < 1
   },
 
   onIssueCreated: function () {
@@ -77,6 +85,10 @@ taiga.wizard.ticket = {
         return taiga.wizardpage.issue.onWizardNext()
 
       case this.gui.team():
+        if (this.hasNoAttachments()) {
+          // kinda hacky, but found no other option without final page
+          this.gui.wizard().advance = this.gui.wizard().cancel
+        }
         return taiga.wizardpage.team.onWizardNext()
 
       default:
@@ -90,6 +102,10 @@ taiga.wizard.ticket = {
         return taiga.wizardpage.issue.onWizardCancel()
 
       case this.gui.team():
+        if (this.hasNoAttachments()) {
+          // FIXME doesn't work
+          this.gui.wizard().getButton('next').setAttribute('label', 'FERDSCH')
+        }
         return taiga.wizardpage.team.onWizardCancel()
 
       default:

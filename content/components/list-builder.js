@@ -89,7 +89,7 @@ class ListBuilder {
 
         .then((entities) => {
           if (entities.length === 0) {
-            throw new Error(i18n('noEntities', [ this.entityName ]))
+            throw new Error(i18n('noEntities', [ this.entityName || 'item' ]))
           }
 
           let entityItemMapping = {}
@@ -150,7 +150,7 @@ class ListBuilder {
 
           if (typeof error !== 'string') {
             error = Extension
-              .i18n('errorGettingEntities', [ this.entitiesName ])
+              .i18n('errorGettingEntities', [ this.entitiesName || 'items' ])
           }
 
           this.list.style.cursor = 'auto'

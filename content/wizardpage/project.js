@@ -43,6 +43,8 @@ taiga.wizardpage.project = {
         new Prompt('taiga-wizard')
           .alert(i18n('createTicket'), error)
           .then(window.close))
+
+    this.render()
   },
 
   render: function () {

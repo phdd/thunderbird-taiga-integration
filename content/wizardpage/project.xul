@@ -24,7 +24,8 @@
       
       <listbox 
         id="taiga-project-list"
-        rows="10">
+        height="340"
+        rows="9">
       </listbox>
       
       <description>&taiga-project-list-description;</description>

@@ -4,6 +4,11 @@
   background-color: -moz-dialog!important;
 }
 
+#taiga-options separator,
+#taiga-wizard separator {
+  height: 5px
+}
+
 #taiga-wizard .taiga-progress-overlay-background {
   opacity: 0.8;
 }
@@ -15,11 +20,6 @@
 
 #taiga-watch-list .listcell-icon {
   max-height: 34px;
-}
-
-#taiga-options label,
-#taiga-wizard label {
-  margin: 5px;
 }
 
 #taiga-wizard description,

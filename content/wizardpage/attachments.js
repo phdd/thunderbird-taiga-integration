@@ -35,9 +35,9 @@ taiga.wizardpage.attachments = {
         item.setAttribute('name', attachment.name)
         item.setAttribute('value', attachment.url)
         item.setAttribute('size', taiga.formatFileSize(attachment.size))
+        item.setAttribute('imagesize', '32')
         item.setAttribute('image32',
            `moz-icon://${name}?size=32&amp;amp;contentType=${type}`)
-        item.setAttribute('imagesize', '32')
       })
 
       .consumeSelectionWith(attachments => {
