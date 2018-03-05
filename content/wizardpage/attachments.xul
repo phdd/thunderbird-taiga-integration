@@ -21,9 +21,9 @@
             <hbox align="center" context="attachment-toolbar-context-menu">
               <hbox align="center" flex="1" contextmenu="attachmentListContext">
                 <image class="taiga-attachment-icon"/>
-                <label id="taiga-attachments-count" value=""/>
+                <label id="taiga-attachments-count" value="12 Anhänge"/>
                 <spacer flex="100" />
-                <label id="taiga-attachments-size" value=""/>
+                <label id="taiga-attachments-size" value="1 KB"/>
               </hbox>
             </hbox>
             <attachmentlist 
