@@ -19,7 +19,7 @@ var taiga = {
   },
 
   formatFileSize: function (size) {
-    const messenger = Component.classes['@mozilla.org/messenger;1']
+    const messenger = Components.classes['@mozilla.org/messenger;1']
       .createInstance(Components.interfaces.nsIMessenger)
 
     return messenger.formatFileSize(size)
@@ -74,16 +74,14 @@ var taiga = {
    * @param {string} subPhrases - array of values for template
    */
   i18n: function (id, subPhrases) {
-    if (!Extension.stringBundle) {
-      Extension.stringBundle = Cc['@mozilla.org/intl/stringbundle;1']
+    const stringBundle = Cc['@mozilla.org/intl/stringbundle;1']
         .getService(Ci.nsIStringBundleService)
         .createBundle('chrome://taiga/locale/taiga.properties')
-    }
 
     if (subPhrases) {
-      return Extension.stringBundle.formatStringFromName(id, subPhrases, subPhrases.length)
+      return stringBundle.formatStringFromName(id, subPhrases, subPhrases.length)
     } else {
-      return Extension.stringBundle.GetStringFromName(id)
+      return stringBundle.GetStringFromName(id)
     }
   },
 

@@ -45,9 +45,10 @@ taiga.wizard.ticket = {
       .load(this.model, this.messages[0], this.api)
 
     taiga.wizardpage.issue.onIssueCreated = this.onIssueCreated.bind(this)
-    taiga.wizardpage.project.projectFilter = this.projectFilter
     taiga.wizardpage.team.onWizardShow = this.onWizardShow.bind(this)
     taiga.wizardpage.attachments.onWizardShow = this.onWizardShow.bind(this)
+
+    taiga.wizardpage.project.projectFilter = this.projectFilter
   },
 
   onIssueCreated: function () {

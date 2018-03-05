@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://messenger/content/messenger.css" type="text/css"?>
 <?xml-stylesheet href="chrome://messenger/skin/attachmentList.css" type="text/css"?>
 
 <!DOCTYPE dialog SYSTEM "chrome://taiga/locale/wizardpage/attachments.dtd">
@@ -14,7 +15,9 @@
     <wizardpage 
         id="taiga-wizardpage-attachments"
         pageid="taiga-wizardpage-attachments"
-        label="&taiga-attachments;">
+        label="&taiga-attachments;"
+        onpageshow="taiga.wizardpage.attachments.onPageShow()">
+        
       <stack>
                 
         <vbox id="taiga-attachment-view">
