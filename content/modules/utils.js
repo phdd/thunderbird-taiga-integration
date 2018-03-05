@@ -45,8 +45,25 @@ class Preferences {
     }
   }
 
+  boolFrom (preference) {
+    try {
+      return this.preferences.getBoolPref(preference) || null
+    } catch (error) {
+      console.warn(error)
+      return null
+    }
+  }
+
   setString (preference, value) {
     return this.preferences.setCharPref(preference, value)
+  }
+
+  setBool (preference, value) {
+    return this.preferences.setBoolPref(preference, value)
+  }
+
+  hasUserValue (preference) {
+    return this.preferences.prefHasUserValue(preference)
   }
 
 }

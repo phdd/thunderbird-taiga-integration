@@ -16,7 +16,7 @@ taiga.wizardpage.issue = {
     severity: () => document.querySelector('#taiga-issue-severity'),
     title: () => document.querySelector('#taiga-issue-title'),
     description: () => document.querySelector('#taiga-issue-description'),
-    progressOverlay: () => document.querySelector('#taiga-progress-overlay')
+    progressOverlay: () => document.querySelector('#taiga-issue-progress-overlay')
   },
 
   load: function (model, message, api, preferences) {
@@ -135,9 +135,8 @@ taiga.wizardpage.issue = {
         .isAssignedTo(me))
       .then(dto =>
         this.api.createIssue(dto))
-      .then((issue) => {
-        this.model = Object.assign(issue, this.model)
-      })
+      .then((issue) =>
+        taiga.mergeSimplePropertiesFrom(issue).into(this.model))
   },
 
   onPageShow: function () {
@@ -150,6 +149,7 @@ taiga.wizardpage.issue = {
     if (this.issueHasBeenCreated) {
       return true
     } else {
+      const rewindEnabled = this.gui.wizard().canRewind
       const disableWindowClose = (event) =>
         event.preventDefault()
 
@@ -157,7 +157,7 @@ taiga.wizardpage.issue = {
         window.removeEventListener('beforeunload', disableWindowClose)
         this.gui.progressOverlay().hidden = true
         this.gui.wizard().canAdvance = true
-        this.gui.wizard().canRewind = true
+        this.gui.wizard().canRewind = rewindEnabled
       }
 
       this.gui.progressOverlay().hidden = false
@@ -178,8 +178,7 @@ taiga.wizardpage.issue = {
           reenableUsersInput()
           console.log(error)
           new Prompt('taiga-create-ticket')
-            .alert(i18n('createTicket'),
-              'Sorry, but there was an error. You may try again.')
+            .alert(i18n('createTicket'), i18n('errorTryAgain'))
         })
 
       return false

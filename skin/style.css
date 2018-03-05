@@ -1,10 +1,10 @@
 #taiga-options, 
 #taiga-wizard,
-#taiga-progress-overlay-background {
+#taiga-wizard .taiga-progress-overlay-background {
   background-color: -moz-dialog!important;
 }
 
-#taiga-progress-overlay-background {
+#taiga-wizard .taiga-progress-overlay-background {
   opacity: 0.8;
 }
 
@@ -52,26 +52,11 @@
   height: 30px;
 }
 
+#taiga-wizard checkbox {
+  -moz-binding: url("chrome://global/content/bindings/checkbox.xml#checkbox-with-spacing");
+}
+
 /*
-
-
-
-#final-messages {
-  border: none !important;
-  background: none !important;
-  overflow: hidden !important;
-}
-
-#state {
-  margin: 4px;
-  width: 30px;
-  height: 30px;
-}
-
-#attachmentList {
-  background-color: -moz-Field;
-  color: -moz-FieldText;
-}
 
 #attachmentIcon {
   list-style-image: url("chrome://messenger/skin/icons/filterbar.png");

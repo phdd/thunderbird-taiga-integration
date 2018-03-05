@@ -51,13 +51,13 @@
           <description>&taiga-issue-title-description;</description>
           <separator/>
           
-          <label control="taiga-issuedescription" value="&taiga-issue-description;"/>
+          <label control="taiga-issue-description" value="&taiga-issue-description;"/>
           <textbox class="body" id="taiga-issue-description" multiline="true" rows="9" value=""/>
           <description>&taiga-issue-description-description;</description>
         </vbox>
         
-        <stack id="taiga-progress-overlay" hidden="true">
-          <vbox id="taiga-progress-overlay-background" />
+        <stack id="taiga-issue-progress-overlay" hidden="true">
+          <vbox class="taiga-progress-overlay-background" />
           <vbox>
             <spacer flex="1" />
             <hbox>

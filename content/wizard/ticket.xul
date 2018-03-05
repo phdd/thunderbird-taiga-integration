@@ -3,7 +3,7 @@
 
 <?xul-overlay href="chrome://taiga/content/wizardpage/project.xul"?>
 <?xul-overlay href="chrome://taiga/content/wizardpage/issue.xul"?>
-<?xul-overlay href="chrome://taiga/content/wizardpage/watchers.xul"?>
+<?xul-overlay href="chrome://taiga/content/wizardpage/team.xul"?>
 <?xul-overlay href="chrome://taiga/content/wizardpage/attachments.xul"?>
 
 <wizard

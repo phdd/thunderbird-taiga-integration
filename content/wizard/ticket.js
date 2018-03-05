@@ -11,6 +11,7 @@ taiga.wizard.ticket = {
   gui: {
     projects: () => document.querySelector('#taiga-wizardpage-project'),
     issue: () => document.querySelector('#taiga-wizardpage-issue'),
+    team: () => document.querySelector('#taiga-wizardpage-team'),
     wizard: () => document.querySelector('#taiga-wizard')
   },
 
@@ -36,11 +37,12 @@ taiga.wizard.ticket = {
     taiga.wizardpage.issue
       .load(this.model, this.messages[0], this.api, this.preferences)
 
-    taiga.wizardpage.watchers
-      .load(this.model, this.messages[0], this.api)
+    taiga.wizardpage.team
+      .load(this.model, this.messages[0], this.api, this.preferences)
 
-    taiga.wizardpage.issue.onIssueCreated = this.onIssueCreated
+    taiga.wizardpage.issue.onIssueCreated = this.onIssueCreated.bind(this)
     taiga.wizardpage.project.projectFilter = this.projectFilter
+    taiga.wizardpage.team.onWizardShow = this.onWizardShow.bind(this)
   },
 
   onIssueCreated: function () {
@@ -68,6 +70,9 @@ taiga.wizard.ticket = {
       case this.gui.issue():
         return taiga.wizardpage.issue.onWizardNext()
 
+      case this.gui.team():
+        return taiga.wizardpage.team.onWizardNext()
+
       default:
         return true
     }
@@ -78,8 +83,18 @@ taiga.wizard.ticket = {
       case this.gui.issue():
         return taiga.wizardpage.issue.onWizardCancel()
 
+      case this.gui.team():
+        return taiga.wizardpage.team.onWizardCancel()
+
       default:
         return true
+    }
+  },
+
+  onWizardShow: function () {
+    switch (this.gui.wizard().currentPage) {
+      case this.gui.team():
+        this.gui.wizard().canRewind = false
     }
   }
 
