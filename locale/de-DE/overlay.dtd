@@ -2,5 +2,7 @@
 <!ENTITY create-ticket "erzeuge Ticket">
 <!ENTITY create-user-story "erzeuge User Story">
 <!ENTITY create-task "erzeuge Aufgabe">
+<!ENTITY create-task-accesskey "A">
 <!ENTITY comment "kommentieren">
+<!ENTITY comment-accesskey "k">
 <!ENTITY attach "Anhänge hochladen">

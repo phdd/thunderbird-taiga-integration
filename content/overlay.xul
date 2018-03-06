@@ -38,13 +38,13 @@
         <menuitem
           id="messageMenuPopup_taiga-create-task"
           label="&create-task;"
-          accesskey="T"
+          accesskey="&create-task-accesskey;"
           disabled="true"
           oncommand="taiga.overlay.createTask();"/>
         <menuitem
           id="messageMenuPopup_taiga-comment"
           label="&comment;"
-          accesskey="C"
+          accesskey="&comment-accesskey;"
           disabled="true"
           oncommand="taiga.overlay.comment();"/>
         <menuitem
@@ -79,13 +79,13 @@
         <menuitem
           id="mailContext_taiga-create-task"
           label="&create-task;"
-          accesskey="T"
+          accesskey="&create-task-accesskey;"
           disabled="true"
           oncommand="taiga.overlay.createTask();"/>
         <menuitem
           id="mailContext_taiga-comment"
           label="&comment;"
-          accesskey="C"
+          accesskey="&comment-accesskey;"
           disabled="true"
           oncommand="taiga.overlay.comment();"/>
         <menuitem
