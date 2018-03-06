@@ -13,6 +13,7 @@
     width="600" height="550"
     title="Create Taiga Issue"
     onwizardnext="return taiga.wizard.ticket.onWizardNext()"
+    onwizardfinish="return taiga.wizard.ticket.onWizardNext()"
     onwizardcancel="return taiga.wizard.ticket.onWizardCancel()">
 
   <script src="chrome://taiga/content/modules/turndown.js" />

@@ -10,10 +10,6 @@ const getIdOrMapFromObject = (attribute) => {
   }
 }
 
-class TaigaError extends Error {}
-class NotFound extends TaigaError {}
-class BadRequest extends TaigaError {}
-
 class TaigaApi {
 
   me () {
@@ -32,8 +28,8 @@ class TaigaApi {
     return this.patch(`issues/${patch.id}`, patch)
   }
 
-  postIssueAttachment (attachmentDto) {
-    return this.postFormData('issues/attachments', attachmentDto.formData())
+  postAttachment (entity, attachmentDto) {
+    return this.postFormData(`${entity}/attachments`, attachmentDto.formData())
   }
 
   usersContacts (user, query = '') {

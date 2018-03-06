@@ -7,6 +7,7 @@ taiga.wizardpage.attachments = {
   message: null,
 
   onWizardShow: () => {},
+  entityName: null,
 
   gui: {
     wizard: () => document.querySelector('#taiga-wizard'),
@@ -54,7 +55,7 @@ taiga.wizardpage.attachments = {
             'value', taiga.formatFileSize(0))
         }
 
-        this.model.attachments = attachments
+        this.model.attachments = attachments || []
       })
       .catch(error =>
         new Prompt('taiga-wizard')
@@ -66,6 +67,21 @@ taiga.wizardpage.attachments = {
 
     this.gui.attachmentSize().setAttribute(
       'value', taiga.formatFileSize(0))
+  },
+
+  uploadAttachments: function () {
+    return Promise
+      .all(this.model.attachments
+        .map(attachment => taiga.download(attachment)))
+
+      .then(attachments => Promise
+        .all(attachments
+          .map(attachment => AttachmentDto
+            .createFor(attachment)
+            .targeting(this.model)
+            .within(this.model.project))
+          .map(attachment =>
+            this.api.postAttachment(this.entityName, attachment))))
   },
 
   onWizardNext: function () {
@@ -81,12 +97,14 @@ taiga.wizardpage.attachments = {
         this.gui.progressOverlay().hidden = true
         this.gui.wizard().canAdvance = true
         this.gui.wizard().canRewind = rewindEnabled
+        this.gui.wizard().getButton('finish').disabled = false
       }
 
       window.addEventListener('beforeunload', disableWindowClose)
       this.gui.progressOverlay().hidden = false
       this.gui.wizard().canAdvance = false
       this.gui.wizard().canRewind = false
+      this.gui.wizard().getButton('finish').disabled = true
 
       this
         .uploadAttachments()

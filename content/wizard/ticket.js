@@ -6,7 +6,9 @@ taiga.wizard.ticket = {
   preferences: null,
   api: null,
 
-  model: {},
+  model: {
+    attachments: []
+  },
 
   gui: {
     projects: () => document.querySelector('#taiga-wizardpage-project'),
@@ -52,6 +54,7 @@ taiga.wizard.ticket = {
         .load(this.model, this.message, this.api)
 
       taiga.wizardpage.attachments.onWizardShow = this.onWizardShow.bind(this)
+      taiga.wizardpage.attachments.entityName = 'issues'
     }
   },
 
@@ -91,6 +94,9 @@ taiga.wizard.ticket = {
         }
         return taiga.wizardpage.team.onWizardNext()
 
+      case this.gui.attachments():
+        return taiga.wizardpage.attachments.onWizardNext()
+
       default:
         return true
     }
@@ -103,6 +109,9 @@ taiga.wizard.ticket = {
 
       case this.gui.team():
         return taiga.wizardpage.team.onWizardCancel()
+
+      case this.gui.attachments():
+        return taiga.wizardpage.attachments.onWizardCancel()
 
       default:
         return true
