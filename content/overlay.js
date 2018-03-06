@@ -14,15 +14,15 @@ taiga.overlay = {
   },
 
   load: function (
-      preferences = false,
-      api = new TaigaApi(),
-      messageMapper = new MessageMapper()
+    preferences = false,
+    api = new TaigaApi(),
+    messageMapper = new MessageMapper()
   ) {
     this.messageMapper = messageMapper
     this.api = api
 
     this.preferences = preferences || new Preferences(
-        'extensions.taiga.', () => this.update())
+      'extensions.taiga.', () => this.update())
 
     this.update()
   },
