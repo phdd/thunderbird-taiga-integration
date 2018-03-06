@@ -119,21 +119,24 @@ taiga.wizard.ticket = {
   },
 
   onWizardShow: function () {
+    const setNextToFinish = () => {
+      const next = this.gui.wizard().getButton('next')
+      next.setAttribute('accesskey', i18n('finishAccesskey'))
+      next.label = i18n('finish')
+    }
+
     switch (this.gui.wizard().currentPage) {
       case this.gui.team():
         this.gui.wizard().canRewind = false
 
         if (this.hasNoAttachments()) {
-          this.gui.wizard()
-            .getButton('next').label = i18n('finish')
+          setNextToFinish()
         }
         break
 
       case this.gui.attachments():
         this.gui.wizard().canRewind = false
-
-        this.gui.wizard()
-          .getButton('next').label = i18n('finish')
+        setNextToFinish()
         break
     }
   }
