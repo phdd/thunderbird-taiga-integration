@@ -12,14 +12,14 @@ xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 		
 		<em:name>Taiga Integration</em:name>
 		<em:description>Convert mails to user stories, tasks and tickets for the Taiga project management system.</em:description>
-		<em:homepageURL>http://pehei.de/software/thunderbird-taiga-integration/</em:homepageURL>
+		<em:homepageURL>http://pehei.de/post/thunderbird-taiga-integration/</em:homepageURL>
 		
 		<em:localized>
 			<Description>
 				<em:locale>de-DE</em:locale>
 				<em:name>Taiga Integration</em:name>
 				<em:description>Umwandeln von E-Mails in User-Stories, Aufgaben und Tickets für das Taiga Projektmanagementsystem.</em:description>
-				<em:homepageURL>http://pehei.de/software/thunderbird-taiga-integration/</em:homepageURL>
+				<em:homepageURL>http://pehei.de/post/thunderbird-taiga-integration/</em:homepageURL>
 			</Description>
 		</em:localized>
 
