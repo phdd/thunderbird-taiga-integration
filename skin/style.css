@@ -52,6 +52,10 @@
   height: 30px;
 }
 
+#taiga-options label {
+  margin: 5px;
+}
+
 #taiga-wizard checkbox {
   -moz-binding: url("chrome://global/content/bindings/checkbox.xml#checkbox-with-spacing");
 }
