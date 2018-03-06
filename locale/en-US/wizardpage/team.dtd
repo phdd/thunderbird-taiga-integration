@@ -1,7 +1,6 @@
 <!ENTITY taiga-team "Team Options">
 <!ENTITY taiga-setup-team "Setting Options">
 
-<!ENTITY taiga-people "Project Members">
 <!ENTITY taiga-people-description "Project member's relations.">
 <!ENTITY taiga-assign-to-me "Assign to me">
 <!ENTITY taiga-me-watching "Add me to watch list">
