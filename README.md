@@ -5,7 +5,8 @@ Convert Thunderbirds mails to user stories, tasks and tickets for the [Taiga pro
 ## Links
 
 - <https://addons.mozilla.org/de/thunderbird/addon/thunderbird-taiga-integration/>
-- <https://pehei.de/software/thunderbird-taiga-integration>
+- <http://pehei.de/software/thunderbird-taiga-integration>
+- <https://github.com/phdd/thunderbird-taiga-integration>
 
 ## Token Authentication
 
