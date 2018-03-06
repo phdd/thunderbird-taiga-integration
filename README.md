@@ -13,7 +13,7 @@ Since Taiga's application token flow is unusable, authentication is done via the
 To obtain this token open the developer console and get it from the application's local storage.
 The following screencast illustrates this slightly hacky solution.
 
-![Obtain User Token](https://github.com/phdd/thunderbird-taiga-integration/blob/master/res/token-screencast.png)
+![Obtain User Token](https://github.com/phdd/thunderbird-taiga-integration/blob/master/res/token-screencast.gif)
 
 ## Screenshots
 
