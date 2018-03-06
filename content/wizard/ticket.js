@@ -102,10 +102,6 @@ taiga.wizard.ticket = {
         return taiga.wizardpage.issue.onWizardCancel()
 
       case this.gui.team():
-        if (this.hasNoAttachments()) {
-          // FIXME doesn't work
-          this.gui.wizard().getButton('next').setAttribute('label', 'FERDSCH')
-        }
         return taiga.wizardpage.team.onWizardCancel()
 
       default:
@@ -117,10 +113,18 @@ taiga.wizard.ticket = {
     switch (this.gui.wizard().currentPage) {
       case this.gui.team():
         this.gui.wizard().canRewind = false
+
+        if (this.hasNoAttachments()) {
+          this.gui.wizard()
+            .getButton('next').label = i18n('finish')
+        }
         break
 
       case this.gui.attachments():
         this.gui.wizard().canRewind = false
+
+        this.gui.wizard()
+          .getButton('next').label = i18n('finish')
         break
     }
   }
