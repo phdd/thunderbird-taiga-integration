@@ -7,6 +7,14 @@ Convert Thunderbirds mails to user stories, tasks and tickets for the [Taiga pro
 - <https://addons.mozilla.org/de/thunderbird/addon/thunderbird-taiga-integration/>
 - <https://pehei.de/software/thunderbird-taiga-integration>
 
+## Token Authentication
+
+Since Taiga's application token flow is unusable, authentication is done via the user's Bearer-Token.
+To obtain this token open the developer console and get it from the application's local storage.
+The following screencast illustrates this slightly hacky solution.
+
+![Obtain User Token](https://github.com/phdd/thunderbird-taiga-integration/blob/master/res/token-screencast.png)
+
 ## Screenshots
 
 ![Create Taiga Ticket](https://github.com/phdd/thunderbird-taiga-integration/blob/master/res/ticket.png)
