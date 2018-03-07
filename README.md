@@ -1,7 +1,7 @@
 # Thunderbird Taiga Integration
  
 Convert Thunderbirds mails to user stories, tasks and tickets for the [Taiga project management system](https://taiga.io).
-Go to <http://pehei.de/post/thunderbird-taiga-integration> for setup instructions. 
+Go to <https://pehei.de/post/thunderbird-taiga-integration> for setup instructions. 
 
 ## License
 
