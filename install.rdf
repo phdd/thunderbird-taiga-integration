@@ -7,7 +7,7 @@ xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 	
 		<em:id>taiga@pehei.de</em:id>
 		<em:type>2</em:type>
-		<em:version>1.4</em:version>
+		<em:version>1.5</em:version>
 		<em:creator>Peter Heisig</em:creator>
 		
 		<em:name>Taiga Integration</em:name>
