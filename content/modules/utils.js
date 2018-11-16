@@ -8,9 +8,9 @@ const Cu = Components.utils
 
 Cu.import('resource:///modules/mailServices.js')
 Cu.import('resource:///modules/iteratorUtils.jsm')
-Cu.import('resource:///modules/Services.jsm')
+Cu.import('resource://gre/modules/Services.jsm')
 Cu.import('resource:///modules/gloda/mimemsg.js')
-Cu.import('resource:///modules/FileUtils.jsm')
+Cu.import('resource://gre/modules/FileUtils.jsm')
 Cu.import('resource://gre/modules/osfile.jsm')
 
 class Preferences {
@@ -22,7 +22,7 @@ class Preferences {
         .getService(Ci.nsIPrefService)
         .getBranch(branch)
 
-    this.preferences.QueryInterface(Ci.nsIPrefBranch2)
+    this.preferences.QueryInterface(Ci.nsIPrefBranch)
     this.preferences.addObserver('', this, false)
 
     Extension.onUnload(() => {

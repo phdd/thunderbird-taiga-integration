@@ -92,8 +92,7 @@ class TaigaApi {
         'Content-Type': 'application/json'
       },
 
-      xhr: Cc['@mozilla.org/xmlextras/xmlhttprequest;1']
-              .createInstance()
+      xhr: new XMLHttpRequest()
     }
   }
 
