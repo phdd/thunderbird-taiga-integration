@@ -56,10 +56,6 @@
   margin: 5px;
 }
 
-#taiga-wizard checkbox {
-  -moz-binding: url("chrome://global/content/bindings/checkbox.xml#checkbox-with-spacing");
-}
-
 #taiga-wizard .taiga-attachment-icon {
   list-style-image: url("chrome://messenger/skin/icons/filterbar.png");
   -moz-image-region: rect(0px, 80px, 16px, 64px);
