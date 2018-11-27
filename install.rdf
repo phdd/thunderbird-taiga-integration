@@ -23,7 +23,7 @@ xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 			</Description>
 		</em:localized>
 
-		<em:optionsURL>chrome://taiga/content/options.xul</em:optionsURL>
+		<!-- em:optionsURL>chrome://taiga/content/options.xul</em:optionsURL -->
 		<em:iconURL>chrome://taiga/skin/icon.png</em:iconURL>
 		<em:icon64URL>chrome://taiga/skin/icon.png</em:icon64URL>
 
