@@ -2,6 +2,8 @@
 
 taiga.wizardpage.team = {
 
+  IMAGE_MEMBER: 'chrome://taiga/skin/icon.png',
+
   api: null,
   model: null,
   message: null,
@@ -20,7 +22,8 @@ taiga.wizardpage.team = {
     progressOverlay: () => document.querySelector('#taiga-team-progress-overlay'),
     assignToMe: () => document.querySelector('#taiga-assign-to-me'),
     meWatching: () => document.querySelector('#taiga-me-watching'),
-    participantsWatching: () => document.querySelector('#taiga-participants-watching')
+    participantsWatching: () => document.querySelector('#taiga-participants-watching'),
+    assigneeList: () => document.querySelector('#taiga-assignee')
   },
 
   load: function (model, message, api, preferences) {
@@ -41,6 +44,27 @@ taiga.wizardpage.team = {
         this.options[option] = isChecked
       }
     })
+
+    ListBuilder
+      .fetchEntitiesFrom(() => this.api.memberships(this.model.project.id))
+      .nameEntities(i18n('project'), i18n('projects'))
+      .createItemsNamed('listitem')
+      .addItemsTo(this.gui.assigneeList())
+      .mapEntityToItemWith((member, item) => {
+        item.setAttribute('value', member.id)
+        item.setAttribute('label', member.full_name)
+        item.setAttribute('image', member.photo || this.IMAGE_MEMBER)
+        item.setAttribute('class', 'listitem-iconic')
+      })
+      .consumeSelectionWith(member => {
+        this.model.assigned_to = member.user
+      })
+      .catch(error => {
+        console.log(error)
+        new Prompt('taiga-wizard')
+          .alert(i18n('createTicket'), error)
+          .then(window.close)
+      })
   },
 
   fetchContacts: function () {
@@ -74,6 +98,13 @@ taiga.wizardpage.team = {
     this.options[option] = isChecked
   },
 
+  assignToMeUpdate: function (isChecked) {
+    this.gui.assigneeList()
+      .setAttribute('disabled', isChecked ? 'true' : 'false')
+
+    this.setOption('assignToMe', isChecked)
+  },
+
   patchIssue: function () {
     const patch = {
       id: this.model.id,
@@ -87,7 +118,7 @@ taiga.wizardpage.team = {
         if (this.options.assignToMe) {
           patch.assigned_to = me.id
         } else {
-          patch.assigned_to = null
+          patch.assigned_to = this.model.assigned_to
         }
 
         if (this.options.meWatching) {

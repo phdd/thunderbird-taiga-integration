@@ -25,7 +25,7 @@
             <label control="taiga-assign-to-me" value="&taiga-assign-to-me;" />
             <spacer flex="1" />
             <checkbox id="taiga-assign-to-me" checked="false"
-              oncommand="taiga.wizardpage.team.setOption('assignToMe', event.target.checked)" />
+              oncommand="taiga.wizardpage.team.assignToMeUpdate(event.target.checked)" />
           </hbox>
           <hbox>
             <label control="taiga-me-watching" value="&taiga-me-watching;" />
@@ -40,6 +40,21 @@
               oncommand="taiga.wizardpage.team.setOption('participantsWatching', event.target.checked)" />
           </hbox>
           <description>&taiga-people-description;</description>
+          
+          <separator/>
+          
+          <label 
+            control="taiga-assignee" 
+            value="&taiga-assignee;" />
+            
+          <separator/>
+          
+          <listbox 
+            id="taiga-assignee"
+            height="230"
+            rows="9">
+          </listbox>
+          <description>&taiga-assignee-description;</description>
         </vbox>
         
         <stack id="taiga-team-progress-overlay" hidden="true">

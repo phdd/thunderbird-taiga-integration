@@ -40,6 +40,10 @@ class TaigaApi {
     return this.get(`users/${getIdOrMapFromObject(user)}/contacts?q=${query}`)
   }
 
+  memberships (projectId) {
+    return this.get(`memberships?project=${projectId}`)
+  }
+
   issueTypes (projectId) {
     return this.get(`issue-types?project=${projectId}`)
   }
