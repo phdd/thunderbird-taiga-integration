@@ -31,8 +31,14 @@ taiga.overlay = {
 
     this.api
       .me()
-      .then(user => this.setValidConnection(false))
-      .catch(() => this.setValidConnection(true))
+      .then(user => {
+        this.setValidConnection(true)
+        this.preferences.setString('me', user.id.toString())
+      })
+      .catch(() => {
+        this.setValidConnection(false)
+        this.preferences.setString('me', '-1')
+      })
   },
 
   createTicket: function () {
@@ -49,8 +55,8 @@ taiga.overlay = {
   },
 
   setValidConnection: function (valid) {
-    this.gui.messageMenu().disabled = valid
-    this.gui.contextMenu().disabled = valid
+    this.gui.messageMenu().disabled = !valid
+    this.gui.contextMenu().disabled = !valid
   },
 
   updateMenu: function (name) {

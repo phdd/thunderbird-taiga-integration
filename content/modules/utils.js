@@ -184,7 +184,6 @@ class MessageMapper {
 
   constructor (displayedFolder) {
     this.displayedFolder = displayedFolder
-    console.log(displayedFolder)
 
     this.turndownService = new TurndownService()
     this.turndownService.remove('style')

@@ -25,8 +25,10 @@ taiga.wizardpage.project = {
   },
 
   update: function () {
+    const me = this.preferences.stringFrom('me')
+
     ListBuilder
-      .fetchEntitiesFrom(() => this.api.projects())
+      .fetchEntitiesFrom(() => this.api.projects(me))
       .nameEntities(i18n('project'), i18n('projects'))
       .createItemsNamed('listitem')
       .addItemsTo(this.gui.projects())

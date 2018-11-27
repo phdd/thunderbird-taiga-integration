@@ -16,8 +16,12 @@ class TaigaApi {
     return this.get('users/me')
   }
 
-  projects () {
-    return this.get('projects')
+  projects (memberId) {
+    if (typeof memberId !== 'undefined') {
+      return this.get(`projects?member=${memberId}`)
+    } else {
+      return this.get('projects')
+    }
   }
 
   createIssue (issueDto) {

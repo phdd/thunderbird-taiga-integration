@@ -77,8 +77,7 @@ taiga.wizard.ticket = {
   },
 
   projectFilter: function (project) {
-    return project.i_am_member &&
-      project.is_issues_activated &&
+    return project.is_issues_activated &&
       project.my_permissions.includes('add_issue')
   },
 
