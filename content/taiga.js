@@ -15,7 +15,7 @@ var taiga = {
   openUrl: function (url) {
     Components.classes['@mozilla.org/uriloader/external-protocol-service;1']
       .getService(Components.interfaces.nsIExternalProtocolService)
-      .loadUrl(Services.io.newURI(url, null, null))
+      .loadURI(Services.io.newURI(url, null, null))
   },
 
   formatFileSize: function (size) {

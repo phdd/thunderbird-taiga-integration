@@ -156,7 +156,7 @@ class Extension {
   static openUrl (url) {
     Cc['@mozilla.org/uriloader/external-protocol-service;1']
       .getService(Components.interfaces.nsIExternalProtocolService)
-      .loadUrl(Services.io.newURI(url, null, null))
+      .loadURI(Services.io.newURI(url, null, null))
   }
 
 }
