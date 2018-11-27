@@ -14,13 +14,13 @@ taiga.options = {
   },
 
   load: function (
-      preferences = null,
-      api = new TaigaApi()
+    preferences = null,
+    api = new TaigaApi()
   ) {
     this.api = api
 
     this.preferences = preferences || new Preferences(
-        'extensions.taiga.', () => this.validateTaigaAuthentication())
+      'extensions.taiga.', () => this.validateTaigaAuthentication())
 
     this.validateTaigaAuthentication()
   },

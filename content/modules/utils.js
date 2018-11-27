@@ -17,12 +17,7 @@ class Preferences {
 
   constructor (branch = '', callback = null) {
     this.callback = callback
-
-    this.preferences = Cc['@mozilla.org/preferences-service;1']
-        .getService(Ci.nsIPrefService)
-        .getBranch(branch)
-
-    this.preferences.QueryInterface(Ci.nsIPrefBranch)
+    this.preferences = Services.prefs.getBranch(branch)
     this.preferences.addObserver('', this, false)
 
     Extension.onUnload(() => {
@@ -187,7 +182,10 @@ class Prompt {
 
 class MessageMapper {
 
-  constructor () {
+  constructor (displayedFolder) {
+    this.displayedFolder = displayedFolder
+    console.log(displayedFolder)
+
     this.turndownService = new TurndownService()
     this.turndownService.remove('style')
     this.turndownService.remove('title')
@@ -260,7 +258,7 @@ class MessageMapper {
     } else if (textPart) {
       return textPart
     } else if (mime.coerceBodyToPlaintext) {
-      return mime.coerceBodyToPlaintext()
+      return mime.coerceBodyToPlaintext(this.displayedFolder)
     }
   }
 

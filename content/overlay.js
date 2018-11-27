@@ -15,10 +15,8 @@ taiga.overlay = {
 
   load: function (
     preferences = false,
-    api = new TaigaApi(),
-    messageMapper = new MessageMapper()
+    api = new TaigaApi()
   ) {
-    this.messageMapper = messageMapper
     this.api = api
 
     this.preferences = preferences || new Preferences(
@@ -42,7 +40,9 @@ taiga.overlay = {
       .all(this
         .selectedMessages()
         .map(message =>
-          this.messageMapper.toJson(message)))
+          new MessageMapper(this
+            .displayedFolder())
+            .toJson(message)))
       .then((mappedMessages) => this
         .startDialog('wizard/ticket', mappedMessages))
       .catch(console.log)
@@ -79,6 +79,10 @@ taiga.overlay = {
 
   selectedMessages: function () {
     return gFolderDisplay.selectedMessages
+  },
+
+  displayedFolder: function () {
+    return gFolderDisplay.displayedFolder
   }
 
 }

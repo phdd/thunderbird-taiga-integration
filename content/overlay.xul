@@ -29,7 +29,7 @@
           label="&create-ticket;"
           accesskey="I"
           oncommand="taiga.overlay.createTicket();"/>
-        <!-- <menuitem
+        <menuitem
           id="messageMenuPopup_taiga-create-user-story"
           label="&create-user-story;"
           accesskey="S"
@@ -52,7 +52,7 @@
           label="&attach;"
           accesskey="A"
           disabled="true"
-          oncommand="taiga.overlay.uploadAttachment();"/> -->
+          oncommand="taiga.overlay.uploadAttachment();"/>
       </menupopup>
     </menu>
   </menupopup>
@@ -70,7 +70,7 @@
           label="&create-ticket;"
           accesskey="I"
           oncommand="taiga.overlay.createTicket();"/>
-        <!-- <menuitem
+        <menuitem
           id="mailContext_taiga-create-user-story"
           label="&create-user-story;"
           accesskey="S"
@@ -93,7 +93,7 @@
           label="&attach;"
           accesskey="A"
           disabled="true"
-          oncommand="taiga.overlay.uploadAttachment();"/> -->
+          oncommand="taiga.overlay.uploadAttachment();"/>
       </menupopup>
     </menu>
   </menupopup>

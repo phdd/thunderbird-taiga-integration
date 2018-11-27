@@ -88,7 +88,7 @@ class TaigaApi {
   ajaxOptions () {
     return {
       headers: {
-        'Authorization': `Bearer ${this._token}`,
+        'Authorization': `Application ${this._token}`,
         'Content-Type': 'application/json'
       },
 
@@ -121,7 +121,7 @@ class AttachmentDto {
   formData () {
     const data = new FormData()
     const blob = new Blob([this.attachment.bytes],
-      {type: this.attachment.contentType})
+      { type: this.attachment.contentType })
 
     data.append('attached_file', blob, this.attachment.name)
     data.append('from_comment', this.from_comment)
