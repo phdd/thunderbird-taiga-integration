@@ -75,8 +75,8 @@ var taiga = {
    */
   i18n: function (id, subPhrases) {
     const stringBundle = Cc['@mozilla.org/intl/stringbundle;1']
-        .getService(Ci.nsIStringBundleService)
-        .createBundle('chrome://taiga/locale/taiga.properties')
+      .getService(Ci.nsIStringBundleService)
+      .createBundle('chrome://taiga/locale/taiga.properties')
 
     if (subPhrases) {
       return stringBundle.formatStringFromName(id, subPhrases, subPhrases.length)

@@ -28,8 +28,16 @@ class TaigaApi {
     return this.postJson('issues', issueDto.json())
   }
 
+  createUserStory (userStoryDto) {
+    return this.postJson('userstories', userStoryDto.json())
+  }
+
   patchIssue (patch) {
     return this.patch(`issues/${patch.id}`, patch)
+  }
+
+  patchUserStory (patch) {
+    return this.patch(`userstories/${patch.id}`, patch)
   }
 
   postAttachment (entity, attachmentDto) {
@@ -137,6 +145,46 @@ class AttachmentDto {
     data.append('project', getIdOrMapFromObject(this.project))
 
     return data
+  }
+
+}
+
+// FIXME duplicated DTO-Code
+
+class UserStoryDto {
+
+  static createFor (userStory) {
+    const dto = new UserStoryDto()
+    dto.userStory = userStory
+    dto.watchers = []
+    dto.tags = []
+    return dto
+  }
+
+  isAssignedTo (user) {
+    this.assignTo = user
+    return this
+  }
+
+  isWatchedBy (users) {
+    this.watchers = users
+    return this
+  }
+
+  isTaggedWith (tags) {
+    this.tags = tags
+    return this
+  }
+
+  json () {
+    return {
+      assigned_to: getIdOrMapFromObject(this.assignTo),
+      description: this.ticket.description,
+      project: getIdOrMapFromObject(this.ticket.project),
+      subject: this.ticket.subject,
+      tags: this.tags.map(tag => getIdOrMapFromObject(tag)),
+      watchers: this.watchers.map(watcher => getIdOrMapFromObject(watcher))
+    }
   }
 
 }

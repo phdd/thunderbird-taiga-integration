@@ -41,7 +41,7 @@ taiga.overlay = {
       })
   },
 
-  createTicket: function () {
+  mapMessagesAndStart: function (wizard) {
     Promise
       .all(this
         .selectedMessages()
@@ -50,8 +50,16 @@ taiga.overlay = {
             .displayedFolder())
             .toJson(message)))
       .then((mappedMessages) => this
-        .startDialog('wizard/ticket', mappedMessages))
+        .startDialog(wizard, mappedMessages))
       .catch(console.log)
+  },
+
+  createTicket: function () {
+    this.mapMessagesAndStart('wizard/ticket')
+  },
+
+  createUserStory: function () {
+    this.mapMessagesAndStart('wizard/user-story')
   },
 
   setValidConnection: function (valid) {
@@ -65,7 +73,7 @@ taiga.overlay = {
       document.querySelector(`[id$="${name}_taiga-${idSuffix}"]`)
 
     get('create-ticket').disabled = !isSingleMessageSelected
-    get('create-user-story').disabled = true // TODO
+    get('create-user-story').disabled = !isSingleMessageSelected
     get('create-task').disabled = true // TODO
     get('comment').disabled = true // TODO
     get('attach').disabled = true // TODO
