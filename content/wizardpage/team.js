@@ -105,7 +105,7 @@ taiga.wizardpage.team = {
     this.setOption('assignToMe', isChecked)
   },
 
-  patchIssue: function () {
+  patchPeople: function () {
     const patch = {
       id: this.model.id,
       version: this.model.version,
@@ -130,12 +130,13 @@ taiga.wizardpage.team = {
         if (this.options.participantsWatching) {
           return this
             .fetchContacts()
-            .then((contacts) => patch.watchers.concat(contacts))
+            .then((contacts) => patch.watchers = patch.watchers
+              .concat(contacts.map(contact => contact.id)))
         }
       })
 
-      .then(() => this.api
-        .patchIssue(patch))
+      .then(() => this.model
+        .patchPeopleOperation.call(this.api, patch))
       .then((issue) =>
         taiga.mergeSimplePropertiesFrom(issue).into(this.model))
   },
@@ -161,7 +162,7 @@ taiga.wizardpage.team = {
       this.gui.wizard().canRewind = false
 
       this
-        .patchIssue()
+        .patchPeople()
         .then(() => {
           reenableUsersInput()
           this.optionsHaveBeenSet = true

@@ -179,9 +179,9 @@ class UserStoryDto {
   json () {
     return {
       assigned_to: getIdOrMapFromObject(this.assignTo),
-      description: this.ticket.description,
-      project: getIdOrMapFromObject(this.ticket.project),
-      subject: this.ticket.subject,
+      description: this.userStory.description,
+      project: getIdOrMapFromObject(this.userStory.project),
+      subject: this.userStory.subject,
       tags: this.tags.map(tag => getIdOrMapFromObject(tag)),
       watchers: this.watchers.map(watcher => getIdOrMapFromObject(watcher))
     }

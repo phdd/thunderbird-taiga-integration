@@ -24,7 +24,7 @@
           <separator/>
           
           <label control="taiga-user-story-description" value="&taiga-user-story-description;"/>
-          <textbox class="body" id="taiga-user-story-description" multiline="true" rows="9" value=""/>
+          <textbox class="body" id="taiga-user-story-description" multiline="true" rows="14" value=""/>
           <description>&taiga-user-story-description-description;</description>
         </vbox>
         

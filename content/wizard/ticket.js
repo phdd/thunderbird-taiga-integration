@@ -34,6 +34,8 @@ taiga.wizard.ticket = {
   },
 
   setup: function () {
+    this.model.patchPeopleOperation = this.api.patchIssue
+
     taiga.wizardpage.project
       .load(this.model, this.api, this.preferences)
 

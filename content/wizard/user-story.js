@@ -34,6 +34,8 @@ taiga.wizard.userStory = {
   },
 
   setup: function () {
+    this.model.patchPeopleOperation = this.api.patchUserStory
+
     taiga.wizardpage.project
       .load(this.model, this.api, this.preferences)
 
@@ -54,7 +56,7 @@ taiga.wizard.userStory = {
         .load(this.model, this.message, this.api)
 
       taiga.wizardpage.attachments.onWizardShow = this.onWizardShow.bind(this)
-      taiga.wizardpage.attachments.entityName = 'issues'
+      taiga.wizardpage.attachments.entityName = 'userstories'
     }
   },
 
